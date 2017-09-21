@@ -1,0 +1,22 @@
+#designer {
+    width: 1000px;
+    height: 1000px;
+    user-select: none;
+    cursor: default;
+}
+
+.tableGroup {
+    stroke: #707070;
+}
+
+.table {
+    fill: white;
+}
+
+.tableName {
+    font-size: 14px;    
+}
+
+.tableColumn {
+    font-size: 12px;    
+}
