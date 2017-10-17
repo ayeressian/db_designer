@@ -1,4 +1,5 @@
-const ns = 'http://www.w3.org/2000/svg';
+const nsSvg = 'http://www.w3.org/2000/svg';
+const nsHtml = 'http://www.w3.org/1999/xhtml';
 
 export default class Table {
     constructor(name, columns = []) {
@@ -16,7 +17,7 @@ export default class Table {
         }
 
         mouseMove = mouseMove.bind(this);
-        this._elem.addEventListener('mousedown', event => {
+        this._table.addEventListener('mousedown', event => {
             const boundingRect = this._elem.getBoundingClientRect();
             mouseDownInitialElemX = event.clientX - boundingRect.left;
             mouseDownInitialElemY = event.clientY - boundingRect.top;
@@ -36,64 +37,116 @@ export default class Table {
         this._columns.push(column);
     }
 
-    postDraw() {
-        const textOffsetTopBottom = 10;
-        const bBox = this._nameElem.getBBox();
-        const textHeight = bBox.height;
-        const textWidth = bBox.width;
-        this._nameElem.setAttributeNS(null, 'y', textOffsetTopBottom + textHeight / 1.5);
+    getPosition() {
+        const boundingRect = this._elem.getBoundingClientRect();
+        const centerX = boundingRect.left + boundingRect.width / 2;
+        const centerY = boundingRect.top + boundingRect.height / 2;
+        return {
+            centerX,
+            centerY
+        };
+    }
 
-        const titleHeight = textHeight + textOffsetTopBottom * 2;
-        this._titleLine.setAttributeNS(null, 'y1', titleHeight);
-        this._titleLine.setAttributeNS(null, 'y2', titleHeight);
+    // getRightSide() {
+    //     const boundingRect = this._elem.getBoundingClientRect();
+    //     return {boundingRect.left};
+    // }
 
-        const tableOffsetLeftRight = 20;
-        let width = this._nameElem.getComputedTextLength() + tableOffsetLeftRight * 2;
-        const MIN_WIDTH_SIZE = 100;
-        if (width < MIN_WIDTH_SIZE) {
-            width = MIN_WIDTH_SIZE;
-            this._nameElem.setAttributeNS(null, 'x', (MIN_WIDTH_SIZE - textWidth) / 2);
-        } else {
-            this._nameElem.setAttributeNS(null, 'x', tableOffsetLeftRight);
+    isIntersecting(l1p1, l1p2, l2p1, l2p2) {
+        const deltaXL1 = l1p1.x - l1p2.x;
+        const deltaXL2 = l2p1.x - l2p2.x;
+
+        if (deltaXL1 === 0 && deltaXL2 === 0) {
+            // Parallel both horizontal
+            return null;
         }
-        this._table.setAttributeNS(null, 'width', width);
-        this._titleLine.setAttributeNS(null, 'x2', width);
 
-        this._elem.appendChild(this._titleLine);
+        if (deltaXL1 === 0) {
+            const deltaYL2 = l2p1.y - l2p2.y;
+            const m2 = deltaYL2 / deltaXL2;
+            const b2 = m1 * l2p1.x - l2p1.y;
 
-        let columnHeight = 0;
+            const intersectY = m2 * l1p1.x + b2;
 
-        this._columns.forEach(column => column.postDraw());        
+            return {
+                y: intersectY,
+                x: l1p1.x
+            };
+        }
+        const deltaYL1 = l1p1.y - l1p2.y;
+        const m1 = deltaYL1 / deltaXL1;
+        const b1 = m1 * l1p1.x - l1p1.y;
 
-        this._table.setAttributeNS(null, 'height', titleHeight + columnHeight * this._columns.length);
+        if (deltaXL2 === 0) {
+            const intersectY = m1 * l2p1.x + b1;
+            return {
+                y: intersectY,
+                x: l2p1.x
+            };
+        }
+        const deltaYL2 = l2p1.y - l2p2.y;
+        const m2 = deltaYL2 / deltaXL2;
+
+        // Parallel
+        if (m1 === m2) return null;
+
+        const b2 = m1 * l2p1.x - l2p1.y;
+        const intersectY = m1 * l2p1.x + b1;
+
+    }
+
+    drawRelations() {
+        this._columns.forEach(column => {
+            if (column.ref) {
+                column.ref.table.getPosition();
+                this.getPosition();
+
+
+            }
+        })
+
+        const boundingRect = this._elem.getBoundingClientRect();
+        boundingRect.left;
+        boundingRect.top;
+
+
+    }
+
+    postDraw() {
+
     }
 
     render() {
         const x = 0,
             y = 0;
+        this._elem = document.createElementNS(nsSvg, 'foreignObject');
+        this._elem.setAttributeNS(null, 'x', x);
+        this._elem.setAttributeNS(null, 'y', y);
 
-        this._elem = document.createElementNS(ns, 'g');
-        this._elem.setAttributeNS(null, 'class', 'tableGroup');
-        this._elem.setAttributeNS(null, 'transform', `translate(${x},${y})`);
+        this._table = document.createElementNS(nsHtml, 'table');
+        this._table.className = 'table';
+        const headingTr = document.createElementNS(nsHtml, 'tr');
+        this._table.appendChild(headingTr);
+        const headingTh = document.createElementNS(nsHtml, 'th');
+        headingTh.setAttributeNS(null, 'colspan', 2);
+        headingTh.innerHTML = this._name;
+        headingTr.appendChild(headingTh);
 
-        this._table = document.createElementNS(ns, 'rect');
-        this._table.setAttributeNS(null, 'class', 'table');
         this._elem.appendChild(this._table);
 
-        this._titleLine = document.createElementNS(ns, 'line');
-        this._titleLine.setAttributeNS(null, 'x1', 0);
+        this._columns.forEach(column => {
+            const columnTr = document.createElementNS(nsHtml, 'tr');
+            this._table.appendChild(columnTr);
 
-        this._nameElem = document.createElementNS(ns, 'text');
-        this._nameElem.innerHTML = this._name;
-        this._nameElem.setAttributeNS(null, 'class', 'tableName');
-        this._elem.appendChild(this._nameElem);
+            const columnNameTd = document.createElementNS(nsHtml, 'td');
+            columnNameTd.innerHTML = column.name;
+            columnTr.appendChild(columnNameTd);
 
-        
+            const columnTypeTd = document.createElementNS(nsHtml, 'td');
+            columnTypeTd.innerHTML = column.type;
+            columnTr.appendChild(columnTypeTd);
+        });
         this._moveEvents();
-
-        for (const column of this._columns) {
-            this._table.appendChild(column.render());
-        }    
         return this._elem;
     }
 }

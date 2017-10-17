@@ -3,6 +3,7 @@
     height: 1000px;
     user-select: none;
     cursor: default;
+    background-color: #e3ebed;
 }
 
 .tableGroup {
@@ -10,13 +11,22 @@
 }
 
 .table {
-    fill: white;
+    border: 1px solid black;
+    background-color: white;
+    min-width: 100px;
+    border-collapse: collapse;
 }
 
-.tableName {
-    font-size: 14px;    
+.table tr {
+    border-bottom: 1px solid black;
+}
+.table tr th {
+    font-size: 1.2em;
+    padding: 5px;
 }
 
-.tableColumn {
-    font-size: 12px;    
+.table td {
+    padding: 5px;
+    padding-left: 10px;
+    padding-right: 10px;    
 }
