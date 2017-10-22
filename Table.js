@@ -11,17 +11,18 @@ export default class Table {
         let mouseDownInitialElemX, mouseDownInitialElemY;
 
         function mouseMove(event) {
-            const deltaX = event.clientX - mouseDownInitialElemX;
-            const deltaY = event.clientY - mouseDownInitialElemY;
+            event.stopPropagation();
+            const deltaX = (event.clientX / this._designer.getZoom()) - mouseDownInitialElemX;
+            const deltaY = (event.clientY / this._designer.getZoom()) - mouseDownInitialElemY;
             this._elem.setAttributeNS(null, 'transform', `translate(${deltaX},${deltaY})`);
         }
 
         mouseMove = mouseMove.bind(this);
         this._table.addEventListener('mousedown', event => {
+            event.stopPropagation();
             const boundingRect = this._elem.getBoundingClientRect();
-            mouseDownInitialElemX = event.clientX - boundingRect.left;
-            mouseDownInitialElemY = event.clientY - boundingRect.top;
-
+            mouseDownInitialElemX = (event.clientX - boundingRect.left) / this._designer.getZoom();
+            mouseDownInitialElemY = (event.clientY - boundingRect.top) / this._designer.getZoom();
             document.addEventListener('mousemove', mouseMove);
         }, false);
         document.addEventListener('mouseup', () => {
@@ -100,16 +101,11 @@ export default class Table {
             if (column.ref) {
                 column.ref.table.getPosition();
                 this.getPosition();
-
-
             }
         })
-
         const boundingRect = this._elem.getBoundingClientRect();
         boundingRect.left;
         boundingRect.top;
-
-
     }
 
     postDraw() {
@@ -148,5 +144,9 @@ export default class Table {
         });
         this._moveEvents();
         return this._elem;
+    }
+
+    setDesigner(designer) {
+        this._designer = designer;
     }
 }
