@@ -10,14 +10,13 @@ export default class Table {
     _moveEvents() {
         let mouseDownInitialElemX, mouseDownInitialElemY;
 
-        function mouseMove(event) {
+        const mouseMove = event => {
             event.stopPropagation();
-            const deltaX = (event.clientX / this._designer.getZoom()) - mouseDownInitialElemX;
-            const deltaY = (event.clientY / this._designer.getZoom()) - mouseDownInitialElemY;
+            const deltaX = event.clientX / this._designer.getZoom() + this._designer.getPan().x - mouseDownInitialElemX;
+            const deltaY = event.clientY / this._designer.getZoom() + this._designer.getPan().y - mouseDownInitialElemY;
             this._elem.setAttributeNS(null, 'transform', `translate(${deltaX},${deltaY})`);
-        }
+        };
 
-        mouseMove = mouseMove.bind(this);
         this._table.addEventListener('mousedown', event => {
             event.stopPropagation();
             const boundingRect = this._elem.getBoundingClientRect();
@@ -148,5 +147,9 @@ export default class Table {
 
     setDesigner(designer) {
         this._designer = designer;
+    }
+
+    getElement() {
+        return this._elem;
     }
 }

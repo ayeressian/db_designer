@@ -29,8 +29,9 @@ export default class Designer {
     }
 
     draw() {
-        this.tables.forEach(table => {
+        this.tables.forEach((table, i) => {
             const tableElm = table.render();
+            tableElm.setAttribute('id', i + 'table');
             this._svgElem.appendChild(tableElm);
         });
 
@@ -87,5 +88,12 @@ export default class Designer {
 
     getZoom() {
         return this._zoom;
+    }
+
+    getPan() {
+        return {
+            x: this._viewBoxVals.minX,
+            y: this._viewBoxVals.minY
+        };
     }
 }
