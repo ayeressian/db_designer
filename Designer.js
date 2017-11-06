@@ -1,3 +1,5 @@
+import { intersection } from './util';
+
 const ns = 'http://www.w3.org/2000/svg';
 
 export default class Designer {
@@ -28,16 +30,41 @@ export default class Designer {
         drawTable();
     }
 
+    drawTableRelation({ fromTable, toTable, fromColum, toColumn }) {
+        const fromTableCenter = fromTable.getCenter();
+        const toTableCenter = toTable.getCenter();
+
+        const fromTableSides = fromTable.getSides();
+
+        
+
+        const intersectFromTableRightSide = intersection(fromTableCenter, toTableCenter, fromTableSides.right.p1, fromTableSides.right.p2);
+        if (intersectFromTableRightSide) {
+
+        }
+        intersection(fromTableCenter, toTableCenter, fromTableSides.left.p1, fromTableSides.left.p2);
+        intersection(fromTableCenter, toTableCenter, fromTableSides.top.p1, fromTableSides.top.p2);
+        intersection(fromTableCenter, toTableCenter, fromTableSides.bottom.p1, fromTableSides.bottom.p2);
+    }
+
     draw() {
+        const relations = [];
+
         this.tables.forEach((table, i) => {
             const tableElm = table.render();
             tableElm.setAttribute('id', i + 'table');
             this._svgElem.appendChild(tableElm);
+
+            table.columns.forEach(column => {
+                if (column.fk) {
+                    drawTableRelation({ fromTable: table, toTable: column.fk.table, fromColum: column, toColumn: column.fk.column });
+                }
+            });
         });
 
         //After draw happened
         setTimeout(() => {
-            this.tables.forEach(table => table.postDraw());
+            this.tables.forEach(table => table.postDraw && table.postDraw());
         });
     }
 

@@ -3,7 +3,7 @@ const nsHtml = 'http://www.w3.org/1999/xhtml';
 
 export default class Table {
     constructor(name, columns = []) {
-        this._columns = columns;
+        this.columns = columns;
         this._name = name;
     }
 
@@ -34,81 +34,59 @@ export default class Table {
     }
 
     addColumn(column) {
-        this._columns.push(column);
+        this.columns.push(column);
     }
 
-    getPosition() {
+    getCenter() {
         const boundingRect = this._elem.getBoundingClientRect();
-        const centerX = boundingRect.left + boundingRect.width / 2;
-        const centerY = boundingRect.top + boundingRect.height / 2;
+        const x = boundingRect.left + boundingRect.width / 2;
+        const y = boundingRect.top + boundingRect.height / 2;
         return {
-            centerX,
-            centerY
+            x,
+            y
         };
     }
 
-    // getRightSide() {
-    //     const boundingRect = this._elem.getBoundingClientRect();
-    //     return {boundingRect.left};
-    // }
-
-    isIntersecting(l1p1, l1p2, l2p1, l2p2) {
-        const deltaXL1 = l1p1.x - l1p2.x;
-        const deltaXL2 = l2p1.x - l2p2.x;
-
-        if (deltaXL1 === 0 && deltaXL2 === 0) {
-            // Parallel both horizontal
-            return null;
-        }
-
-        if (deltaXL1 === 0) {
-            const deltaYL2 = l2p1.y - l2p2.y;
-            const m2 = deltaYL2 / deltaXL2;
-            const b2 = m1 * l2p1.x - l2p1.y;
-
-            const intersectY = m2 * l1p1.x + b2;
-
-            return {
-                y: intersectY,
-                x: l1p1.x
-            };
-        }
-        const deltaYL1 = l1p1.y - l1p2.y;
-        const m1 = deltaYL1 / deltaXL1;
-        const b1 = m1 * l1p1.x - l1p1.y;
-
-        if (deltaXL2 === 0) {
-            const intersectY = m1 * l2p1.x + b1;
-            return {
-                y: intersectY,
-                x: l2p1.x
-            };
-        }
-        const deltaYL2 = l2p1.y - l2p2.y;
-        const m2 = deltaYL2 / deltaXL2;
-
-        // Parallel
-        if (m1 === m2) return null;
-
-        const b2 = m1 * l2p1.x - l2p1.y;
-        const intersectY = m1 * l2p1.x + b1;
-
-    }
-
-    drawRelations() {
-        this._columns.forEach(column => {
-            if (column.ref) {
-                column.ref.table.getPosition();
-                this.getPosition();
-            }
-        })
+    getSides() {
         const boundingRect = this._elem.getBoundingClientRect();
-        boundingRect.left;
-        boundingRect.top;
+        return {
+            right: {
+                p1: { x: boundingRect.right, y: boundingRect.top },
+                p2: { x: boundingRect.right, y: boundingRect.bottom }
+            },
+            left: {
+                p1: { x: boundingRect.left, y: boundingRect.top },
+                p2: { x: boundingRect.left, y: boundingRect.bottom }
+            },
+            top: {
+                p1: { x: boundingRect.left, y: boundingRect.top },
+                p2: { x: boundingRect.right, y: boundingRect.top }
+            },
+            bottom: {
+                p1: { x: boundingRect.left, y: boundingRect.bottom },
+                p2: { x: boundingRect.right, y: boundingRect.bottom }
+            }
+        };
     }
 
-    postDraw() {
+    getRightSide() {
+        const boundingRect = this._elem.getBoundingClientRect();
+        return { p1x: boundingRect.right, p1y: boundingRect.top, p2x: boundingRect.right, p2y: boundingRect.bottom };
+    }
 
+    getLeftSide() {
+        const boundingRect = this._elem.getBoundingClientRect();
+        return { p1x: boundingRect.left, p1y: boundingRect.top, p2x: boundingRect.left, p2y: boundingRect.bottom };
+    }
+
+    getTopSide() {
+        const boundingRect = this._elem.getBoundingClientRect();
+        return { p1x: boundingRect.left, p1y: boundingRect.top, p2x: boundingRect.right, p2y: boundingRect.top };
+    }
+
+    getBottomSide() {
+        const boundingRect = this._elem.getBoundingClientRect();
+        return { p1x: boundingRect.left, p1y: boundingRect.bottom, p2x: boundingRect.right, p2y: boundingRect.bottom };
     }
 
     render() {
@@ -129,7 +107,7 @@ export default class Table {
 
         this._elem.appendChild(this._table);
 
-        this._columns.forEach(column => {
+        this.columns.forEach(column => {
             const columnTr = document.createElementNS(nsHtml, 'tr');
             this._table.appendChild(columnTr);
 
