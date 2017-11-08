@@ -1,4 +1,4 @@
-import { intersection } from './util';
+import { intersection } from './util.js';
 
 const ns = 'http://www.w3.org/2000/svg';
 
@@ -30,21 +30,51 @@ export default class Designer {
         drawTable();
     }
 
-    drawTableRelation({ fromTable, toTable, fromColum, toColumn }) {
+    _getTableRelationSide({ fromTable, toTable, fromColum, toColumn }) {
         const fromTableCenter = fromTable.getCenter();
         const toTableCenter = toTable.getCenter();
 
         const fromTableSides = fromTable.getSides();
 
-        
+        let fromTablePathSide;
 
         const intersectFromTableRightSide = intersection(fromTableCenter, toTableCenter, fromTableSides.right.p1, fromTableSides.right.p2);
         if (intersectFromTableRightSide) {
-
+            fromTablePathSide = 'right';
         }
-        intersection(fromTableCenter, toTableCenter, fromTableSides.left.p1, fromTableSides.left.p2);
-        intersection(fromTableCenter, toTableCenter, fromTableSides.top.p1, fromTableSides.top.p2);
-        intersection(fromTableCenter, toTableCenter, fromTableSides.bottom.p1, fromTableSides.bottom.p2);
+        const intersectFromTableLeftSide = intersection(fromTableCenter, toTableCenter, fromTableSides.left.p1, fromTableSides.left.p2);
+        if (intersectFromTableRightSide) {
+            fromTablePathSide = 'left';
+        }
+        const intersectFromTableTopSide = intersection(fromTableCenter, toTableCenter, fromTableSides.top.p1, fromTableSides.top.p2);
+        if (intersectFromTableTopSide) {
+            fromTablePathSide = 'top';
+        }
+        const intersectFromTableBottomSide = intersection(fromTableCenter, toTableCenter, fromTableSides.bottom.p1, fromTableSides.bottom.p2);
+        if (intersectFromTableBottomSide) {
+            fromTablePathSide = 'bottom';
+        }
+
+        let toTablePathSide;
+
+        const intersectToTableRightSide = intersection(fromTableCenter, toTableCenter, fromTableSides.right.p1, fromTableSides.right.p2);
+        if (intersectToTableRightSide) {
+            toTablePathSide = 'right';
+        }
+        const intersectToTableLeftSide = intersection(fromTableCenter, toTableCenter, fromTableSides.left.p1, fromTableSides.left.p2);
+        if (intersectToTableRightSide) {
+            toTablePathSide = 'left';
+        }
+        const intersectToTableTopSide = intersection(fromTableCenter, toTableCenter, fromTableSides.top.p1, fromTableSides.top.p2);
+        if (intersectToTableTopSide) {
+            toTablePathSide = 'top';
+        }
+        const intersectToTableBottomSide = intersection(fromTableCenter, toTableCenter, fromTableSides.bottom.p1, fromTableSides.bottom.p2);
+        if (intersectToTableBottomSide) {
+            toTablePathSide = 'bottom';
+        }
+
+        return { fromTablePathSide, toTablePathSide };
     }
 
     draw() {
@@ -57,7 +87,8 @@ export default class Designer {
 
             table.columns.forEach(column => {
                 if (column.fk) {
-                    drawTableRelation({ fromTable: table, toTable: column.fk.table, fromColum: column, toColumn: column.fk.column });
+                    const sidePathStart = this._getTableRelationSide({ fromTable: table, toTable: column.fk.table, fromColum: column, toColumn: column.fk.column });
+                    console.log(sidePathStart);
                 }
             });
         });
