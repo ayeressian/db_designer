@@ -9,3 +9,5 @@ const table2 = new Table('BBB', [
 ]);
 
 const designer = new Designer([table, table2]);
+
+window.designer = designer;

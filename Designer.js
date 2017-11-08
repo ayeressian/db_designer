@@ -22,6 +22,8 @@ export default class Designer {
 
         this._setUpEvents();
 
+        this._relationInfos = [];
+
         this._zoom = 1;
     }
 
@@ -78,8 +80,6 @@ export default class Designer {
     }
 
     draw() {
-        const relations = [];
-
         this.tables.forEach((table, i) => {
             const tableElm = table.render();
             tableElm.setAttribute('id', i + 'table');
@@ -87,15 +87,29 @@ export default class Designer {
 
             table.columns.forEach(column => {
                 if (column.fk) {
+                    let relationInfo = { fromTable: table, toTable: column.fk.table, fromColum: column, toColumn: column.fk.column };
                     const sidePathStart = this._getTableRelationSide({ fromTable: table, toTable: column.fk.table, fromColum: column, toColumn: column.fk.column });
-                    console.log(sidePathStart);
+                    relationInfo = {...relationInfo, ...sidePathStart};
+                    this._relationInfos.push(relationInfo);                    
                 }
-            });
+            });            
         });
+
+        this.tables.forEach(table => {
+            relations = this._getTableRelations(table);
+        });
+        
+        this._relationInfos.forEach();
 
         //After draw happened
         setTimeout(() => {
             this.tables.forEach(table => table.postDraw && table.postDraw());
+        });
+    }
+
+    _getTableRelations(table) {
+        return this._relationInfos.filter(relations => {
+            return relations.fromTable === table || relations.toTable === table;
         });
     }
 
@@ -141,6 +155,13 @@ export default class Designer {
             this._viewBoxVals.height = this._viewBoxVals.height * ZOOM;
             setViewBox();
             this._zoom /= ZOOM;
+        });
+
+        this.tables.forEach(table => {
+            table.setMoveListener(() => {
+                const relations = this._getTableRelations(table);
+                relations.
+            });
         });
     }
 
