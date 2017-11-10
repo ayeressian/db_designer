@@ -20,7 +20,7 @@ export default class Table {
 
         this._table.addEventListener('mousedown', event => {
             event.stopPropagation();
-            const boundingRect = this._elem.getBoundingClientRect();
+            const boundingRect = this._table.getBoundingClientRect();
             mouseDownInitialElemX = (event.clientX - boundingRect.left) / this._designer.getZoom();
             mouseDownInitialElemY = (event.clientY - boundingRect.top) / this._designer.getZoom();
             document.addEventListener('mousemove', mouseMove);
@@ -43,7 +43,7 @@ export default class Table {
     }
 
     getCenter() {
-        const boundingRect = this._elem.getBoundingClientRect();
+        const boundingRect = this._table.getBoundingClientRect();
         const x = boundingRect.left + boundingRect.width / 2;
         const y = boundingRect.top + boundingRect.height / 2;
         return {
@@ -53,7 +53,7 @@ export default class Table {
     }
 
     getSides() {
-        const boundingRect = this._elem.getBoundingClientRect();
+        const boundingRect = this._table.getBoundingClientRect();
         return {
             right: {
                 p1: { x: boundingRect.right, y: boundingRect.top },
@@ -72,26 +72,6 @@ export default class Table {
                 p2: { x: boundingRect.right, y: boundingRect.bottom }
             }
         };
-    }
-
-    getRightSide() {
-        const boundingRect = this._elem.getBoundingClientRect();
-        return { p1x: boundingRect.right, p1y: boundingRect.top, p2x: boundingRect.right, p2y: boundingRect.bottom };
-    }
-
-    getLeftSide() {
-        const boundingRect = this._elem.getBoundingClientRect();
-        return { p1x: boundingRect.left, p1y: boundingRect.top, p2x: boundingRect.left, p2y: boundingRect.bottom };
-    }
-
-    getTopSide() {
-        const boundingRect = this._elem.getBoundingClientRect();
-        return { p1x: boundingRect.left, p1y: boundingRect.top, p2x: boundingRect.right, p2y: boundingRect.top };
-    }
-
-    getBottomSide() {
-        const boundingRect = this._elem.getBoundingClientRect();
-        return { p1x: boundingRect.left, p1y: boundingRect.bottom, p2x: boundingRect.right, p2y: boundingRect.bottom };
     }
 
     render() {

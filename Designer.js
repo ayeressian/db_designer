@@ -8,8 +8,7 @@ export default class Designer {
         this._svgElem = document.getElementById('designer');
         this._btnZoomIn = document.getElementById('btn-zoom-in');
         this._btnZoomOut = document.getElementById('btn-zoom-out');
-        this.tables = tables;
-        this.draw();
+        this.tables = tables;       
 
         tables.forEach(table => table.setDesigner(this));
 
@@ -25,6 +24,8 @@ export default class Designer {
         this._relationInfos = [];
 
         this._zoom = 1;
+
+        this.draw();
     }
 
     addTable(table) {
@@ -92,14 +93,8 @@ export default class Designer {
                     relationInfo = {...relationInfo, ...sidePathStart};
                     this._relationInfos.push(relationInfo);                    
                 }
-            });            
+            });
         });
-
-        this.tables.forEach(table => {
-            relations = this._getTableRelations(table);
-        });
-        
-        this._relationInfos.forEach();
 
         //After draw happened
         setTimeout(() => {
@@ -160,7 +155,38 @@ export default class Designer {
         this.tables.forEach(table => {
             table.setMoveListener(() => {
                 const relations = this._getTableRelations(table);
-                relations.
+                const leftSideRelations = [], rightSideRelations = [], topSideRelations = [], bottomSideRelations = [];
+                
+                relations.forEach(relation => {
+                    const r = this._getTableRelationSide(relation);                    
+                    relation.fromTablePathSide = r.fromTablePathSide;
+                    relation.toTablePathSide = r.toTablePathSide;
+                    if (relation.fromTable === table) {
+                        if (relation.fromTablePathSide === 'left') {
+                            leftSideRelations.push(relation);
+                        } else if (relation.fromTablePathSide === 'right') {
+                            rightSideRelations.push(relation);
+                        } else if (relation.fromTablePathSide === 'top') {
+                            topSideRelations.push(relation);
+                        //relation.fromTablePathSide === 'bottom'
+                        } else {
+                            bottomSideRelations.push(relation);
+                        }
+                    //relation.toTable === table
+                    } else {
+                        if (relation.toTablePathSide === 'left') {
+                            leftSideRelations.push(relation);
+                        } else if (relation.toTablePathSide === 'right') {
+                            rightSideRelations.push(relation);
+                        } else if (relation.toTablePathSide === 'top') {
+                            topSideRelations.push(relation);
+                        //relation.toTablePathSide === 'bottom'
+                        } else {
+                            bottomSideRelations.push(relation);
+                        }
+                    }
+                });
+
             });
         });
     }
