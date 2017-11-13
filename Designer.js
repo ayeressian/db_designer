@@ -1,4 +1,4 @@
-import { intersection } from './util.js';
+import { segmentIntersection } from './util.js';
 
 const ns = 'http://www.w3.org/2000/svg';
 
@@ -18,7 +18,7 @@ export default class Designer {
             width: parseInt(window.getComputedStyle(this._svgElem).width, 10),
             height: parseInt(window.getComputedStyle(this._svgElem).height, 10)
         };
-
+        getSides
         this._setUpEvents();
 
         this._relationInfos = [];
@@ -41,38 +41,38 @@ export default class Designer {
 
         let fromTablePathSide;
 
-        const intersectFromTableRightSide = intersection(fromTableCenter, toTableCenter, fromTableSides.right.p1, fromTableSides.right.p2);
+        const intersectFromTableRightSide = segmentIntersection(fromTableCenter, toTableCenter, fromTableSides.right.p1, fromTableSides.right.p2);
         if (intersectFromTableRightSide) {
             fromTablePathSide = 'right';
         }
-        const intersectFromTableLeftSide = intersection(fromTableCenter, toTableCenter, fromTableSides.left.p1, fromTableSides.left.p2);
+        const intersectFromTableLeftSide = segmentIntersection(fromTableCenter, toTableCenter, fromTableSides.left.p1, fromTableSides.left.p2);
         if (intersectFromTableRightSide) {
             fromTablePathSide = 'left';
         }
-        const intersectFromTableTopSide = intersection(fromTableCenter, toTableCenter, fromTableSides.top.p1, fromTableSides.top.p2);
+        const intersectFromTableTopSide = segmentIntersection(fromTableCenter, toTableCenter, fromTableSides.top.p1, fromTableSides.top.p2);
         if (intersectFromTableTopSide) {
             fromTablePathSide = 'top';
         }
-        const intersectFromTableBottomSide = intersection(fromTableCenter, toTableCenter, fromTableSides.bottom.p1, fromTableSides.bottom.p2);
+        const intersectFromTableBottomSide = segmentIntersection(fromTableCenter, toTableCenter, fromTableSides.bottom.p1, fromTableSides.bottom.p2);
         if (intersectFromTableBottomSide) {
             fromTablePathSide = 'bottom';
         }
 
         let toTablePathSide;
 
-        const intersectToTableRightSide = intersection(fromTableCenter, toTableCenter, fromTableSides.right.p1, fromTableSides.right.p2);
+        const intersectToTableRightSide = segmentIntersection(fromTableCenter, toTableCenter, fromTableSides.right.p1, fromTableSides.right.p2);
         if (intersectToTableRightSide) {
             toTablePathSide = 'right';
         }
-        const intersectToTableLeftSide = intersection(fromTableCenter, toTableCenter, fromTableSides.left.p1, fromTableSides.left.p2);
+        const intersectToTableLeftSide = segmentIntersection(fromTableCenter, toTableCenter, fromTableSides.left.p1, fromTableSides.left.p2);
         if (intersectToTableRightSide) {
             toTablePathSide = 'left';
         }
-        const intersectToTableTopSide = intersection(fromTableCenter, toTableCenter, fromTableSides.top.p1, fromTableSides.top.p2);
+        const intersectToTableTopSide = segmentIntersection(fromTableCenter, toTableCenter, fromTableSides.top.p1, fromTableSides.top.p2);
         if (intersectToTableTopSide) {
             toTablePathSide = 'top';
         }
-        const intersectToTableBottomSide = intersection(fromTableCenter, toTableCenter, fromTableSides.bottom.p1, fromTableSides.bottom.p2);
+        const intersectToTableBottomSide = segmentIntersection(fromTableCenter, toTableCenter, fromTableSides.bottom.p1, fromTableSides.bottom.p2);
         if (intersectToTableBottomSide) {
             toTablePathSide = 'bottom';
         }
@@ -161,6 +161,7 @@ export default class Designer {
                     const r = this._getTableRelationSide(relation);                    
                     relation.fromTablePathSide = r.fromTablePathSide;
                     relation.toTablePathSide = r.toTablePathSide;
+                    console.log(relation);
                     if (relation.fromTable === table) {
                         if (relation.fromTablePathSide === 'left') {
                             leftSideRelations.push(relation);

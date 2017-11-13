@@ -1,45 +1,64 @@
-function intersection(l1p1, l1p2, l2p1, l2p2) {
-  const deltaXL1 = l1p1.x - l1p2.x;
-  const deltaXL2 = l2p1.x - l2p2.x;
+function segmentIntersection(l1p1, l1p2, l2p1, l2p2) {
+    const ip = lineIntersection(l1p1, l1p2, l2p1, l2p2);
 
-  if (deltaXL1 === 0 && deltaXL2 === 0) {
-      // Parallel both horizontal
-      return null;
-  }
+    if (!ip) return null;
 
-  if (deltaXL1 === 0) {
-      const deltaYL2 = l2p1.y - l2p2.y;
-      const m2 = deltaYL2 / deltaXL2;
-      const b2 = m1 * l2p1.x - l2p1.y;
+    if (ip.x < Math.max(l1p1.x, l1p2.x) && ip.x > Math.min(l1p1.x, l1p2.x) &&
+        ip.x < Math.max(l2p1.x, l2p2.x) && ip.x > Math.min(l2p1.x, l2p2.x) &&
+        ip.y < Math.max(l1p1.y, l1p2.y) && ip.y > Math.min(l1p1.y, l1p2.y) &&
+        ip.x < Math.max(l2p1.y, l2p2.y) && ip.y > Math.min(l2p1.y, l2p2.y))
+        return ip;
+    return null;
+}
 
-      const intersectY = m2 * l1p1.x + b2;
+function lineIntersection(l1p1, l1p2, l2p1, l2p2) {
+    const deltaXL1 = l1p1.x - l1p2.x;
+    const deltaXL2 = l2p1.x - l2p2.x;
 
-      return {
-          y: intersectY,
-          x: l1p1.x
-      };
-  }
-  const deltaYL1 = l1p1.y - l1p2.y;
-  const m1 = deltaYL1 / deltaXL1;
-  const b1 = m1 * l1p1.x - l1p1.y;
+    if (deltaXL1 === 0 && deltaXL2 === 0) {
+        // Parallel both horizontal
+        return null;
+    }
 
-  if (deltaXL2 === 0) {
-      const intersectY = m1 * l2p1.x + b1;
-      return {
-          y: intersectY,
-          x: l2p1.x
-      };
-  }
-  const deltaYL2 = l2p1.y - l2p2.y;
-  const m2 = deltaYL2 / deltaXL2;
+    if (deltaXL1 === 0) {
+        const deltaYL2 = l2p1.y - l2p2.y;
+        const m2 = deltaYL2 / deltaXL2;
+        const b2 = m1 * l2p1.x - l2p1.y;
 
-  // Parallel
-  if (m1 === m2) return null;
+        const intersectY = m2 * l1p1.x + b2;
 
-  const b2 = m1 * l2p1.x - l2p1.y;
-  const intersectY = m1 * l2p1.x + b1;
+        return {
+            y: intersectY,
+            x: l1p1.x
+        };
+    }
+    const deltaYL1 = l1p1.y - l1p2.y;
+    const m1 = deltaYL1 / deltaXL1;
+    const b1 = m1 * l1p1.x - l1p1.y;
+
+    if (deltaXL2 === 0) {
+        const intersectY = m1 * l2p1.x + b1;
+        return {
+            y: intersectY,
+            x: l2p1.x
+        };
+    }
+    const deltaYL2 = l2p1.y - l2p2.y;
+    const m2 = deltaYL2 / deltaXL2;
+
+    // Parallel
+    if (m1 === m2) return null;
+
+    const b2 = m1 * l2p1.x - l2p1.y;
+    const intersectY = m1 * l2p1.x + b1;
+
+    return {
+        x: l2p1.x,
+        y: intersectY
+    };
 }
 
 export {
-  intersection
+    lineIntersection,
+    segmentIntersection
 };
