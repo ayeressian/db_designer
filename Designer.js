@@ -18,8 +18,8 @@ export default class Designer {
             width: parseInt(window.getComputedStyle(this._svgElem).width, 10),
             height: parseInt(window.getComputedStyle(this._svgElem).height, 10)
         };
-        getSides
-        this._setUpEvents();
+        
+        this._setUpEvents();    
 
         this._relationInfos = [];
 

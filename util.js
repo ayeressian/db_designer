@@ -20,10 +20,11 @@ function lineIntersection(l1p1, l1p2, l2p1, l2p2) {
         return null;
     }
 
+    // first line horizontal
     if (deltaXL1 === 0) {
         const deltaYL2 = l2p1.y - l2p2.y;
         const m2 = deltaYL2 / deltaXL2;
-        const b2 = m1 * l2p1.x - l2p1.y;
+        const b2 = l2p1.y - m2 * l2p1.x;
 
         const intersectY = m2 * l1p1.x + b2;
 
@@ -34,7 +35,7 @@ function lineIntersection(l1p1, l1p2, l2p1, l2p2) {
     }
     const deltaYL1 = l1p1.y - l1p2.y;
     const m1 = deltaYL1 / deltaXL1;
-    const b1 = m1 * l1p1.x - l1p1.y;
+    const b1 = l1p1.y - m1 * l1p1.x;
 
     if (deltaXL2 === 0) {
         const intersectY = m1 * l2p1.x + b1;
@@ -49,7 +50,7 @@ function lineIntersection(l1p1, l1p2, l2p1, l2p2) {
     // Parallel
     if (m1 === m2) return null;
 
-    const b2 = m1 * l2p1.x - l2p1.y;
+    const b2 = l2p1.y - m2 * l2p1.x;
     const intersectY = m1 * l2p1.x + b1;
 
     return {
