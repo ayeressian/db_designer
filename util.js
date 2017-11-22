@@ -51,10 +51,12 @@ function lineIntersection(l1p1, l1p2, l2p1, l2p2) {
     if (m1 === m2) return null;
 
     const b2 = l2p1.y - m2 * l2p1.x;
-    const intersectY = m1 * l2p1.x + b1;
+
+    const intersectX = (b1 - b2) / (m2 - m1);
+    const intersectY = m1 * intersectX + b1;
 
     return {
-        x: l2p1.x,
+        x: intersectX,
         y: intersectY
     };
 }
