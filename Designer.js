@@ -8,7 +8,7 @@ export default class Designer {
         this._svgElem = document.getElementById('designer');
         this._btnZoomIn = document.getElementById('btn-zoom-in');
         this._btnZoomOut = document.getElementById('btn-zoom-out');
-        this.tables = tables;       
+        this.tables = tables;
 
         tables.forEach(table => table.setDesigner(this));
 
@@ -18,8 +18,8 @@ export default class Designer {
             width: parseInt(window.getComputedStyle(this._svgElem).width, 10),
             height: parseInt(window.getComputedStyle(this._svgElem).height, 10)
         };
-        
-        this._setUpEvents();    
+
+        this._setUpEvents();
 
         this._relationInfos = [];
 
@@ -58,21 +58,23 @@ export default class Designer {
             fromTablePathSide = 'bottom';
         }
 
+        const toTableSides = toTable.getSides();
+
         let toTablePathSide;
 
-        const intersectToTableRightSide = segmentIntersection(fromTableCenter, toTableCenter, fromTableSides.right.p1, fromTableSides.right.p2);
+        const intersectToTableRightSide = segmentIntersection(fromTableCenter, toTableCenter, toTableSides.right.p1, toTableSides.right.p2);
         if (intersectToTableRightSide) {
             toTablePathSide = 'right';
         }
-        const intersectToTableLeftSide = segmentIntersection(fromTableCenter, toTableCenter, fromTableSides.left.p1, fromTableSides.left.p2);
+        const intersectToTableLeftSide = segmentIntersection(fromTableCenter, toTableCenter, toTableSides.left.p1, toTableSides.left.p2);
         if (intersectToTableRightSide) {
             toTablePathSide = 'left';
         }
-        const intersectToTableTopSide = segmentIntersection(fromTableCenter, toTableCenter, fromTableSides.top.p1, fromTableSides.top.p2);
+        const intersectToTableTopSide = segmentIntersection(fromTableCenter, toTableCenter, toTableSides.top.p1, toTableSides.top.p2);
         if (intersectToTableTopSide) {
             toTablePathSide = 'top';
         }
-        const intersectToTableBottomSide = segmentIntersection(fromTableCenter, toTableCenter, fromTableSides.bottom.p1, fromTableSides.bottom.p2);
+        const intersectToTableBottomSide = segmentIntersection(fromTableCenter, toTableCenter, toTableSides.bottom.p1, toTableSides.bottom.p2);
         if (intersectToTableBottomSide) {
             toTablePathSide = 'bottom';
         }
@@ -90,8 +92,8 @@ export default class Designer {
                 if (column.fk) {
                     let relationInfo = { fromTable: table, toTable: column.fk.table, fromColum: column, toColumn: column.fk.column };
                     const sidePathStart = this._getTableRelationSide({ fromTable: table, toTable: column.fk.table, fromColum: column, toColumn: column.fk.column });
-                    relationInfo = {...relationInfo, ...sidePathStart};
-                    this._relationInfos.push(relationInfo);                    
+                    relationInfo = { ...relationInfo, ...sidePathStart };
+                    this._relationInfos.push(relationInfo);
                 }
             });
         });
@@ -156,12 +158,11 @@ export default class Designer {
             table.setMoveListener(() => {
                 const relations = this._getTableRelations(table);
                 const leftSideRelations = [], rightSideRelations = [], topSideRelations = [], bottomSideRelations = [];
-                
+
                 relations.forEach(relation => {
-                    const r = this._getTableRelationSide(relation);                    
+                    const r = this._getTableRelationSide(relation);
                     relation.fromTablePathSide = r.fromTablePathSide;
                     relation.toTablePathSide = r.toTablePathSide;
-                    console.log(relation);
                     if (relation.fromTable === table) {
                         if (relation.fromTablePathSide === 'left') {
                             leftSideRelations.push(relation);
@@ -169,11 +170,11 @@ export default class Designer {
                             rightSideRelations.push(relation);
                         } else if (relation.fromTablePathSide === 'top') {
                             topSideRelations.push(relation);
-                        //relation.fromTablePathSide === 'bottom'
+                            //relation.fromTablePathSide === 'bottom'
                         } else {
                             bottomSideRelations.push(relation);
                         }
-                    //relation.toTable === table
+                        //relation.toTable === table
                     } else {
                         if (relation.toTablePathSide === 'left') {
                             leftSideRelations.push(relation);
@@ -181,7 +182,7 @@ export default class Designer {
                             rightSideRelations.push(relation);
                         } else if (relation.toTablePathSide === 'top') {
                             topSideRelations.push(relation);
-                        //relation.toTablePathSide === 'bottom'
+                            //relation.toTablePathSide === 'bottom'
                         } else {
                             bottomSideRelations.push(relation);
                         }

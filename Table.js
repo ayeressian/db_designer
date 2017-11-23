@@ -2,9 +2,10 @@ const nsSvg = 'http://www.w3.org/2000/svg';
 const nsHtml = 'http://www.w3.org/1999/xhtml';
 
 export default class Table {
-    constructor(name, columns = []) {
+    constructor({ name, columns = [], pos = { x: 0, y: 0 } }) {
         this.columns = columns;
         this._name = name;
+        this._pos = pos;
     }
 
     _moveEvents() {
@@ -75,11 +76,8 @@ export default class Table {
     }
 
     render() {
-        const x = 0,
-            y = 0;
-        this._elem = document.createElementNS(nsSvg, 'foreignObject');
-        this._elem.setAttributeNS(null, 'x', x);
-        this._elem.setAttributeNS(null, 'y', y);
+        this._elem = document.createElementNS(nsSvg, 'foreignObject');        
+        this._elem.setAttributeNS(null, 'transform', `translate(${this._pos.x},${this._pos.y})`);
 
         this._table = document.createElementNS(nsHtml, 'table');
         this._table.className = 'table';

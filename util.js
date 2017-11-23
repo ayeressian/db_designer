@@ -3,10 +3,10 @@ function segmentIntersection(l1p1, l1p2, l2p1, l2p2) {
 
     if (!ip) return null;
 
-    if (ip.x < Math.max(l1p1.x, l1p2.x) && ip.x > Math.min(l1p1.x, l1p2.x) &&
-        ip.x < Math.max(l2p1.x, l2p2.x) && ip.x > Math.min(l2p1.x, l2p2.x) &&
-        ip.y < Math.max(l1p1.y, l1p2.y) && ip.y > Math.min(l1p1.y, l1p2.y) &&
-        ip.x < Math.max(l2p1.y, l2p2.y) && ip.y > Math.min(l2p1.y, l2p2.y))
+    if (ip.x <= Math.max(l1p1.x, l1p2.x) && ip.x >= Math.min(l1p1.x, l1p2.x) &&
+        ip.x <= Math.max(l2p1.x, l2p2.x) && ip.x >= Math.min(l2p1.x, l2p2.x) &&
+        ip.y <= Math.max(l1p1.y, l1p2.y) && ip.y >= Math.min(l1p1.y, l1p2.y) &&
+        ip.y <= Math.max(l2p1.y, l2p2.y) && ip.y >= Math.min(l2p1.y, l2p2.y))
         return ip;
     return null;
 }
