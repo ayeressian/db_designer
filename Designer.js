@@ -33,7 +33,7 @@ export default class Designer {
         drawTable();
     }
 
-    _getTableRelationSide({ fromTable, toTable, fromColum, toColumn }) {
+    _getTableRelationSide({ fromTable, toTable, fromColumn, toColumn }) {
         const fromTableCenter = fromTable.getCenter();
         const toTableCenter = toTable.getCenter();
 
@@ -82,6 +82,10 @@ export default class Designer {
         return { fromTablePathSide, toTablePathSide };
     }
 
+    drawRelation({fromTable, toTable, fromColumn, toColumn}) {
+
+    }
+
     draw() {
         this.tables.forEach((table, i) => {
             const tableElm = table.render();
@@ -90,13 +94,17 @@ export default class Designer {
 
             table.columns.forEach(column => {
                 if (column.fk) {
-                    let relationInfo = { fromTable: table, toTable: column.fk.table, fromColum: column, toColumn: column.fk.column };
-                    const sidePathStart = this._getTableRelationSide({ fromTable: table, toTable: column.fk.table, fromColum: column, toColumn: column.fk.column });
+                    let relationInfo = { fromTable: table, toTable: column.fk.table, fromColumn: column, toColumn: column.fk.column };
+                    const sidePathStart = this._getTableRelationSide(relationInfo);
                     relationInfo = { ...relationInfo, ...sidePathStart };
                     this._relationInfos.push(relationInfo);
                 }
             });
         });
+
+        this._getTableRelations()
+
+        console.log(this._relationInfos);
 
         //After draw happened
         setTimeout(() => {
