@@ -82,7 +82,17 @@ export default class Designer {
         return { fromTablePathSide, toTablePathSide };
     }
 
-    drawRelation({fromTable, toTable, fromColumn, toColumn}) {
+    _drawRelation({ fromTable, 
+        toTable, 
+        fromColumn, 
+        toColumn, 
+        fromTablePathSide, 
+        toTablePathSide, 
+        fromTablePathCount, 
+        fromTablePathNumLength, 
+        toTablePathCount, 
+        toTablePathNumLength }) {
+        
 
     }
 
@@ -102,7 +112,26 @@ export default class Designer {
             });
         });
 
-        this._getTableRelations()
+        this.tables.forEach(table => {
+            const tableRelations = this._getTableRelations(table);
+
+            table.leftRelations = tableRelations.filter(
+                r => r.toTable === table && r.toTablePathSide === 'left' || r.fromTable === table && r.fromTablePathSide === 'left');
+            table.rightRelations = tableRelations.filter(
+                r => r.toTable === table && r.toTablePathSide === 'right' || r.fromTable === table && r.fromTablePathSide === 'right');
+            table.topRelations = tableRelations.filter(
+                r => r.toTable === table && r.toTablePathSide === 'top' || r.fromTable === table && r.fromTablePathSide === 'top');
+            table.bottomRelations = tableRelations.filter(
+                r => r.toTable === table && r.toTablePathSide === 'bottom' || r.fromTable === table && r.fromTablePathSide === 'bottom');
+
+            // leftRelations.forEach((leftRelation, i) => {
+            //     _drawRelation({...leftRelation, fromTablePathCount: i, 
+            //         fromTablePathNumLength: leftRelations.length, 
+            //         toTablePathCount, 
+            //         toTablePathNumLength});
+            // });
+            
+        });
 
         console.log(this._relationInfos);
 
