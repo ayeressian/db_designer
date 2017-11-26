@@ -82,17 +82,17 @@ export default class Designer {
         return { fromTablePathSide, toTablePathSide };
     }
 
-    _drawRelation({ fromTable, 
-        toTable, 
-        fromColumn, 
-        toColumn, 
-        fromTablePathSide, 
-        toTablePathSide, 
-        fromTablePathCount, 
-        fromTablePathNumLength, 
-        toTablePathCount, 
+    _drawRelation({ fromTable,
+        toTable,
+        fromColumn,
+        toColumn,
+        fromTablePathSide,
+        toTablePathSide,
+        fromTablePathCount,
+        fromTablePathNumLength,
+        toTablePathCount,
         toTablePathNumLength }) {
-        
+
 
     }
 
@@ -115,22 +115,50 @@ export default class Designer {
         this.tables.forEach(table => {
             const tableRelations = this._getTableRelations(table);
 
-            table.leftRelations = tableRelations.filter(
+            const leftRelations = tableRelations.filter(
                 r => r.toTable === table && r.toTablePathSide === 'left' || r.fromTable === table && r.fromTablePathSide === 'left');
-            table.rightRelations = tableRelations.filter(
+            const rightRelations = tableRelations.filter(
                 r => r.toTable === table && r.toTablePathSide === 'right' || r.fromTable === table && r.fromTablePathSide === 'right');
-            table.topRelations = tableRelations.filter(
+            const topRelations = tableRelations.filter(
                 r => r.toTable === table && r.toTablePathSide === 'top' || r.fromTable === table && r.fromTablePathSide === 'top');
-            table.bottomRelations = tableRelations.filter(
+            const bottomRelations = tableRelations.filter(
                 r => r.toTable === table && r.toTablePathSide === 'bottom' || r.fromTable === table && r.fromTablePathSide === 'bottom');
 
-            // leftRelations.forEach((leftRelation, i) => {
-            //     _drawRelation({...leftRelation, fromTablePathCount: i, 
-            //         fromTablePathNumLength: leftRelations.length, 
-            //         toTablePathCount, 
-            //         toTablePathNumLength});
-            // });
-            
+            table.leftRelations.map((relation, i) => {
+                if (relation.fromTable === table) {
+                    relation.fromPathIndex = i;
+                } else {
+                    relation.toPathIndex = i;
+                }
+            });
+
+            table.rightRelations.map((relation, i) => {
+                if (relation.fromTable === table) {
+                    relation.fromPathIndex = i;
+                } else {
+                    relation.toPathIndex = i;
+                }
+            });
+
+            topRelations.map((relation, i) => {
+                if (relation.fromTable === table) {
+                    relation.fromPathIndex = i;
+                } else {
+                    relation.toPathIndex = i;
+                }
+            });
+
+            bottomRelations.map((relation, i) => {
+                if (relation.fromTable === table) {
+                    relation.fromPathIndex = i;
+                } else {
+                    relation.toPathIndex = i;
+                }
+            });
+        });
+
+        this._relationInfos.forEach(relation => {
+
         });
 
         console.log(this._relationInfos);
