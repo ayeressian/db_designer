@@ -1,6 +1,9 @@
 import { segmentIntersection } from './util.js';
 
-const ns = 'http://www.w3.org/2000/svg';
+const nsSvg = 'http://www.w3.org/2000/svg';
+const nsHtml = 'http://www.w3.org/1999/xhtml';
+
+const PATH_FROM_LEFT = 'left', PATH_FROM_RIGHT = 'right', PATH_FROM_TOP = 'top', PATH_FROM_BOTTOM = 'bottom';
 
 export default class Designer {
     constructor(tables = []) {
@@ -43,19 +46,19 @@ export default class Designer {
 
         const intersectFromTableRightSide = segmentIntersection(fromTableCenter, toTableCenter, fromTableSides.right.p1, fromTableSides.right.p2);
         if (intersectFromTableRightSide) {
-            fromTablePathSide = 'right';
+            fromTablePathSide = PATH_FROM_RIGHT;
         }
         const intersectFromTableLeftSide = segmentIntersection(fromTableCenter, toTableCenter, fromTableSides.left.p1, fromTableSides.left.p2);
         if (intersectFromTableRightSide) {
-            fromTablePathSide = 'left';
+            fromTablePathSide = PATH_FROM_LEFT;
         }
         const intersectFromTableTopSide = segmentIntersection(fromTableCenter, toTableCenter, fromTableSides.top.p1, fromTableSides.top.p2);
         if (intersectFromTableTopSide) {
-            fromTablePathSide = 'top';
+            fromTablePathSide = PATH_FROM_TOP;
         }
         const intersectFromTableBottomSide = segmentIntersection(fromTableCenter, toTableCenter, fromTableSides.bottom.p1, fromTableSides.bottom.p2);
         if (intersectFromTableBottomSide) {
-            fromTablePathSide = 'bottom';
+            fromTablePathSide = PATH_FROM_BOTTOM;
         }
 
         const toTableSides = toTable.getSides();
@@ -64,35 +67,86 @@ export default class Designer {
 
         const intersectToTableRightSide = segmentIntersection(fromTableCenter, toTableCenter, toTableSides.right.p1, toTableSides.right.p2);
         if (intersectToTableRightSide) {
-            toTablePathSide = 'right';
+            toTablePathSide = PATH_FROM_RIGHT;
         }
         const intersectToTableLeftSide = segmentIntersection(fromTableCenter, toTableCenter, toTableSides.left.p1, toTableSides.left.p2);
         if (intersectToTableRightSide) {
-            toTablePathSide = 'left';
+            toTablePathSide = PATH_FROM_LEFT;
         }
         const intersectToTableTopSide = segmentIntersection(fromTableCenter, toTableCenter, toTableSides.top.p1, toTableSides.top.p2);
         if (intersectToTableTopSide) {
-            toTablePathSide = 'top';
+            toTablePathSide = PATH_FROM_TOP;
         }
         const intersectToTableBottomSide = segmentIntersection(fromTableCenter, toTableCenter, toTableSides.bottom.p1, toTableSides.bottom.p2);
         if (intersectToTableBottomSide) {
-            toTablePathSide = 'bottom';
+            toTablePathSide = PATH_FROM_BOTTOM;
         }
 
         return { fromTablePathSide, toTablePathSide };
     }
 
-    _drawRelation({ fromTable,
-        toTable,
+    _drawRelation({
         fromColumn,
-        toColumn,
+        fromPathCount,
+        fromPathIndex,
+        fromTable,
         fromTablePathSide,
-        toTablePathSide,
-        fromTablePathCount,
-        fromTablePathNumLength,
-        toTablePathCount,
-        toTablePathNumLength }) {
+        toColumn,
+        toPathCount,
+        toPathIndex,
+        toTable,
+        toTablePathSide
+    }) {
+        const fromTableSides = fromTable.getSides();
+        const toTableSides = toTable.getSides();
 
+        switch (fromTablePathSide) {
+            case PATH_FROM_LEFT:
+                switch (toTablePathSide) {
+                    case PATH_FROM_LEFT:
+                        
+                    case PATH_FROM_RIGHT:
+                        const  firstLine = document.createElementNS(nsSvg, 'line');
+                    case PATH_FROM_TOP:
+
+                    case PATH_FROM_BOTTOM:
+
+                }
+                break;
+            case PATH_FROM_RIGHT:
+                switch (toTablePathSide) {
+                    case PATH_FROM_LEFT:
+
+                    case PATH_FROM_RIGHT:
+
+                    case PATH_FROM_TOP:
+
+                    case PATH_FROM_BOTTOM:
+
+                }
+            case PATH_FROM_TOP:
+                switch (toTablePathSide) {
+                    case PATH_FROM_LEFT:
+
+                    case PATH_FROM_RIGHT:
+
+                    case PATH_FROM_TOP:
+
+                    case PATH_FROM_BOTTOM:
+
+                }
+            case PATH_FROM_BOTTOM:
+                switch (toTablePathSide) {
+                    case PATH_FROM_LEFT:
+
+                    case PATH_FROM_RIGHT:
+
+                    case PATH_FROM_TOP:
+
+                    case PATH_FROM_BOTTOM:
+
+                }
+        }
 
     }
 
@@ -116,52 +170,58 @@ export default class Designer {
             const tableRelations = this._getTableRelations(table);
 
             const leftRelations = tableRelations.filter(
-                r => r.toTable === table && r.toTablePathSide === 'left' || r.fromTable === table && r.fromTablePathSide === 'left');
+                r => r.toTable === table && r.toTablePathSide === PATH_FROM_LEFT || r.fromTable === table && r.fromTablePathSide === PATH_FROM_LEFT);
             const rightRelations = tableRelations.filter(
-                r => r.toTable === table && r.toTablePathSide === 'right' || r.fromTable === table && r.fromTablePathSide === 'right');
+                r => r.toTable === table && r.toTablePathSide === PATH_FROM_RIGHT || r.fromTable === table && r.fromTablePathSide === PATH_FROM_RIGHT);
             const topRelations = tableRelations.filter(
-                r => r.toTable === table && r.toTablePathSide === 'top' || r.fromTable === table && r.fromTablePathSide === 'top');
+                r => r.toTable === table && r.toTablePathSide === PATH_FROM_TOP || r.fromTable === table && r.fromTablePathSide === PATH_FROM_TOP);
             const bottomRelations = tableRelations.filter(
-                r => r.toTable === table && r.toTablePathSide === 'bottom' || r.fromTable === table && r.fromTablePathSide === 'bottom');
+                r => r.toTable === table && r.toTablePathSide === PATH_FROM_BOTTOM || r.fromTable === table && r.fromTablePathSide === PATH_FROM_BOTTOM);
 
-            table.leftRelations.map((relation, i) => {
+            leftRelations.forEach((relation, i) => {
                 if (relation.fromTable === table) {
                     relation.fromPathIndex = i;
+                    relation.fromPathCount = leftRelations.length;
                 } else {
                     relation.toPathIndex = i;
+                    relation.toPathCount = leftRelations.length;
                 }
             });
 
-            table.rightRelations.map((relation, i) => {
+            rightRelations.forEach((relation, i) => {
                 if (relation.fromTable === table) {
                     relation.fromPathIndex = i;
+                    relation.fromPathCount = rightRelations.length;
                 } else {
                     relation.toPathIndex = i;
+                    relation.toPathCount = rightRelations.length;
                 }
             });
 
-            topRelations.map((relation, i) => {
+            topRelations.forEach((relation, i) => {
                 if (relation.fromTable === table) {
                     relation.fromPathIndex = i;
+                    relation.fromPathCount = topRelations.length;
                 } else {
                     relation.toPathIndex = i;
+                    relation.toPathCount = topRelations.length;
                 }
             });
 
-            bottomRelations.map((relation, i) => {
+            bottomRelations.forEach((relation, i) => {
                 if (relation.fromTable === table) {
                     relation.fromPathIndex = i;
+                    relation.fromPathCount = bottomRelations.length;
                 } else {
                     relation.toPathIndex = i;
+                    relation.toPathCount = bottomRelations.length;
                 }
             });
         });
 
         this._relationInfos.forEach(relation => {
-
+            this._drawRelation(relation);
         });
-
-        console.log(this._relationInfos);
 
         //After draw happened
         setTimeout(() => {
@@ -229,25 +289,25 @@ export default class Designer {
                     relation.fromTablePathSide = r.fromTablePathSide;
                     relation.toTablePathSide = r.toTablePathSide;
                     if (relation.fromTable === table) {
-                        if (relation.fromTablePathSide === 'left') {
+                        if (relation.fromTablePathSide === PATH_FROM_LEFT) {
                             leftSideRelations.push(relation);
-                        } else if (relation.fromTablePathSide === 'right') {
+                        } else if (relation.fromTablePathSide === PATH_FROM_RIGHT) {
                             rightSideRelations.push(relation);
-                        } else if (relation.fromTablePathSide === 'top') {
+                        } else if (relation.fromTablePathSide === PATH_FROM_TOP) {
                             topSideRelations.push(relation);
-                            //relation.fromTablePathSide === 'bottom'
+                            //relation.fromTablePathSide === PATH_FROM_BOTTOM
                         } else {
                             bottomSideRelations.push(relation);
                         }
                         //relation.toTable === table
                     } else {
-                        if (relation.toTablePathSide === 'left') {
+                        if (relation.toTablePathSide === PATH_FROM_LEFT) {
                             leftSideRelations.push(relation);
-                        } else if (relation.toTablePathSide === 'right') {
+                        } else if (relation.toTablePathSide === PATH_FROM_RIGHT) {
                             rightSideRelations.push(relation);
-                        } else if (relation.toTablePathSide === 'top') {
+                        } else if (relation.toTablePathSide === PATH_FROM_TOP) {
                             topSideRelations.push(relation);
-                            //relation.toTablePathSide === 'bottom'
+                            //relation.toTablePathSide === PATH_FROM_BOTTOM
                         } else {
                             bottomSideRelations.push(relation);
                         }
