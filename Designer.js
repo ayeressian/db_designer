@@ -102,15 +102,30 @@ export default class Designer {
 
         switch (fromTablePathSide) {
             case PATH_FROM_LEFT:
+                const leftSideLength = fromTableSides.left.p2.y - fromTableSides.left.p1.y;
+                const posOnLine = fromPathIndex * (leftSideLength / (fromPathCount + 1));
+                const startP1 = { y: fromTableSides.left.p1.y + posOnLine, x: fromTableSides.left.p1.x };
                 switch (toTablePathSide) {
                     case PATH_FROM_LEFT:
-                        
+                    break;
                     case PATH_FROM_RIGHT:
-                        const  firstLine = document.createElementNS(nsSvg, 'line');
+                    {
+                        const rightSideLength = toTableSides.right.p2.x - toTableSides.right.p1.x;
+                        const posOnLine = fromPathIndex * (rightSideLength / (toPathCount + 1));
+                        const endP1 = { y: fromTableSides.left.p1.y + posOnLine, x: fromTableSides.left.p1.x };
+
+                        if (startP1.y === endP1.y) {
+                            //draw streight line
+                            return;
+                        }
+                        
+
+                    }
+                    break;
                     case PATH_FROM_TOP:
-
+                    break;
                     case PATH_FROM_BOTTOM:
-
+                    break;
                 }
                 break;
             case PATH_FROM_RIGHT:
