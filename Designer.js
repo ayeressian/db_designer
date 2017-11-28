@@ -119,6 +119,15 @@ export default class Designer {
                             return;
                         }
 
+                        const p2X = (toTableSides.right.p1.x - fromTableSides.left.p1.x) / 2;
+
+                        if (startP1.y > endP1.y) {                            
+                            
+                        }
+
+                        if (startP1.y < endP1.y) {
+
+                        }
 
                     }
                     break;
