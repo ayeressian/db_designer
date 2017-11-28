@@ -49,7 +49,7 @@ export default class Designer {
             fromTablePathSide = PATH_FROM_RIGHT;
         }
         const intersectFromTableLeftSide = segmentIntersection(fromTableCenter, toTableCenter, fromTableSides.left.p1, fromTableSides.left.p2);
-        if (intersectFromTableRightSide) {
+        if (intersectFromTableLeftSide) {
             fromTablePathSide = PATH_FROM_LEFT;
         }
         const intersectFromTableTopSide = segmentIntersection(fromTableCenter, toTableCenter, fromTableSides.top.p1, fromTableSides.top.p2);
@@ -70,7 +70,7 @@ export default class Designer {
             toTablePathSide = PATH_FROM_RIGHT;
         }
         const intersectToTableLeftSide = segmentIntersection(fromTableCenter, toTableCenter, toTableSides.left.p1, toTableSides.left.p2);
-        if (intersectToTableRightSide) {
+        if (intersectToTableLeftSide) {
             toTablePathSide = PATH_FROM_LEFT;
         }
         const intersectToTableTopSide = segmentIntersection(fromTableCenter, toTableCenter, toTableSides.top.p1, toTableSides.top.p2);
@@ -103,22 +103,22 @@ export default class Designer {
         switch (fromTablePathSide) {
             case PATH_FROM_LEFT:
                 const leftSideLength = fromTableSides.left.p2.y - fromTableSides.left.p1.y;
-                const posOnLine = fromPathIndex * (leftSideLength / (fromPathCount + 1));
+                const posOnLine = (fromPathIndex + 1) * (leftSideLength / (fromPathCount + 1));
                 const startP1 = { y: fromTableSides.left.p1.y + posOnLine, x: fromTableSides.left.p1.x };
                 switch (toTablePathSide) {
                     case PATH_FROM_LEFT:
                     break;
                     case PATH_FROM_RIGHT:
                     {
-                        const rightSideLength = toTableSides.right.p2.x - toTableSides.right.p1.x;
-                        const posOnLine = fromPathIndex * (rightSideLength / (toPathCount + 1));
+                        const rightSideLength = toTableSides.right.p2.y - toTableSides.right.p1.y;
+                        const posOnLine = (fromPathIndex + 1) * (rightSideLength / (toPathCount + 1));
                         const endP1 = { y: fromTableSides.left.p1.y + posOnLine, x: fromTableSides.left.p1.x };
 
                         if (startP1.y === endP1.y) {
                             //draw streight line
                             return;
                         }
-                        
+
 
                     }
                     break;

@@ -5,7 +5,7 @@ const table = new Table({
   name: 'AAA',
   columns: [{ name: "id", type: "INT" }],
   pos: {
-    x: 200,
+    x: 100,
     y: 100
   }
 });
@@ -18,8 +18,8 @@ const table2 = new Table({
     { name: "AAA_id", type: "INT", fk: { table, column: table.columns[0] } }
   ],
   pos: {
-    x: 200,
-    y: 300
+    x: 400,
+    y: 100
   }
 });
 
