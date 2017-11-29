@@ -104,37 +104,55 @@ export default class Designer {
             case PATH_FROM_LEFT:
                 const leftSideLength = fromTableSides.left.p2.y - fromTableSides.left.p1.y;
                 const posOnLine = (fromPathIndex + 1) * (leftSideLength / (fromPathCount + 1));
-                const startP1 = { y: fromTableSides.left.p1.y + posOnLine, x: fromTableSides.left.p1.x };
+                const start = { y: fromTableSides.left.p1.y + posOnLine, x: fromTableSides.left.p1.x };
                 switch (toTablePathSide) {
                     case PATH_FROM_LEFT:
-                    break;
+                        break;
                     case PATH_FROM_RIGHT:
-                    {
-                        const rightSideLength = toTableSides.right.p2.y - toTableSides.right.p1.y;
-                        const posOnLine = (fromPathIndex + 1) * (rightSideLength / (toPathCount + 1));
-                        const endP1 = { y: fromTableSides.left.p1.y + posOnLine, x: fromTableSides.left.p1.x };
+                        {
+                            const rightSideLength = toTableSides.right.p2.y - toTableSides.right.p1.y;
+                            const posOnLine = (toPathIndex + 1) * (rightSideLength / (toPathCount + 1));
+                            const end = { y: toTableSides.right.p1.y + posOnLine, x: toTableSides.right.p1.x };
 
-                        if (startP1.y === endP1.y) {
-                            //draw streight line
-                            return;
-                        }
-
-                        const p2X = (toTableSides.right.p1.x - fromTableSides.left.p1.x) / 2;
-
-                        if (startP1.y > endP1.y) {                            
+                            if (start.y === end.y) {
+                                //draw streight line
+                                const line = document.createElementNS(nsSvg, 'line');
+                                line.setAttributeNS(null, 'x1', start.x);
+                                line.setAttributeNS(null, 'y1', start.y);
+                                line.setAttributeNS(null, 'x2', end.x);
+                                line.setAttributeNS(null, 'y2', end.y);
+                                this._svgElem.prependChild(line);
+                                return;
+                            }
                             
+                            const p2X = start.x - (fromTableSides.left.p1.x - toTableSides.right.p1.x) / 2;
+
+                            const line1 = document.createElementNS(nsSvg, 'line');
+                            line1.setAttributeNS(null, 'x1', start.x);
+                            line1.setAttributeNS(null, 'y1', start.y);
+                            line1.setAttributeNS(null, 'x2', p2X);
+                            line1.setAttributeNS(null, 'y2', start.y);
+                            this._svgElem.prepend(line1);
+
+                            const line2 = document.createElementNS(nsSvg, 'line');
+                            line2.setAttributeNS(null, 'x1', p2X);
+                            line2.setAttributeNS(null, 'y1', start.y);
+                            line2.setAttributeNS(null, 'x2', p2X);
+                            line2.setAttributeNS(null, 'y2', end.y);
+                            this._svgElem.prepend(line2);
+
+                            const line3 = document.createElementNS(nsSvg, 'line');
+                            line3.setAttributeNS(null, 'x1', p2X);
+                            line3.setAttributeNS(null, 'y1', end.y);
+                            line3.setAttributeNS(null, 'x2', end.x);
+                            line3.setAttributeNS(null, 'y2', end.y);
+                            this._svgElem.prepend(line3);
                         }
-
-                        if (startP1.y < endP1.y) {
-
-                        }
-
-                    }
-                    break;
+                        break;
                     case PATH_FROM_TOP:
-                    break;
+                        break;
                     case PATH_FROM_BOTTOM:
-                    break;
+                        break;
                 }
                 break;
             case PATH_FROM_RIGHT:

@@ -49,3 +49,8 @@
     padding-left: 10px;
     padding-right: 10px;
 }
+
+line {
+    stroke-width: 1;
+    stroke: black
+}

@@ -76,7 +76,7 @@ export default class Table {
     }
 
     render() {
-        this._elem = document.createElementNS(nsSvg, 'foreignObject');        
+        this._elem = document.createElementNS(nsSvg, 'foreignObject');
         this._elem.setAttributeNS(null, 'transform', `translate(${this._pos.x},${this._pos.y})`);
 
         this._table = document.createElementNS(nsHtml, 'table');
