@@ -114,17 +114,17 @@ export default class Designer {
                             const posOnLine = (toPathIndex + 1) * (rightSideLength / (toPathCount + 1));
                             const end = { y: toTableSides.right.p1.y + posOnLine, x: toTableSides.right.p1.x };
 
-                            if (start.y === end.y) {
-                                //draw streight line
-                                const line = document.createElementNS(nsSvg, 'line');
-                                line.setAttributeNS(null, 'x1', start.x);
-                                line.setAttributeNS(null, 'y1', start.y);
-                                line.setAttributeNS(null, 'x2', end.x);
-                                line.setAttributeNS(null, 'y2', end.y);
-                                this._svgElem.prependChild(line);
-                                return;
-                            }
-                            
+                            // if (start.y === end.y) {
+                            //     //draw streight line
+                            //     const line = document.createElementNS(nsSvg, 'line');
+                            //     line.setAttributeNS(null, 'x1', start.x);
+                            //     line.setAttributeNS(null, 'y1', start.y);
+                            //     line.setAttributeNS(null, 'x2', end.x);
+                            //     line.setAttributeNS(null, 'y2', end.y);
+                            //     this._svgElem.prependChild(line);
+                            //     return;
+                            // }
+
                             const p2X = start.x - (fromTableSides.left.p1.x - toTableSides.right.p1.x) / 2;
 
                             const line1 = document.createElementNS(nsSvg, 'line');
@@ -150,6 +150,25 @@ export default class Designer {
                         }
                         break;
                     case PATH_FROM_TOP:
+                        {
+                            const topSideLength = toTableSides.top.p2.x - toTableSides.top.p1.x;
+                            const posOnLine = (toPathIndex + 1) * (topSideLength / (toPathCount + 1));
+                            const end = { y: toTableSides.top.p1.y, x: toTableSides.top.p1.x + posOnLine };                            
+
+                            const line1 = document.createElementNS(nsSvg, 'line');
+                            line1.setAttributeNS(null, 'x1', start.x);
+                            line1.setAttributeNS(null, 'y1', start.y);
+                            line1.setAttributeNS(null, 'x2', end.x);
+                            line1.setAttributeNS(null, 'y2', start.y);
+                            this._svgElem.prepend(line1);
+
+                            const line2 = document.createElementNS(nsSvg, 'line');
+                            line2.setAttributeNS(null, 'x1', end.x);
+                            line2.setAttributeNS(null, 'y1', start.y);
+                            line2.setAttributeNS(null, 'x2', end.x);
+                            line2.setAttributeNS(null, 'y2', end.y);
+                            this._svgElem.prepend(line2);
+                        }
                         break;
                     case PATH_FROM_BOTTOM:
                         break;
