@@ -1,8 +1,6 @@
 import { segmentIntersection } from './util.js';
 import constant from './const.js';
 
-const nsSvg = 'http://www.w3.org/2000/svg';
-
 export class MissingCountIndex extends Error {
   constructor() {
     super('toPathIndex and fromPathCount must be defined before calling render');
@@ -25,7 +23,7 @@ export default class Relation {
     this.fromColumn = fromColumn;
     this.fromPathCount = fromPathCount;
     this.fromPathIndex = fromPathIndex;
-    this.fromTable = fromTable;    
+    this.fromTable = fromTable;
     this.toColumn = toColumn;
     this.toPathCount = toPathCount;
     this.toPathIndex = toPathIndex;
@@ -37,7 +35,7 @@ export default class Relation {
   }
 
   _getPosOnLine(pathIndex, pathCount, sideLength) {
-    return (pathIndex + 1) * (sideLength / (pathCount + 1));    
+    return (pathIndex + 1) * (sideLength / (pathCount + 1));
   }
 
   _getLeftSidePathCord(tableSides, pathIndex, pathCount) {
@@ -64,6 +62,52 @@ export default class Relation {
     return { y: tableSides.bottom.p1.y, x: tableSides.bottom.p1.x + posOnLine };
   }
 
+  _get2LinePathFlatTop(start, end) {
+    const line1 = document.createElementNS(constant.nsSvg, 'line');
+    line1.setAttributeNS(null, 'x1', start.x);
+    line1.setAttributeNS(null, 'y1', start.y);
+    line1.setAttributeNS(null, 'x2', end.x);
+    line1.setAttributeNS(null, 'y2', start.y);
+
+    const line2 = document.createElementNS(constant.nsSvg, 'line');
+    line2.setAttributeNS(null, 'x1', end.x);
+    line2.setAttributeNS(null, 'y1', start.y);
+    line2.setAttributeNS(null, 'x2', end.x);
+    line2.setAttributeNS(null, 'y2', end.y);
+
+    return [line1, line2];
+  }
+
+  _get3LinePathHoriz(start, end) {
+    if (start.x > end.x) {
+      const tmp = start;
+      start = end;
+      end = tmp;
+    }     
+
+    const p2X = start.x + (end.x - start.x) / 2;
+
+    const line1 = document.createElementNS(constant.nsSvg, 'line');
+    line1.setAttributeNS(null, 'x1', start.x);
+    line1.setAttributeNS(null, 'y1', start.y);
+    line1.setAttributeNS(null, 'x2', p2X);
+    line1.setAttributeNS(null, 'y2', start.y);
+
+    const line2 = document.createElementNS(constant.nsSvg, 'line');
+    line2.setAttributeNS(null, 'x1', p2X);
+    line2.setAttributeNS(null, 'y1', start.y);
+    line2.setAttributeNS(null, 'x2', p2X);
+    line2.setAttributeNS(null, 'y2', end.y);
+
+    const line3 = document.createElementNS(constant.nsSvg, 'line');
+    line3.setAttributeNS(null, 'x1', p2X);
+    line3.setAttributeNS(null, 'y1', end.y);
+    line3.setAttributeNS(null, 'x2', end.x);
+    line3.setAttributeNS(null, 'y2', end.y);
+
+    return [line1, line2, line3];
+  }
+
   render() {
     if (this.toPathIndex == null || this.fromPathCount == null) throw new MissingCountIndex();
 
@@ -82,75 +126,21 @@ export default class Relation {
               {
                 const end = this._getRightSidePathCord(toTableSides, this.toPathIndex, this.toPathCount);
 
-                // if (start.y === end.y) {
-                //     //draw streight line
-                //     const line = document.createElementNS(nsSvg, 'line');
-                //     line.setAttributeNS(null, 'x1', start.x);
-                //     line.setAttributeNS(null, 'y1', start.y);
-                //     line.setAttributeNS(null, 'x2', end.x);
-                //     line.setAttributeNS(null, 'y2', end.y);                
-                //     return;
-                // }
-
-                const p2X = start.x - (fromTableSides.left.p1.x - toTableSides.right.p1.x) / 2;
-
-                const line1 = document.createElementNS(nsSvg, 'line');
-                line1.setAttributeNS(null, 'x1', start.x);
-                line1.setAttributeNS(null, 'y1', start.y);
-                line1.setAttributeNS(null, 'x2', p2X);
-                line1.setAttributeNS(null, 'y2', start.y);
-
-                const line2 = document.createElementNS(nsSvg, 'line');
-                line2.setAttributeNS(null, 'x1', p2X);
-                line2.setAttributeNS(null, 'y1', start.y);
-                line2.setAttributeNS(null, 'x2', p2X);
-                line2.setAttributeNS(null, 'y2', end.y);
-
-                const line3 = document.createElementNS(nsSvg, 'line');
-                line3.setAttributeNS(null, 'x1', p2X);
-                line3.setAttributeNS(null, 'y1', end.y);
-                line3.setAttributeNS(null, 'x2', end.x);
-                line3.setAttributeNS(null, 'y2', end.y);
-
-                this.lineElems = [line1, line2, line3];
+                this.lineElems = this._get3LinePathHoriz(start, end);
               }
               break;
             case constant.PATH_TOP:
               {
                 const end = this._getTopSidePathCord(toTableSides, this.toPathIndex, this.toPathCount);
-
-                const line1 = document.createElementNS(nsSvg, 'line');
-                line1.setAttributeNS(null, 'x1', start.x);
-                line1.setAttributeNS(null, 'y1', start.y);
-                line1.setAttributeNS(null, 'x2', end.x);
-                line1.setAttributeNS(null, 'y2', start.y);
-
-                const line2 = document.createElementNS(nsSvg, 'line');
-                line2.setAttributeNS(null, 'x1', end.x);
-                line2.setAttributeNS(null, 'y1', start.y);
-                line2.setAttributeNS(null, 'x2', end.x);
-                line2.setAttributeNS(null, 'y2', end.y);
-
-                this.lineElems = [line1, line2];
+                
+                this.lineElems = this._get2LinePathFlatTop(start, end);
               }
               break;
             case constant.PATH_BOTTOM:
               {
                 const end = this._getBottomSidePathCord(toTableSides, this.toPathIndex, this.toPathCount);
 
-                const line1 = document.createElementNS(nsSvg, 'line');
-                line1.setAttributeNS(null, 'x1', start.x);
-                line1.setAttributeNS(null, 'y1', start.y);
-                line1.setAttributeNS(null, 'x2', end.x);
-                line1.setAttributeNS(null, 'y2', start.y);
-
-                const line2 = document.createElementNS(nsSvg, 'line');
-                line2.setAttributeNS(null, 'x1', end.x);
-                line2.setAttributeNS(null, 'y1', start.y);
-                line2.setAttributeNS(null, 'x2', end.x);
-                line2.setAttributeNS(null, 'y2', end.y);
-
-                this.lineElems = [line1, line2];
+                this.lineElems = this._get2LinePathFlatTop(start, end);
               }
               break;
           }
@@ -163,40 +153,9 @@ export default class Relation {
           switch (this.toTablePathSide) {
             case constant.PATH_LEFT:
               {
-                const end = this._getLeftSidePathCord(toTableSides, this.toPathIndex, this.toPathCount);
+                const end = this._getLeftSidePathCord(toTableSides, this.toPathIndex, this.toPathCount);                
 
-                // if (start.y === end.y) {
-                //     //draw streight line
-                //     const line = document.createElementNS(nsSvg, 'line');
-                //     line.setAttributeNS(null, 'x1', start.x);
-                //     line.setAttributeNS(null, 'y1', start.y);
-                //     line.setAttributeNS(null, 'x2', end.x);
-                //     line.setAttributeNS(null, 'y2', end.y);
-                //     this._svgElem.prependChild(line);
-                //     return;
-                // }
-
-                const p2X = start.x + (fromTableSides.left.p1.x - toTableSides.right.p1.x) / 2;
-
-                const line1 = document.createElementNS(nsSvg, 'line');
-                line1.setAttributeNS(null, 'x1', start.x);
-                line1.setAttributeNS(null, 'y1', start.y);
-                line1.setAttributeNS(null, 'x2', p2X);
-                line1.setAttributeNS(null, 'y2', start.y);
-
-                const line2 = document.createElementNS(nsSvg, 'line');
-                line2.setAttributeNS(null, 'x1', p2X);
-                line2.setAttributeNS(null, 'y1', start.y);
-                line2.setAttributeNS(null, 'x2', p2X);
-                line2.setAttributeNS(null, 'y2', end.y);
-
-                const line3 = document.createElementNS(nsSvg, 'line');
-                line3.setAttributeNS(null, 'x1', p2X);
-                line3.setAttributeNS(null, 'y1', end.y);
-                line3.setAttributeNS(null, 'x2', end.x);
-                line3.setAttributeNS(null, 'y2', end.y);
-
-                this.lineElems = [line1, line2, line3];
+                this.lineElems = this._get3LinePathHoriz(start, end);
               }
               break;
             case constant.PATH_RIGHT:
@@ -207,19 +166,7 @@ export default class Relation {
               {
                 const end = this._getTopSidePathCord(toTableSides, this.toPathIndex, this.toPathCount);
 
-                const line1 = document.createElementNS(nsSvg, 'line');
-                line1.setAttributeNS(null, 'x1', start.x);
-                line1.setAttributeNS(null, 'y1', start.y);
-                line1.setAttributeNS(null, 'x2', end.x);
-                line1.setAttributeNS(null, 'y2', start.y);
-
-                const line2 = document.createElementNS(nsSvg, 'line');
-                line2.setAttributeNS(null, 'x1', end.x);
-                line2.setAttributeNS(null, 'y1', start.y);
-                line2.setAttributeNS(null, 'x2', end.x);
-                line2.setAttributeNS(null, 'y2', end.y);
-
-                this.lineElems = [line1, line2];
+                this.lineElems = this._get2LinePathFlatTop(start, end);
               }
               break;
             case constant.PATH_BOTTOM:
@@ -227,19 +174,7 @@ export default class Relation {
               {
                 const end = this._getBottomSidePathCord(toTableSides, this.toPathIndex, this.toPathCount);
 
-                const line1 = document.createElementNS(nsSvg, 'line');
-                line1.setAttributeNS(null, 'x1', start.x);
-                line1.setAttributeNS(null, 'y1', start.y);
-                line1.setAttributeNS(null, 'x2', end.x);
-                line1.setAttributeNS(null, 'y2', start.y);
-
-                const line2 = document.createElementNS(nsSvg, 'line');
-                line2.setAttributeNS(null, 'x1', end.x);
-                line2.setAttributeNS(null, 'y1', start.y);
-                line2.setAttributeNS(null, 'x2', end.x);
-                line2.setAttributeNS(null, 'y2', end.y);
-
-                this.lineElems = [line1, line2];
+                this.lineElems = this._get2LinePathFlatTop(start, end);
               }
               break;
           }
@@ -254,17 +189,7 @@ export default class Relation {
               {
                 const end = this._getLeftSidePathCord(toTableSides, this.toPathIndex, this.toPathCount);
 
-                const line1 = document.createElementNS(nsSvg, 'line');
-                line1.setAttributeNS(null, 'x1', start.x);
-                line1.setAttributeNS(null, 'y1', start.y);
-                line1.setAttributeNS(null, 'x2', end.x);
-                line1.setAttributeNS(null, 'y2', start.y);
-
-                const line2 = document.createElementNS(nsSvg, 'line');
-                line2.setAttributeNS(null, 'x1', end.x);
-                line2.setAttributeNS(null, 'y1', start.y);
-                line2.setAttributeNS(null, 'x2', end.x);
-                line2.setAttributeNS(null, 'y2', end.y);
+                const { line1, line2 } = this._get2LinePath(start, end);
                 this.lineElems = [line1, line2];
               }
               break;

@@ -15,7 +15,7 @@ export default class Table {
             const deltaX = event.clientX / this._designer.getZoom() + this._designer.getPan().x - mouseDownInitialElemX;
             const deltaY = event.clientY / this._designer.getZoom() + this._designer.getPan().y - mouseDownInitialElemY;
             this._elem.setAttributeNS(null, 'transform', `translate(${deltaX},${deltaY})`);
-            this._onMove();
+            this._onMove && this._onMove();
         };
 
         this._table.addEventListener('mousedown', event => {

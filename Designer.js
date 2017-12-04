@@ -164,41 +164,41 @@ export default class Designer {
         });
 
         this.tables.forEach(table => {
-            table.setMoveListener(() => {
-                const relations = this._getTableRelations(table);
-                const leftSideRelations = [], rightSideRelations = [], topSideRelations = [], bottomSideRelations = [];
+            // table.setMoveListener(() => {
+            //     const relations = this._getTableRelations(table);
+            //     const leftSideRelations = [], rightSideRelations = [], topSideRelations = [], bottomSideRelations = [];
 
-                relations.forEach(relation => {
-                    const r = this._getTableRelationSide(relation);
-                    relation.fromTablePathSide = r.fromTablePathSide;
-                    relation.toTablePathSide = r.toTablePathSide;
-                    if (relation.fromTable === table) {
-                        if (relation.fromTablePathSide === constant.PATH_LEFT) {
-                            leftSideRelations.push(relation);
-                        } else if (relation.fromTablePathSide === constant.PATH_RIGHT) {
-                            rightSideRelations.push(relation);
-                        } else if (relation.fromTablePathSide === constant.PATH_TOP) {
-                            topSideRelations.push(relation);
-                            //relation.fromTablePathSide === constant.PATH_BOTTOM
-                        } else {
-                            bottomSideRelations.push(relation);
-                        }
-                        //relation.toTable === table
-                    } else {
-                        if (relation.toTablePathSide === constant.PATH_LEFT) {
-                            leftSideRelations.push(relation);
-                        } else if (relation.toTablePathSide === constant.PATH_RIGHT) {
-                            rightSideRelations.push(relation);
-                        } else if (relation.toTablePathSide === constant.PATH_TOP) {
-                            topSideRelations.push(relation);
-                            //relation.toTablePathSide === constant.PATH_BOTTOM
-                        } else {
-                            bottomSideRelations.push(relation);
-                        }
-                    }
-                });
+            //     relations.forEach(relation => {
+            //         const r = this._getTableRelationSide(relation);
+            //         relation.fromTablePathSide = r.fromTablePathSide;
+            //         relation.toTablePathSide = r.toTablePathSide;
+            //         if (relation.fromTable === table) {
+            //             if (relation.fromTablePathSide === constant.PATH_LEFT) {
+            //                 leftSideRelations.push(relation);
+            //             } else if (relation.fromTablePathSide === constant.PATH_RIGHT) {
+            //                 rightSideRelations.push(relation);
+            //             } else if (relation.fromTablePathSide === constant.PATH_TOP) {
+            //                 topSideRelations.push(relation);
+            //                 //relation.fromTablePathSide === constant.PATH_BOTTOM
+            //             } else {
+            //                 bottomSideRelations.push(relation);
+            //             }
+            //             //relation.toTable === table
+            //         } else {
+            //             if (relation.toTablePathSide === constant.PATH_LEFT) {
+            //                 leftSideRelations.push(relation);
+            //             } else if (relation.toTablePathSide === constant.PATH_RIGHT) {
+            //                 rightSideRelations.push(relation);
+            //             } else if (relation.toTablePathSide === constant.PATH_TOP) {
+            //                 topSideRelations.push(relation);
+            //                 //relation.toTablePathSide === constant.PATH_BOTTOM
+            //             } else {
+            //                 bottomSideRelations.push(relation);
+            //             }
+            //         }
+            //     });
 
-            });
+            // });
         });
     }
 
