@@ -1,5 +1,4 @@
-const nsSvg = 'http://www.w3.org/2000/svg';
-const nsHtml = 'http://www.w3.org/1999/xhtml';
+import constant from './const.js';
 
 export default class Table {
     constructor({ name, columns = [], pos = { x: 0, y: 0 } }) {
@@ -76,14 +75,14 @@ export default class Table {
     }
 
     render() {
-        this._elem = document.createElementNS(nsSvg, 'foreignObject');
+        this._elem = document.createElementNS(constant.nsSvg, 'foreignObject');
         this._elem.setAttributeNS(null, 'transform', `translate(${this._pos.x},${this._pos.y})`);
 
-        this._table = document.createElementNS(nsHtml, 'table');
+        this._table = document.createElementNS(constant.nsHtml, 'table');
         this._table.className = 'table';
-        const headingTr = document.createElementNS(nsHtml, 'tr');
+        const headingTr = document.createElementNS(constant.nsHtml, 'tr');
         this._table.appendChild(headingTr);
-        const headingTh = document.createElementNS(nsHtml, 'th');
+        const headingTh = document.createElementNS(constant.nsHtml, 'th');
         headingTh.setAttributeNS(null, 'colspan', 2);
         headingTh.innerHTML = this._name;
         headingTr.appendChild(headingTh);
@@ -91,14 +90,14 @@ export default class Table {
         this._elem.appendChild(this._table);
 
         this.columns.forEach(column => {
-            const columnTr = document.createElementNS(nsHtml, 'tr');
+            const columnTr = document.createElementNS(constant.nsHtml, 'tr');
             this._table.appendChild(columnTr);
 
-            const columnNameTd = document.createElementNS(nsHtml, 'td');
+            const columnNameTd = document.createElementNS(constant.nsHtml, 'td');
             columnNameTd.innerHTML = column.name;
             columnTr.appendChild(columnNameTd);
 
-            const columnTypeTd = document.createElementNS(nsHtml, 'td');
+            const columnTypeTd = document.createElementNS(constant.nsHtml, 'td');
             columnTypeTd.innerHTML = column.type;
             columnTr.appendChild(columnTypeTd);
         });
