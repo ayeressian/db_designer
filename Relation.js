@@ -36,6 +36,34 @@ export default class Relation {
     this.lineElems = [];
   }
 
+  _getPosOnLine(pathIndex, pathCount, sideLength) {
+    return (pathIndex + 1) * (sideLength / (pathCount + 1));    
+  }
+
+  _getLeftSidePathCord(tableSides, pathIndex, pathCount) {
+    const sideLength = tableSides.left.p2.y - tableSides.left.p1.y;
+    const posOnLine = this._getPosOnLine(pathIndex, pathCount, sideLength);
+    return { y: tableSides.left.p1.y + posOnLine, x: tableSides.left.p1.x };
+  }
+
+  _getRightSidePathCord(tableSides, pathIndex, pathCount) {
+    const sideLength = tableSides.right.p2.y - tableSides.right.p1.y;
+    const posOnLine = this._getPosOnLine(pathIndex, pathCount, sideLength);
+    return { y: tableSides.right.p1.y + posOnLine, x: tableSides.right.p1.x };
+  }
+
+  _getTopSidePathCord(tableSides, pathIndex, pathCount) {
+    const sideLength = tableSides.top.p2.x - tableSides.top.p1.x;
+    const posOnLine = this._getPosOnLine(pathIndex, pathCount, sideLength);
+    return { y: tableSides.top.p1.y, x: tableSides.top.p1.x + posOnLine };
+  }
+
+  _getBottomSidePathCord(tableSides, pathIndex, pathCount) {
+    const sideLength = tableSides.bottom.p2.x - tableSides.bottom.p1.x;
+    const posOnLine = this._getPosOnLine(pathIndex, pathCount, sideLength);
+    return { y: tableSides.bottom.p1.y, x: tableSides.bottom.p1.x + posOnLine };
+  }
+
   render() {
     if (this.toPathIndex == null || this.fromPathCount == null) throw new MissingCountIndex();
 
@@ -45,18 +73,14 @@ export default class Relation {
     switch (this.fromTablePathSide) {
       case constant.PATH_LEFT:
         {
-          const leftSideLength = fromTableSides.left.p2.y - fromTableSides.left.p1.y;
-          const posOnLine = (this.fromPathIndex + 1) * (leftSideLength / (this.fromPathCount + 1));
-          const start = { y: fromTableSides.left.p1.y + posOnLine, x: fromTableSides.left.p1.x };
+          const start = this._getLeftSidePathCord(fromTableSides, this.fromPathIndex, this.fromPathCount);
           switch (this.toTablePathSide) {
             case constant.PATH_LEFT:
               //relation form self to self
               break;
             case constant.PATH_RIGHT:
               {
-                const rightSideLength = toTableSides.right.p2.y - toTableSides.right.p1.y;
-                const posOnLine = (this.toPathIndex + 1) * (rightSideLength / (this.toPathCount + 1));
-                const end = { y: toTableSides.right.p1.y + posOnLine, x: toTableSides.right.p1.x };
+                const end = this._getRightSidePathCord(toTableSides, this.toPathIndex, this.toPathCount);
 
                 // if (start.y === end.y) {
                 //     //draw streight line
@@ -93,9 +117,7 @@ export default class Relation {
               break;
             case constant.PATH_TOP:
               {
-                const topSideLength = toTableSides.top.p2.x - toTableSides.top.p1.x;
-                const posOnLine = (this.toPathIndex + 1) * (topSideLength / (this.toPathCount + 1));
-                const end = { y: toTableSides.top.p1.y, x: toTableSides.top.p1.x + posOnLine };
+                const end = this._getTopSidePathCord(toTableSides, this.toPathIndex, this.toPathCount);
 
                 const line1 = document.createElementNS(nsSvg, 'line');
                 line1.setAttributeNS(null, 'x1', start.x);
@@ -114,9 +136,7 @@ export default class Relation {
               break;
             case constant.PATH_BOTTOM:
               {
-                const bottomSideLength = toTableSides.bottom.p2.x - toTableSides.bottom.p1.x;
-                const posOnLine = (this.toPathIndex + 1) * (bottomSideLength / (this.toPathCount + 1));
-                const end = { y: toTableSides.bottom.p1.y, x: toTableSides.bottom.p1.x + posOnLine };
+                const end = this._getBottomSidePathCord(toTableSides, this.toPathIndex, this.toPathCount);
 
                 const line1 = document.createElementNS(nsSvg, 'line');
                 line1.setAttributeNS(null, 'x1', start.x);
@@ -138,15 +158,12 @@ export default class Relation {
         break;
       case constant.PATH_RIGHT:
         {
-          const rightSideLength = fromTableSides.right.p2.y - fromTableSides.right.p1.y;
-          const posOnLine = (fromPathIndex + 1) * (rightSideLength / (fromPathCount + 1));
-          const start = { y: fromTableSides.right.p1.y + posOnLine, x: fromTableSides.right.p1.x };
+          const start = this._getRightSidePathCord(fromTableSides, this.toPathIndex, this.toPathCount);
+
           switch (this.toTablePathSide) {
             case constant.PATH_LEFT:
               {
-                const leftSideLength = toTableSides.left.p2.y - toTableSides.left.p1.y;
-                const posOnLine = (this.toPathIndex + 1) * (leftSideLength / (this.toPathCount + 1));
-                const end = { y: toTableSides.left.p1.y + posOnLine, x: toTableSides.left.p1.x };
+                const end = this._getLeftSidePathCord(toTableSides, this.toPathIndex, this.toPathCount);
 
                 // if (start.y === end.y) {
                 //     //draw streight line
@@ -188,9 +205,7 @@ export default class Relation {
             case constant.PATH_TOP:
               //TODO identical to left-top
               {
-                const topSideLength = toTableSides.top.p2.x - toTableSides.top.p1.x;
-                const posOnLine = (this.toPathIndex + 1) * (topSideLength / (this.toPathCount + 1));
-                const end = { y: toTableSides.top.p1.y, x: toTableSides.top.p1.x + posOnLine };
+                const end = this._getTopSidePathCord(toTableSides, this.toPathIndex, this.toPathCount);
 
                 const line1 = document.createElementNS(nsSvg, 'line');
                 line1.setAttributeNS(null, 'x1', start.x);
@@ -210,9 +225,7 @@ export default class Relation {
             case constant.PATH_BOTTOM:
               //TODO identical to left-bottom
               {
-                const bottomSideLength = toTableSides.bottom.p2.x - toTableSides.bottom.p1.x;
-                const posOnLine = (this.toPathIndex + 1) * (bottomSideLength / (this.toPathCount + 1));
-                const end = { y: toTableSides.bottom.p1.y, x: toTableSides.bottom.p1.x + posOnLine };
+                const end = this._getBottomSidePathCord(toTableSides, this.toPathIndex, this.toPathCount);
 
                 const line1 = document.createElementNS(nsSvg, 'line');
                 line1.setAttributeNS(null, 'x1', start.x);
@@ -234,15 +247,12 @@ export default class Relation {
         break;
       case constant.PATH_TOP:
         {
-          const topSideLength = toTableSides.top.p2.x - toTableSides.top.p1.x;
-          const posOnLine = (this.toPathIndex + 1) * (topSideLength / (this.toPathCount + 1));
-          const start = { y: toTableSides.top.p1.y, x: toTableSides.top.p1.x + posOnLine };
+          const start = this._getTopSidePathCord(fromTableSides, this.toPathIndex, this.toPathCount);
+
           switch (this.toTablePathSide) {
             case constant.PATH_LEFT:
               {
-                const leftSideLength = toTableSides.left.p2.y - toTableSides.left.p1.y;
-                const posOnLine = (this.toPathIndex + 1) * (leftSideLength / (this.toPathCount + 1));
-                const end = { y: toTableSides.left.p1.y + posOnLine, x: toTableSides.left.p1.x };
+                const end = this._getLeftSidePathCord(toTableSides, this.toPathIndex, this.toPathCount);
 
                 const line1 = document.createElementNS(nsSvg, 'line');
                 line1.setAttributeNS(null, 'x1', start.x);
