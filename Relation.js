@@ -162,7 +162,6 @@ export default class Relation {
               //relation form self to self
               break;
             case constant.PATH_TOP:
-              //TODO identical to left-top
               {
                 const end = this._getTopSidePathCord(toTableSides, this.toPathIndex, this.toPathCount);
 
@@ -170,7 +169,6 @@ export default class Relation {
               }
               break;
             case constant.PATH_BOTTOM:
-              //TODO identical to left-bottom
               {
                 const end = this._getBottomSidePathCord(toTableSides, this.toPathIndex, this.toPathCount);
 
@@ -189,7 +187,7 @@ export default class Relation {
               {
                 const end = this._getLeftSidePathCord(toTableSides, this.toPathIndex, this.toPathCount);
 
-                const { line1, line2 } = this._get2LinePath(start, end);
+                const { line1, line2 } = this._get2LinePathFlatTop(start, end);
                 this.lineElems = [line1, line2];
               }
               break;
