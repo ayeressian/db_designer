@@ -78,12 +78,28 @@ export default class Relation {
     return [line1, line2];
   }
 
+  _get2LinePathFlatBottom(start, end) {
+    const line1 = document.createElementNS(constant.nsSvg, 'line');
+    line1.setAttributeNS(null, 'x1', start.x);
+    line1.setAttributeNS(null, 'y1', start.y);
+    line1.setAttributeNS(null, 'x2', start.x);
+    line1.setAttributeNS(null, 'y2', end.y);
+
+    const line2 = document.createElementNS(constant.nsSvg, 'line');
+    line2.setAttributeNS(null, 'x1', start.x);
+    line2.setAttributeNS(null, 'y1', end.y);
+    line2.setAttributeNS(null, 'x2', end.x);
+    line2.setAttributeNS(null, 'y2', end.y);
+
+    return [line1, line2];
+  }
+
   _get3LinePathHoriz(start, end) {
     if (start.x > end.x) {
       const tmp = start;
       start = end;
       end = tmp;
-    }     
+    }
 
     const p2X = start.x + (end.x - start.x) / 2;
 
@@ -102,6 +118,36 @@ export default class Relation {
     const line3 = document.createElementNS(constant.nsSvg, 'line');
     line3.setAttributeNS(null, 'x1', p2X);
     line3.setAttributeNS(null, 'y1', end.y);
+    line3.setAttributeNS(null, 'x2', end.x);
+    line3.setAttributeNS(null, 'y2', end.y);
+
+    return [line1, line2, line3];
+  }
+
+  _get3LinePathVert(start, end) {
+    if (start.x > end.x) {
+      const tmp = start;
+      start = end;
+      end = tmp;
+    }
+
+    const p2Y = start.y + (end.y - start.y) / 2;
+
+    const line1 = document.createElementNS(constant.nsSvg, 'line');
+    line1.setAttributeNS(null, 'x1', start.x);
+    line1.setAttributeNS(null, 'y1', start.y);
+    line1.setAttributeNS(null, 'x2', start.x);
+    line1.setAttributeNS(null, 'y2', p2Y);
+
+    const line2 = document.createElementNS(constant.nsSvg, 'line');
+    line2.setAttributeNS(null, 'x1', start.x);
+    line2.setAttributeNS(null, 'y1', p2Y);
+    line2.setAttributeNS(null, 'x2', end.x);
+    line2.setAttributeNS(null, 'y2', p2Y);
+
+    const line3 = document.createElementNS(constant.nsSvg, 'line');
+    line3.setAttributeNS(null, 'x1', end.x);
+    line3.setAttributeNS(null, 'y1', p2Y);
     line3.setAttributeNS(null, 'x2', end.x);
     line3.setAttributeNS(null, 'y2', end.y);
 
@@ -132,7 +178,7 @@ export default class Relation {
             case constant.PATH_TOP:
               {
                 const end = this._getTopSidePathCord(toTableSides, this.toPathIndex, this.toPathCount);
-                
+
                 this.lineElems = this._get2LinePathFlatTop(start, end);
               }
               break;
@@ -140,7 +186,7 @@ export default class Relation {
               {
                 const end = this._getBottomSidePathCord(toTableSides, this.toPathIndex, this.toPathCount);
 
-                this.lineElems = this._get2LinePathFlatTop(start, end);
+                this.lineElems = this._get2LinePathFlatBottom(start, end);
               }
               break;
           }
@@ -153,7 +199,7 @@ export default class Relation {
           switch (this.toTablePathSide) {
             case constant.PATH_LEFT:
               {
-                const end = this._getLeftSidePathCord(toTableSides, this.toPathIndex, this.toPathCount);                
+                const end = this._getLeftSidePathCord(toTableSides, this.toPathIndex, this.toPathCount);
 
                 this.lineElems = this._get3LinePathHoriz(start, end);
               }
@@ -172,7 +218,7 @@ export default class Relation {
               {
                 const end = this._getBottomSidePathCord(toTableSides, this.toPathIndex, this.toPathCount);
 
-                this.lineElems = this._get2LinePathFlatTop(start, end);
+                this.lineElems = this._get2LinePathFlatBottom(start, end);
               }
               break;
           }
@@ -187,30 +233,68 @@ export default class Relation {
               {
                 const end = this._getLeftSidePathCord(toTableSides, this.toPathIndex, this.toPathCount);
 
-                const { line1, line2 } = this._get2LinePathFlatTop(start, end);
-                this.lineElems = [line1, line2];
+                this.lineElems = this._get2LinePathFlatTop(start, end);
               }
               break;
             case constant.PATH_RIGHT:
+              {
+                const end = this._getRightSidePathCord(toTableSides, this.toPathIndex, this.toPathCount);
 
+                this.lineElems = this._get2LinePathFlatTop(start, end);
+              }
+              break;
             case constant.PATH_TOP:
+              {
 
+              }
+              break;
             case constant.PATH_BOTTOM:
+              {
+                const end = this._getBottomSidePathCord(toTableSides, this.toPathIndex, this.toPathCount);
 
+                this.lineElems = this._get3LinePathVert(start, end);
+              }
+              break;
           }
         }
         break;
       case constant.PATH_BOTTOM:
         {
+          const start = this._getBottomSidePathCord(fromTableSides, this.toPathIndex, this.toPathCount);
+
           switch (this.toTablePathSide) {
             case constant.PATH_LEFT:
-
+              {
+                {
+                  const end = this._getLeftSidePathCord(toTableSides, this.toPathIndex, this.toPathCount);
+  
+                  this.lineElems = this._get2LinePathFlatBottom(start, end);
+                }
+              }
+              break;
             case constant.PATH_RIGHT:
-
+              {
+                {
+                  const end = this._getLeftSidePathCord(toTableSides, this.toPathIndex, this.toPathCount);
+  
+                  this.lineElems = this._get2LinePathFlatBottom(start, end);
+                }
+              }
+              break;
             case constant.PATH_TOP:
-
+              {
+                {
+                  const end = this._getLeftSidePathCord(toTableSides, this.toPathIndex, this.toPathCount);
+  
+                  this.lineElems = this._get3LinePathVert(start, end);
+                }
+              }
+              break;
             case constant.PATH_BOTTOM:
+              {
 
+              }
+              break;
           }
         }
         break;
