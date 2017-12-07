@@ -1,4 +1,3 @@
-import { segmentIntersection } from './util.js';
 import Relation from './Relation.js';
 import constant from './const.js';
 
@@ -33,21 +32,7 @@ export default class Designer {
         drawTable();
     }   
 
-    draw() {
-        this.tables.forEach((table, i) => {
-            const tableElm = table.render();
-            tableElm.setAttribute('id', i + 'table');
-            this._svgElem.appendChild(tableElm);
-
-            table.columns.forEach(column => {
-                if (column.fk) {
-                    let relationInfo = { fromTable: table, toTable: column.fk.table, fromColumn: column, toColumn: column.fk.column };                    
-                    relationInfo = new Relation(relationInfo);
-                    this._relationInfos.push(relationInfo);
-                }
-            });
-        });
-
+    _drawRelations() {
         this.tables.forEach(table => {
             const tableRelations = this._getTableRelations(table);
 
@@ -106,6 +91,24 @@ export default class Designer {
             const elems = relation.render();
             elems.forEach(elem => this._svgElem.prepend(elem));
         });
+    }
+
+    draw() {
+        this.tables.forEach((table, i) => {
+            const tableElm = table.render();
+            tableElm.setAttribute('id', i + 'table');
+            this._svgElem.appendChild(tableElm);
+
+            table.columns.forEach(column => {
+                if (column.fk) {
+                    let relationInfo = { fromTable: table, toTable: column.fk.table, fromColumn: column, toColumn: column.fk.column };                    
+                    relationInfo = new Relation(relationInfo);
+                    this._relationInfos.push(relationInfo);
+                }
+            });
+        });
+
+        this._drawRelations();
 
         //After draw happened
         setTimeout(() => {
@@ -164,41 +167,7 @@ export default class Designer {
         });
 
         this.tables.forEach(table => {
-            // table.setMoveListener(() => {
-            //     const relations = this._getTableRelations(table);
-            //     const leftSideRelations = [], rightSideRelations = [], topSideRelations = [], bottomSideRelations = [];
-
-            //     relations.forEach(relation => {
-            //         const r = this._getTableRelationSide(relation);
-            //         relation.fromTablePathSide = r.fromTablePathSide;
-            //         relation.toTablePathSide = r.toTablePathSide;
-            //         if (relation.fromTable === table) {
-            //             if (relation.fromTablePathSide === constant.PATH_LEFT) {
-            //                 leftSideRelations.push(relation);
-            //             } else if (relation.fromTablePathSide === constant.PATH_RIGHT) {
-            //                 rightSideRelations.push(relation);
-            //             } else if (relation.fromTablePathSide === constant.PATH_TOP) {
-            //                 topSideRelations.push(relation);
-            //                 //relation.fromTablePathSide === constant.PATH_BOTTOM
-            //             } else {
-            //                 bottomSideRelations.push(relation);
-            //             }
-            //             //relation.toTable === table
-            //         } else {
-            //             if (relation.toTablePathSide === constant.PATH_LEFT) {
-            //                 leftSideRelations.push(relation);
-            //             } else if (relation.toTablePathSide === constant.PATH_RIGHT) {
-            //                 rightSideRelations.push(relation);
-            //             } else if (relation.toTablePathSide === constant.PATH_TOP) {
-            //                 topSideRelations.push(relation);
-            //                 //relation.toTablePathSide === constant.PATH_BOTTOM
-            //             } else {
-            //                 bottomSideRelations.push(relation);
-            //             }
-            //         }
-            //     });
-
-            // });
+            table.setMoveListener(this._drawRelations.bind(this));
         });
     }
 
