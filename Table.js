@@ -12,8 +12,10 @@ export default class Table {
 
         const mouseMove = event => {
             event.stopPropagation();
-            const deltaX = event.clientX / this._designer.getZoom() + this._designer.getPan().x - mouseDownInitialElemX;
-            const deltaY = event.clientY / this._designer.getZoom() + this._designer.getPan().y - mouseDownInitialElemY;
+            const normalizedClientX = event.clientX / this._designer.getZoom() + this._designer.getPan().x;
+            const normalizedClientY = event.clientY / this._designer.getZoom() + this._designer.getPan().y;
+            const deltaX = normalizedClientX - mouseDownInitialElemX;
+            const deltaY = normalizedClientY - mouseDownInitialElemY;
             this._elem.setAttributeNS(null, 'transform', `translate(${deltaX},${deltaY})`);
             this._onMove && this._onMove();
         };
@@ -56,20 +58,44 @@ export default class Table {
         const boundingRect = this._table.getBoundingClientRect();
         return {
             right: {
-                p1: { x: boundingRect.right, y: boundingRect.top },
-                p2: { x: boundingRect.right, y: boundingRect.bottom }
+                p1: {
+                    x: boundingRect.right / this._designer.getZoom() + this._designer.getPan().x,
+                    y: boundingRect.top / this._designer.getZoom() + this._designer.getPan().y
+                },
+                p2: {
+                    x: boundingRect.right / this._designer.getZoom() + this._designer.getPan().x,
+                    y: boundingRect.bottom / this._designer.getZoom() + this._designer.getPan().y
+                }
             },
             left: {
-                p1: { x: boundingRect.left, y: boundingRect.top },
-                p2: { x: boundingRect.left, y: boundingRect.bottom }
+                p1: {
+                    x: boundingRect.left / this._designer.getZoom() + this._designer.getPan().x,
+                    y: boundingRect.top / this._designer.getZoom() + this._designer.getPan().y
+                },
+                p2: {
+                    x: boundingRect.left / this._designer.getZoom() + this._designer.getPan().x,
+                    y: boundingRect.bottom / this._designer.getZoom() + this._designer.getPan().y
+                }
             },
             top: {
-                p1: { x: boundingRect.left, y: boundingRect.top },
-                p2: { x: boundingRect.right, y: boundingRect.top }
+                p1: {
+                    x: boundingRect.left / this._designer.getZoom() + this._designer.getPan().x,
+                    y: boundingRect.top / this._designer.getZoom() + this._designer.getPan().y
+                },
+                p2: {
+                    x: boundingRect.right / this._designer.getZoom() + this._designer.getPan().x,
+                    y: boundingRect.top / this._designer.getZoom() + this._designer.getPan().y
+                }
             },
             bottom: {
-                p1: { x: boundingRect.left, y: boundingRect.bottom },
-                p2: { x: boundingRect.right, y: boundingRect.bottom }
+                p1: {
+                    x: boundingRect.left / this._designer.getZoom() + this._designer.getPan().x,
+                    y: boundingRect.bottom / this._designer.getZoom() + this._designer.getPan().y
+                },
+                p2: {
+                    x: boundingRect.right / this._designer.getZoom() + this._designer.getPan().x,
+                    y: boundingRect.bottom / this._designer.getZoom() + this._designer.getPan().y
+                }
             }
         };
     }

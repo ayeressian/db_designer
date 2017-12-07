@@ -27,7 +27,7 @@ export default class Relation {
     this.toColumn = toColumn;
     this.toPathCount = toPathCount;
     this.toPathIndex = toPathIndex;
-    this.toTable = toTable;   
+    this.toTable = toTable;
 
     this.lineElems = [];
   }
@@ -172,7 +172,9 @@ export default class Relation {
     if (this.toPathIndex == null || this.fromPathCount == null) throw new MissingCountIndex();
 
     const fromTableSides = this.fromTable.getSides();
+    console.log('from: ', fromTableSides);
     const toTableSides = this.toTable.getSides();
+    console.log('to: ', toTableSides);
 
     switch (this.fromTablePathSide) {
       case constant.PATH_LEFT:

@@ -30,10 +30,10 @@ export default class Designer {
     addTable(table) {
         this.tables.push(table);
         drawTable();
-    }   
+    }
 
     _drawRelations() {
-        this.tables.forEach(table => {            
+        this.tables.forEach(table => {
             const tableRelations = this._getTableRelations(table);
 
             tableRelations.forEach(relation => relation.update());
@@ -89,7 +89,7 @@ export default class Designer {
         });
 
         this._relationInfos.forEach(relation => {
-            relation.getElems().forEach(elem => this._svgElem.removeChild(elem));            
+            relation.getElems().forEach(elem => this._svgElem.removeChild(elem));
             const elems = relation.render();
             elems.forEach(elem => this._svgElem.prepend(elem));
         });
@@ -103,7 +103,7 @@ export default class Designer {
 
             table.columns.forEach(column => {
                 if (column.fk) {
-                    let relationInfo = { fromTable: table, toTable: column.fk.table, fromColumn: column, toColumn: column.fk.column };                    
+                    let relationInfo = { fromTable: table, toTable: column.fk.table, fromColumn: column, toColumn: column.fk.column };
                     relationInfo = new Relation(relationInfo);
                     this._relationInfos.push(relationInfo);
                 }
