@@ -27,11 +27,13 @@ export default class Relation {
     this.toColumn = toColumn;
     this.toPathCount = toPathCount;
     this.toPathIndex = toPathIndex;
-    this.toTable = toTable;
-
-    this._getTableRelationSide();
+    this.toTable = toTable;   
 
     this.lineElems = [];
+  }
+
+  update() {
+    this._getTableRelationSide();
   }
 
   _getPosOnLine(pathIndex, pathCount, sideLength) {
@@ -63,6 +65,12 @@ export default class Relation {
   }
 
   _get2LinePathFlatTop(start, end) {
+    if (start.y > end.y) {
+      const tmp = start;
+      start = end;
+      end = tmp;
+    }
+
     const line1 = document.createElementNS(constant.nsSvg, 'line');
     line1.setAttributeNS(null, 'x1', start.x);
     line1.setAttributeNS(null, 'y1', start.y);
@@ -79,6 +87,12 @@ export default class Relation {
   }
 
   _get2LinePathFlatBottom(start, end) {
+    if (start.y > end.y) {
+      const tmp = start;
+      start = end;
+      end = tmp;
+    }
+
     const line1 = document.createElementNS(constant.nsSvg, 'line');
     line1.setAttributeNS(null, 'x1', start.x);
     line1.setAttributeNS(null, 'y1', start.y);
@@ -272,14 +286,14 @@ export default class Relation {
               break;
             case constant.PATH_RIGHT:
               {
-                const end = this._getLeftSidePathCord(toTableSides, this.toPathIndex, this.toPathCount);
+                const end = this._getRightSidePathCord(toTableSides, this.toPathIndex, this.toPathCount);
 
                 this.lineElems = this._get2LinePathFlatBottom(start, end);
               }
               break;
             case constant.PATH_TOP:
               {
-                const end = this._getLeftSidePathCord(toTableSides, this.toPathIndex, this.toPathCount);
+                const end = this._getTopSidePathCord(toTableSides, this.toPathIndex, this.toPathCount);
 
                 this.lineElems = this._get3LinePathVert(start, end);
               }

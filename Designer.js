@@ -33,8 +33,10 @@ export default class Designer {
     }   
 
     _drawRelations() {
-        this.tables.forEach(table => {
+        this.tables.forEach(table => {            
             const tableRelations = this._getTableRelations(table);
+
+            tableRelations.forEach(relation => relation.update());
 
             const leftRelations = tableRelations.filter(
                 r => r.toTable === table && r.toTablePathSide === constant.PATH_LEFT || r.fromTable === table && r.fromTablePathSide === constant.PATH_LEFT);
@@ -87,7 +89,7 @@ export default class Designer {
         });
 
         this._relationInfos.forEach(relation => {
-            relation.getElems().forEach(elem => this._svgElem.removeChild(elem));
+            relation.getElems().forEach(elem => this._svgElem.removeChild(elem));            
             const elems = relation.render();
             elems.forEach(elem => this._svgElem.prepend(elem));
         });
