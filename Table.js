@@ -1,4 +1,5 @@
 import constant from './const.js';
+import { to3FixedNumber } from './util.js';
 
 export default class Table {
     constructor({ name, columns = [], pos = { x: 0, y: 0 } }) {
@@ -44,10 +45,18 @@ export default class Table {
         this._onMove = onMove;
     }
 
+    _normalizeX(num) {
+        return to3FixedNumber(num / this._designer.getZoom() + this._designer.getPan().x);
+    }
+
+    _normalizeY(num) {
+        return to3FixedNumber(num / this._designer.getZoom() + this._designer.getPan().y);
+    }
+
     getCenter() {
         const boundingRect = this._table.getBoundingClientRect();
-        const x = boundingRect.left / this._designer.getZoom() + this._designer.getPan().x + boundingRect.width / 2;
-        const y = boundingRect.top / this._designer.getZoom() + this._designer.getPan().y + boundingRect.height / 2;
+        const x = this._normalizeX(boundingRect.left) + boundingRect.width / 2;
+        const y = this._normalizeY(boundingRect.top) + boundingRect.height / 2;
         return {
             x,
             y
@@ -59,42 +68,42 @@ export default class Table {
         return {
             right: {
                 p1: {
-                    x: boundingRect.right / this._designer.getZoom() + this._designer.getPan().x,
-                    y: boundingRect.top / this._designer.getZoom() + this._designer.getPan().y
+                    x: this._normalizeX(boundingRect.right),
+                    y: this._normalizeY(boundingRect.top)
                 },
                 p2: {
-                    x: boundingRect.right / this._designer.getZoom() + this._designer.getPan().x,
-                    y: boundingRect.bottom / this._designer.getZoom() + this._designer.getPan().y
+                    x: this._normalizeX(boundingRect.right),
+                    y: this._normalizeY(boundingRect.bottom)
                 }
             },
             left: {
                 p1: {
-                    x: boundingRect.left / this._designer.getZoom() + this._designer.getPan().x,
-                    y: boundingRect.top / this._designer.getZoom() + this._designer.getPan().y
+                    x: this._normalizeX(boundingRect.left),
+                    y: this._normalizeY(boundingRect.top)
                 },
                 p2: {
-                    x: boundingRect.left / this._designer.getZoom() + this._designer.getPan().x,
-                    y: boundingRect.bottom / this._designer.getZoom() + this._designer.getPan().y
+                    x: this._normalizeX(boundingRect.left),
+                    y: this._normalizeY(boundingRect.bottom)
                 }
             },
             top: {
                 p1: {
-                    x: boundingRect.left / this._designer.getZoom() + this._designer.getPan().x,
-                    y: boundingRect.top / this._designer.getZoom() + this._designer.getPan().y
+                    x: this._normalizeX(boundingRect.left),
+                    y: this._normalizeY(boundingRect.top)
                 },
                 p2: {
-                    x: boundingRect.right / this._designer.getZoom() + this._designer.getPan().x,
-                    y: boundingRect.top / this._designer.getZoom() + this._designer.getPan().y
+                    x: this._normalizeX(boundingRect.right),
+                    y: this._normalizeY(boundingRect.top)
                 }
             },
             bottom: {
                 p1: {
-                    x: boundingRect.left / this._designer.getZoom() + this._designer.getPan().x,
-                    y: boundingRect.bottom / this._designer.getZoom() + this._designer.getPan().y
+                    x: this._normalizeX(boundingRect.left),
+                    y: this._normalizeY(boundingRect.bottom)
                 },
                 p2: {
-                    x: boundingRect.right / this._designer.getZoom() + this._designer.getPan().x,
-                    y: boundingRect.bottom / this._designer.getZoom() + this._designer.getPan().y
+                    x: this._normalizeX(boundingRect.right),
+                    y: this._normalizeY(boundingRect.bottom)
                 }
             }
         };
