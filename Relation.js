@@ -208,7 +208,7 @@ export default class Relation {
         break;
       case constant.PATH_RIGHT:
         {
-          const start = this._getRightSidePathCord(fromTableSides, this.toPathIndex, this.toPathCount);
+          const start = this._getRightSidePathCord(fromTableSides, this.fromPathIndex, this.fromPathCount);
 
           switch (this.toTablePathSide) {
             case constant.PATH_LEFT:
@@ -240,7 +240,7 @@ export default class Relation {
         break;
       case constant.PATH_TOP:
         {
-          const start = this._getTopSidePathCord(fromTableSides, this.toPathIndex, this.toPathCount);
+          const start = this._getTopSidePathCord(fromTableSides, this.fromPathIndex, this.fromPathCount);
 
           switch (this.toTablePathSide) {
             case constant.PATH_LEFT:
@@ -274,7 +274,7 @@ export default class Relation {
         break;
       case constant.PATH_BOTTOM:
         {
-          const start = this._getBottomSidePathCord(fromTableSides, this.toPathIndex, this.toPathCount);
+          const start = this._getBottomSidePathCord(fromTableSides, this.fromPathIndex, this.fromPathCount);
 
           switch (this.toTablePathSide) {
             case constant.PATH_LEFT:

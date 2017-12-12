@@ -95,7 +95,7 @@ export default class Designer {
         });
     }
 
-    draw() {
+    draw() {        
         this.tables.forEach((table, i) => {
             const tableElm = table.render();
             tableElm.setAttribute('id', i + 'table');
