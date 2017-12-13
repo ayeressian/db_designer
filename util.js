@@ -1,5 +1,5 @@
 function to3FixedNumber(num) {
-    return Math.round(num * 1e3) / 1e3
+    return Math.round(num * 1e3) / 1e3;
 }
 
 function segmentIntersection(l1p1, l1p2, l2p1, l2p2) {

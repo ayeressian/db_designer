@@ -23,6 +23,8 @@
     user-select: none;
     cursor: default;
     background-color: #e3ebed;
+
+    font: normal 10px Verdana, Arial, sans-serif;
 }
 
 .tableGroup {
@@ -32,8 +34,11 @@
 .table {
     border: 1px solid black;
     background-color: white;
-    min-width: 100px;
+    min-width: 100px; 
+
     border-collapse: collapse;
+    border-radius: 5px;
+    overflow: hidden;  
 }
 
 .table tr {
@@ -42,6 +47,7 @@
 .table tr th {
     font-size: 1.2em;
     padding: 5px;
+    background-color: lightcyan;
 }
 
 .table td {
