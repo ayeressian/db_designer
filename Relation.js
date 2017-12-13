@@ -316,48 +316,49 @@ export default class Relation {
 
     const fromTableSides = this.fromTable.getSides();
 
-    let fromTablePathSide;
-
     const intersectFromTableRightSide = segmentIntersection(fromTableCenter, toTableCenter, fromTableSides.right.p1, fromTableSides.right.p2);
     if (intersectFromTableRightSide) {
-      fromTablePathSide = constant.PATH_RIGHT;
+      this.fromIntersectPoint = intersectFromTableRightSide;
+      this.fromTablePathSide = constant.PATH_RIGHT;
     }
     const intersectFromTableLeftSide = segmentIntersection(fromTableCenter, toTableCenter, fromTableSides.left.p1, fromTableSides.left.p2);
     if (intersectFromTableLeftSide) {
-      fromTablePathSide = constant.PATH_LEFT;
+      this.fromIntersectPoint = intersectFromTableLeftSide;
+      this.fromTablePathSide = constant.PATH_LEFT;
     }
     const intersectFromTableTopSide = segmentIntersection(fromTableCenter, toTableCenter, fromTableSides.top.p1, fromTableSides.top.p2);
     if (intersectFromTableTopSide) {
-      fromTablePathSide = constant.PATH_TOP;
+      this.fromIntersectPoint = intersectFromTableTopSide;
+      this.fromTablePathSide = constant.PATH_TOP;
     }
     const intersectFromTableBottomSide = segmentIntersection(fromTableCenter, toTableCenter, fromTableSides.bottom.p1, fromTableSides.bottom.p2);
     if (intersectFromTableBottomSide) {
-      fromTablePathSide = constant.PATH_BOTTOM;
+      this.fromIntersectPoint = intersectFromTableBottomSide;
+      this.fromTablePathSide = constant.PATH_BOTTOM;
     }
 
     const toTableSides = this.toTable.getSides();
 
-    let toTablePathSide;
-
     const intersectToTableRightSide = segmentIntersection(fromTableCenter, toTableCenter, toTableSides.right.p1, toTableSides.right.p2);
     if (intersectToTableRightSide) {
-      toTablePathSide = constant.PATH_RIGHT;
+      this.toIntersectPoint = intersectToTableRightSide;
+      this.toTablePathSide = constant.PATH_RIGHT;
     }
     const intersectToTableLeftSide = segmentIntersection(fromTableCenter, toTableCenter, toTableSides.left.p1, toTableSides.left.p2);
     if (intersectToTableLeftSide) {
-      toTablePathSide = constant.PATH_LEFT;
+      this.toIntersectPoint = intersectToTableLeftSide;
+      this.toTablePathSide = constant.PATH_LEFT;
     }
     const intersectToTableTopSide = segmentIntersection(fromTableCenter, toTableCenter, toTableSides.top.p1, toTableSides.top.p2);
     if (intersectToTableTopSide) {
-      toTablePathSide = constant.PATH_TOP;
+      this.toIntersectPoint = intersectToTableTopSide;
+      this.toTablePathSide = constant.PATH_TOP;
     }
     const intersectToTableBottomSide = segmentIntersection(fromTableCenter, toTableCenter, toTableSides.bottom.p1, toTableSides.bottom.p2);
     if (intersectToTableBottomSide) {
-      toTablePathSide = constant.PATH_BOTTOM;
+      this.toIntersectPoint = intersectToTableBottomSide;
+      this.toTablePathSide = constant.PATH_BOTTOM;
     }
-
-    this.fromTablePathSide = fromTablePathSide;
-    this.toTablePathSide = toTablePathSide;
   }
 
   getElems() {

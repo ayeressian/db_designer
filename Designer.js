@@ -32,20 +32,58 @@ export default class Designer {
         drawTable();
     }
 
+    _ySort(arr, table) {
+        return arr.sort((r1, r2) => {
+            if (r1.fromTable === table) {
+                if (r2.fromTable === table) {
+                    return r1.fromIntersectPoint.y - r2.fromIntersectPoint.y;
+                }
+                return r1.fromIntersectPoint.y - r2.toIntersectPoint.y;
+            } else {
+                if (r2.fromTable === table) {
+                    return r1.toIntersectPoint.y - r2.fromIntersectPoint.y;
+                }
+                return r1.toIntersectPoint.y - r2.toIntersectPoint.y;
+            }
+        });        
+    }
+
+
+    _xSort(arr, table) {
+        return arr.sort((r1, r2) => {
+            if (r1.fromTable === table) {
+                if (r2.fromTable === table) {
+                    return r1.fromIntersectPoint.x - r2.fromIntersectPoint.x;
+                }
+                return r1.fromIntersectPoint.x - r2.toIntersectPoint.x;
+            } else {
+                if (r2.fromTable === table) {
+                    return r1.toIntersectPoint.x - r2.fromIntersectPoint.x;
+                }
+                return r1.toIntersectPoint.x - r2.toIntersectPoint.x;
+            }
+        });        
+    }
+
     _drawRelations() {
         this.tables.forEach(table => {
             const tableRelations = this._getTableRelations(table);
 
             tableRelations.forEach(relation => relation.update());
 
-            const leftRelations = tableRelations.filter(
+            let leftRelations = tableRelations.filter(
                 r => r.toTable === table && r.toTablePathSide === constant.PATH_LEFT || r.fromTable === table && r.fromTablePathSide === constant.PATH_LEFT);
-            const rightRelations = tableRelations.filter(
+            let rightRelations = tableRelations.filter(
                 r => r.toTable === table && r.toTablePathSide === constant.PATH_RIGHT || r.fromTable === table && r.fromTablePathSide === constant.PATH_RIGHT);
-            const topRelations = tableRelations.filter(
+            let topRelations = tableRelations.filter(
                 r => r.toTable === table && r.toTablePathSide === constant.PATH_TOP || r.fromTable === table && r.fromTablePathSide === constant.PATH_TOP);
-            const bottomRelations = tableRelations.filter(
+            let bottomRelations = tableRelations.filter(
                 r => r.toTable === table && r.toTablePathSide === constant.PATH_BOTTOM || r.fromTable === table && r.fromTablePathSide === constant.PATH_BOTTOM);
+
+            this._ySort(leftRelations, table);
+            this._ySort(rightRelations, table);
+            this._xSort(topRelations, table);
+            this._xSort(bottomRelations, table);
 
             leftRelations.forEach((relation, i) => {
                 if (relation.fromTable === table) {
@@ -95,7 +133,7 @@ export default class Designer {
         });
     }
 
-    draw() {        
+    draw() {
         this.tables.forEach((table, i) => {
             const tableElm = table.render();
             tableElm.setAttribute('id', i + 'table');
