@@ -33,7 +33,7 @@ export default class Designer {
     }
 
     _ySort(arr, table) {
-        return arr.sort((r1, r2) => {
+        arr.sort((r1, r2) => {
             if (r1.fromTable === table) {
                 if (r2.fromTable === table) {
                     return r1.fromIntersectPoint.y - r2.fromIntersectPoint.y;
@@ -50,7 +50,7 @@ export default class Designer {
 
 
     _xSort(arr, table) {
-        return arr.sort((r1, r2) => {
+        arr.sort((r1, r2) => {
             if (r1.fromTable === table) {
                 if (r2.fromTable === table) {
                     return r1.fromIntersectPoint.x - r2.fromIntersectPoint.x;
