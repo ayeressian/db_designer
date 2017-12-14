@@ -1,0 +1,88 @@
+{
+  "tables": [
+    {
+      "name": "school",
+      "columns": [
+        {
+          "name": "id",
+          "pk": true,
+          "type": "int"
+        },
+        {
+          "name": "cpacity",
+          "required": true,
+          "type": "int"
+        },
+        {
+          "name": "name",
+          "required": true,
+          "type": "string"
+        },
+        {
+          "name": "address",
+          "required": true,
+          "type": "string"
+        }
+      ]
+    },
+    {
+      "name": "class",
+      "columns": [
+        {
+          "name": "id",
+          "pk": true,
+          "type": "int"
+        },
+        {
+          "name": "grade",
+          "required": true,
+          "type": "int"
+        },
+        {
+          "name": "school_id",
+          "required": true,
+          "fk": {
+            "table": "school",
+            "column": "id"
+          },
+          "type": "int"
+        }
+      ]
+    },
+    {
+      "name": "student",
+      "columns": [
+        {
+          "name": "id",
+          "pk": true,
+          "type": "int"
+        },
+        {
+          "name": "firstname",
+          "required": true,
+          "type": "string"
+        },
+        {
+          "name": "lastname",
+          "required": true,
+          "type": "string"
+        },
+        {
+          "name": "age",
+          "required": true,
+          "type": "int"
+        },
+        {
+          "name": "class_id",
+          "fk": {
+            "table": "class",
+            "column": "id"
+          },
+          "required": true,
+          "type": "int"
+        }
+      ]
+    }
+
+  ]
+}

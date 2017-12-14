@@ -37,6 +37,10 @@ export default class Table {
         this._name = name;
     }
 
+    getName() {
+        return this._name;
+    }
+
     addColumn(column) {
         this.columns.push(column);
     }
