@@ -31,17 +31,18 @@
     stroke: #707070;
 }
 
-.table {    
+.table {        
     background-color: white;
     min-width: 100px; 
-
-    border-collapse: collapse;
-    border-radius: 5px;
-    overflow: hidden;  
+    border-collapse: collapse; 
+    box-shadow: 0px 0px 10px rgba(0,0,0,0.15),
+        0px 0px 10px rgba(0,0,0,0.15),
+        0px 0px 10px rgba(0,0,0,0.15),
+        0px 0px 10px rgba(0,0,0,0.15);    
 }
 
 .table tr {
-    border-bottom: 1px solid grey;
+    border-bottom: 1px solid #BBB;
 }
 .table tr th {
     font-size: 1.2em;
@@ -57,5 +58,5 @@
 
 line {
     stroke-width: 1;
-    stroke: black
+    stroke: #666;
 }
