@@ -169,8 +169,8 @@ export default class Relation {
 
       startLine.setAttributeNS(null, 'x1', start.x - PATH_START_LENGTH);
       startLine.setAttributeNS(null, 'x2', start.x + PATH_START_LENGTH);
-      startLine.setAttributeNS(null, 'y1', start.y - PATH_START_PADDING);
-      startLine.setAttributeNS(null, 'y2', start.y - PATH_START_PADDING);
+      startLine.setAttributeNS(null, 'y1', start.y + PATH_START_PADDING);
+      startLine.setAttributeNS(null, 'y2', start.y + PATH_START_PADDING);
       
       if (start.x > end.x) {
         arrowline1.setAttributeNS(null, 'x2', end.x + PATH_ARROW_LENGTH);
