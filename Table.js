@@ -137,7 +137,11 @@ export default class Table {
             columnTr.appendChild(columnNameTd);
 
             const columnTypeTd = document.createElementNS(constant.nsHtml, 'td');
-            columnTypeTd.innerHTML = column.type;
+            if (column.fk) {
+                columnTypeTd.innerHTML = column.fk.column.type;
+            } else {
+                columnTypeTd.innerHTML = column.type;
+            }
             columnTr.appendChild(columnTypeTd);
         });
         this._moveEvents();

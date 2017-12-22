@@ -32,44 +32,11 @@ export default class Designer {
         drawTable();
     }
 
-    _ySort(arr, table) {
-        arr.sort((r1, r2) => {
-            if (r1.fromTable === table) {
-                if (r2.fromTable === table) {
-                    return r1.fromIntersectPoint.y - r2.fromIntersectPoint.y;
-                }
-                return r1.fromIntersectPoint.y - r2.toIntersectPoint.y;
-            } else {
-                if (r2.fromTable === table) {
-                    return r1.toIntersectPoint.y - r2.fromIntersectPoint.y;
-                }
-                return r1.toIntersectPoint.y - r2.toIntersectPoint.y;
-            }
-        });        
-    }
-
-
-    _xSort(arr, table) {
-        arr.sort((r1, r2) => {
-            if (r1.fromTable === table) {
-                if (r2.fromTable === table) {
-                    return r1.fromIntersectPoint.x - r2.fromIntersectPoint.x;
-                }
-                return r1.fromIntersectPoint.x - r2.toIntersectPoint.x;
-            } else {
-                if (r2.fromTable === table) {
-                    return r1.toIntersectPoint.x - r2.fromIntersectPoint.x;
-                }
-                return r1.toIntersectPoint.x - r2.toIntersectPoint.x;
-            }
-        });        
-    }
-
     _drawRelations() {
         this.tables.forEach(table => {
             const tableRelations = this._getTableRelations(table);
 
-            tableRelations.forEach(relation => relation.update());
+            const pendingSelfRelations = tableRelations.filter(relation => relation.calcPathTableSides());
 
             let leftRelations = tableRelations.filter(
                 r => r.toTable === table && r.toTablePathSide === constant.PATH_LEFT || r.fromTable === table && r.fromTablePathSide === constant.PATH_LEFT);
@@ -80,48 +47,81 @@ export default class Designer {
             let bottomRelations = tableRelations.filter(
                 r => r.toTable === table && r.toTablePathSide === constant.PATH_BOTTOM || r.fromTable === table && r.fromTablePathSide === constant.PATH_BOTTOM);
 
-            this._ySort(leftRelations, table);
-            this._ySort(rightRelations, table);
-            this._xSort(topRelations, table);
-            this._xSort(bottomRelations, table);
+            Relation._ySort(leftRelations, table);
+            Relation._ySort(rightRelations, table);
+            Relation._xSort(topRelations, table);
+            Relation._xSort(bottomRelations, table);
+
+            const sidesAndCount = [
+                { side: 'left', count: leftRelations.length },
+                { side: 'right', count: rightRelations.length },
+                { side: 'top', count: topRelations.length },
+                { side: 'bottom', count: bottomRelations.length }
+            ];            
+
+            pendingSelfRelations.forEach(pendingSelfRelation => {
+                let minPathSideCount = sidesAndCount.sort((item1, item2) => item1.count >= item2.count)[0];
+                
+                switch (minPathSideCount.side) {                    
+                    case 'left':
+                        leftRelations.push(pendingSelfRelation);                                                
+                        break;
+                    case 'right':
+                        rightRelations.push(pendingSelfRelation);
+                        break;
+                    case 'top':
+                        topRelations.push(pendingSelfRelation);
+                        break;
+                    case 'bottom':
+                        bottomRelations.push(pendingSelfRelation);
+                        break;
+                }
+                pendingSelfRelation.fromPathIndex = minPathSideCount.count + 1;
+                pendingSelfRelation.toPathIndex = minPathSideCount.count + 2;
+                minPathSideCount.count += 2;
+            });            
 
             leftRelations.forEach((relation, i) => {
+                const count = sidesAndCount.find(item => item.side === 'left').count;
                 if (relation.fromTable === table) {
                     relation.fromPathIndex = i;
-                    relation.fromPathCount = leftRelations.length;
+                    relation.fromPathCount = count;
                 } else {
                     relation.toPathIndex = i;
-                    relation.toPathCount = leftRelations.length;
+                    relation.toPathCount = count;
                 }
             });
 
             rightRelations.forEach((relation, i) => {
+                const count = sidesAndCount.find(item => item.side === 'right').count;
                 if (relation.fromTable === table) {
                     relation.fromPathIndex = i;
-                    relation.fromPathCount = rightRelations.length;
+                    relation.fromPathCount = count;
                 } else {
                     relation.toPathIndex = i;
-                    relation.toPathCount = rightRelations.length;
+                    relation.toPathCount = count;
                 }
             });
 
             topRelations.forEach((relation, i) => {
+                const count = sidesAndCount.find(item => item.side === 'top').count;
                 if (relation.fromTable === table) {
                     relation.fromPathIndex = i;
-                    relation.fromPathCount = topRelations.length;
+                    relation.fromPathCount = count;
                 } else {
                     relation.toPathIndex = i;
-                    relation.toPathCount = topRelations.length;
+                    relation.toPathCount = count;
                 }
             });
 
             bottomRelations.forEach((relation, i) => {
+                const count = sidesAndCount.find(item => item.side === 'bottom').count;
                 if (relation.fromTable === table) {
                     relation.fromPathIndex = i;
-                    relation.fromPathCount = bottomRelations.length;
+                    relation.fromPathCount = count;
                 } else {
                     relation.toPathIndex = i;
-                    relation.toPathCount = bottomRelations.length;
+                    relation.toPathCount = count;
                 }
             });
         });

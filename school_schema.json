@@ -44,8 +44,7 @@
           "fk": {
             "table": "school",
             "column": "id"
-          },
-          "type": "int"
+          }          
         }
       ]
     },
@@ -78,8 +77,15 @@
             "table": "class",
             "column": "id"
           },
+          "required": true
+        },
+        {
+          "name": "friend",
           "required": true,
-          "type": "int"
+          "fk": {
+            "table": "student",
+            "column": "id"
+          }
         }
       ]
     }
