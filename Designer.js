@@ -57,14 +57,14 @@ export default class Designer {
                 { side: 'right', count: rightRelations.length },
                 { side: 'top', count: topRelations.length },
                 { side: 'bottom', count: bottomRelations.length }
-            ];            
+            ];
 
             pendingSelfRelations.forEach(pendingSelfRelation => {
                 let minPathSideCount = sidesAndCount.sort((item1, item2) => item1.count >= item2.count)[0];
-                
-                switch (minPathSideCount.side) {                    
+
+                switch (minPathSideCount.side) {
                     case 'left':
-                        leftRelations.push(pendingSelfRelation);                                                
+                        leftRelations.push(pendingSelfRelation);
                         break;
                     case 'right':
                         rightRelations.push(pendingSelfRelation);
@@ -76,52 +76,87 @@ export default class Designer {
                         bottomRelations.push(pendingSelfRelation);
                         break;
                 }
-                pendingSelfRelation.fromPathIndex = minPathSideCount.count + 1;
-                pendingSelfRelation.toPathIndex = minPathSideCount.count + 2;
                 minPathSideCount.count += 2;
-            });            
+            });
 
+            let pathIndex = 0;
             leftRelations.forEach((relation, i) => {
                 const count = sidesAndCount.find(item => item.side === 'left').count;
-                if (relation.fromTable === table) {
-                    relation.fromPathIndex = i;
-                    relation.fromPathCount = count;
+                if (relation.fromTable !== relation.toTable) {                    
+                    if (relation.fromTable === table) {
+                        relation.fromPathIndex = pathIndex;
+                        relation.fromPathCount = count;
+                    } else {
+                        relation.toPathIndex = pathIndex;
+                        relation.toPathCount = count;
+                    }
+                    pathIndex++;
                 } else {
-                    relation.toPathIndex = i;
+                    relation.fromPathCount = count;
                     relation.toPathCount = count;
+                    relation.fromPathIndex = pathIndex;
+                    relation.toPathIndex = pathIndex + 1;
+                    pathIndex += 2;
                 }
             });
 
+            pathIndex = 0;
             rightRelations.forEach((relation, i) => {
                 const count = sidesAndCount.find(item => item.side === 'right').count;
-                if (relation.fromTable === table) {
-                    relation.fromPathIndex = i;
-                    relation.fromPathCount = count;
+                if (relation.fromTable !== relation.toTable) {                    
+                    if (relation.fromTable === table) {
+                        relation.fromPathIndex = pathIndex;
+                        relation.fromPathCount = count;
+                    } else {
+                        relation.toPathIndex = pathIndex;
+                        relation.toPathCount = count;
+                    }
                 } else {
-                    relation.toPathIndex = i;
+                    relation.fromPathCount = count;
                     relation.toPathCount = count;
+                    relation.fromPathIndex = pathIndex;
+                    relation.toPathIndex = pathIndex + 1;
+                    pathIndex += 2;
                 }
             });
 
+            pathIndex = 0;
             topRelations.forEach((relation, i) => {
                 const count = sidesAndCount.find(item => item.side === 'top').count;
-                if (relation.fromTable === table) {
-                    relation.fromPathIndex = i;
-                    relation.fromPathCount = count;
+                if (relation.fromTable !== relation.toTable) {                    
+                    if (relation.fromTable === table) {
+                        relation.fromPathIndex = pathIndex;
+                        relation.fromPathCount = count;
+                    } else {
+                        relation.toPathIndex = pathIndex;
+                        relation.toPathCount = count;
+                    }
                 } else {
-                    relation.toPathIndex = i;
+                    relation.fromPathCount = count;
                     relation.toPathCount = count;
+                    relation.fromPathIndex = pathIndex;
+                    relation.toPathIndex = pathIndex + 1;
+                    pathIndex += 2;
                 }
             });
 
+            pathIndex = 0;
             bottomRelations.forEach((relation, i) => {
                 const count = sidesAndCount.find(item => item.side === 'bottom').count;
-                if (relation.fromTable === table) {
-                    relation.fromPathIndex = i;
-                    relation.fromPathCount = count;
+                if (relation.fromTable !== relation.toTable) {                    
+                    if (relation.fromTable === table) {
+                        relation.fromPathIndex = i;
+                        relation.fromPathCount = count;
+                    } else {
+                        relation.toPathIndex = i;
+                        relation.toPathCount = count;
+                    }
                 } else {
-                    relation.toPathIndex = i;
+                    relation.fromPathCount = count;
                     relation.toPathCount = count;
+                    relation.fromPathIndex = pathIndex;
+                    relation.toPathIndex = pathIndex + 1;
+                    pathIndex += 2;
                 }
             });
         });
