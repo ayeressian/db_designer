@@ -11,7 +11,7 @@ const PATH_ARROW_LENGTH = 9,
   PATH_ARROW_HEIGHT = 4,
   PATH_START_PADDING = 7,
   PATH_START_LENGTH = 5,
-  PATH_SELF_RELATION_LENGTH = 20;
+  PATH_SELF_RELATION_LENGTH = 40;
 
 export default class Relation {
   constructor({
@@ -324,6 +324,7 @@ export default class Relation {
           switch (this.toTablePathSide) {
             case constant.PATH_LEFT:
               {
+                const end = this._getLeftSidePathCord(toTableSides, this.toPathIndex, this.toPathCount);
                 const line1 = document.createElementNS(constant.nsSvg, 'line');
                 line1.setAttributeNS(null, 'x1', start.x);
                 line1.setAttributeNS(null, 'y1', start.y);
@@ -397,6 +398,7 @@ export default class Relation {
               break;
             case constant.PATH_RIGHT:
               {
+                const end = this._getRightSidePathCord(toTableSides, this.toPathIndex, this.toPathCount);
                 const line1 = document.createElementNS(constant.nsSvg, 'line');
                 line1.setAttributeNS(null, 'x1', start.x);
                 line1.setAttributeNS(null, 'y1', start.y);
@@ -470,6 +472,7 @@ export default class Relation {
               break;
             case constant.PATH_TOP:
               {
+                const end = this._getTopSidePathCord(toTableSides, this.toPathIndex, this.toPathCount);
                 const line1 = document.createElementNS(constant.nsSvg, 'line');
                 line1.setAttributeNS(null, 'x1', start.x);
                 line1.setAttributeNS(null, 'y1', start.y);
@@ -543,6 +546,8 @@ export default class Relation {
               break;
             case constant.PATH_BOTTOM:
               {
+                const end = this._getBottomSidePathCord(toTableSides, this.toPathIndex, this.toPathCount);
+
                 const line1 = document.createElementNS(constant.nsSvg, 'line');
                 line1.setAttributeNS(null, 'x1', start.x);
                 line1.setAttributeNS(null, 'y1', start.y);
@@ -647,6 +652,9 @@ export default class Relation {
 
   static _ySort(arr, table) {
     arr.sort((r1, r2) => {
+      if (r1.fromIntersectPoint == null || r2.fromIntersectPoint == null) {
+        return -1;
+      }
       if (r1.fromTable === table) {
         if (r2.fromTable === table) {
           return r1.fromIntersectPoint.y - r2.fromIntersectPoint.y;
@@ -663,6 +671,9 @@ export default class Relation {
 
   static _xSort(arr, table) {
     arr.sort((r1, r2) => {
+      if (r1.fromIntersectPoint == null || r2.fromIntersectPoint == null) {
+        return -1;
+      }
       if (r1.fromTable === table) {
         if (r2.fromTable === table) {
           return r1.fromIntersectPoint.x - r2.fromIntersectPoint.x;

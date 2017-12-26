@@ -60,20 +60,30 @@ export default class Designer {
             ];
 
             pendingSelfRelations.forEach(pendingSelfRelation => {
-                let minPathSideCount = sidesAndCount.sort((item1, item2) => item1.count >= item2.count)[0];
+                let minPathSideCount = sidesAndCount.sort((item1, item2) => item2.count - item1.count)[0];
+                console.log(sidesAndCount);
+                console.log(minPathSideCount);
 
                 switch (minPathSideCount.side) {
                     case 'left':
                         leftRelations.push(pendingSelfRelation);
+                        pendingSelfRelation.fromTablePathSide = constant.PATH_LEFT;
+                        pendingSelfRelation.toTablePathSide = constant.PATH_LEFT;
                         break;
                     case 'right':
                         rightRelations.push(pendingSelfRelation);
+                        pendingSelfRelation.fromTablePathSide = constant.PATH_RIGHT;
+                        pendingSelfRelation.toTablePathSide = constant.PATH_RIGHT;
                         break;
                     case 'top':
                         topRelations.push(pendingSelfRelation);
+                        pendingSelfRelation.fromTablePathSide = constant.PATH_TOP;
+                        pendingSelfRelation.toTablePathSide = constant.PATH_TOP;
                         break;
                     case 'bottom':
                         bottomRelations.push(pendingSelfRelation);
+                        pendingSelfRelation.fromTablePathSide = constant.PATH_BOTTOM;
+                        pendingSelfRelation.toTablePathSide = constant.PATH_BOTTOM;
                         break;
                 }
                 minPathSideCount.count += 2;
