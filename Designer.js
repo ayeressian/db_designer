@@ -60,7 +60,7 @@ export default class Designer {
             ];
 
             pendingSelfRelations.forEach(pendingSelfRelation => {
-                let minPathSideCount = sidesAndCount.sort((item1, item2) => item2.count - item1.count)[0];
+                let minPathSideCount = sidesAndCount.sort((item1, item2) => item1.count - item2.count)[0];
                 console.log(sidesAndCount);
                 console.log(minPathSideCount);
 
@@ -90,7 +90,7 @@ export default class Designer {
             });
 
             let pathIndex = 0;
-            leftRelations.forEach((relation, i) => {
+            leftRelations.forEach(relation => {
                 const count = sidesAndCount.find(item => item.side === 'left').count;
                 if (relation.fromTable !== relation.toTable) {                    
                     if (relation.fromTable === table) {
@@ -111,7 +111,7 @@ export default class Designer {
             });
 
             pathIndex = 0;
-            rightRelations.forEach((relation, i) => {
+            rightRelations.forEach(relation => {
                 const count = sidesAndCount.find(item => item.side === 'right').count;
                 if (relation.fromTable !== relation.toTable) {                    
                     if (relation.fromTable === table) {
@@ -121,6 +121,7 @@ export default class Designer {
                         relation.toPathIndex = pathIndex;
                         relation.toPathCount = count;
                     }
+                    pathIndex++;
                 } else {
                     relation.fromPathCount = count;
                     relation.toPathCount = count;
@@ -131,7 +132,7 @@ export default class Designer {
             });
 
             pathIndex = 0;
-            topRelations.forEach((relation, i) => {
+            topRelations.forEach(relation => {
                 const count = sidesAndCount.find(item => item.side === 'top').count;
                 if (relation.fromTable !== relation.toTable) {                    
                     if (relation.fromTable === table) {
@@ -141,6 +142,7 @@ export default class Designer {
                         relation.toPathIndex = pathIndex;
                         relation.toPathCount = count;
                     }
+                    pathIndex++;
                 } else {
                     relation.fromPathCount = count;
                     relation.toPathCount = count;
@@ -151,16 +153,17 @@ export default class Designer {
             });
 
             pathIndex = 0;
-            bottomRelations.forEach((relation, i) => {
+            bottomRelations.forEach(relation => {
                 const count = sidesAndCount.find(item => item.side === 'bottom').count;
                 if (relation.fromTable !== relation.toTable) {                    
                     if (relation.fromTable === table) {
-                        relation.fromPathIndex = i;
+                        relation.fromPathIndex = pathIndex;
                         relation.fromPathCount = count;
                     } else {
-                        relation.toPathIndex = i;
+                        relation.toPathIndex = pathIndex;
                         relation.toPathCount = count;
                     }
+                    pathIndex++;
                 } else {
                     relation.fromPathCount = count;
                     relation.toPathCount = count;
