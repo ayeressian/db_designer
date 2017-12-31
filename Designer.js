@@ -38,25 +38,44 @@ export default class Designer {
 
             const pendingSelfRelations = tableRelations.filter(relation => relation.calcPathTableSides());
 
-            let leftRelations = tableRelations.filter(
-                r => r.toTable === table && r.toTablePathSide === constant.PATH_LEFT || r.fromTable === table && r.fromTablePathSide === constant.PATH_LEFT);
-            let rightRelations = tableRelations.filter(
-                r => r.toTable === table && r.toTablePathSide === constant.PATH_RIGHT || r.fromTable === table && r.fromTablePathSide === constant.PATH_RIGHT);
-            let topRelations = tableRelations.filter(
-                r => r.toTable === table && r.toTablePathSide === constant.PATH_TOP || r.fromTable === table && r.fromTablePathSide === constant.PATH_TOP);
-            let bottomRelations = tableRelations.filter(
-                r => r.toTable === table && r.toTablePathSide === constant.PATH_BOTTOM || r.fromTable === table && r.fromTablePathSide === constant.PATH_BOTTOM);
+            const leftRelations = tableRelations.filter(r =>
+                ((r.toTable === table && r.toTablePathSide === constant.PATH_LEFT) ||
+                (r.fromTable === table && r.fromTablePathSide === constant.PATH_LEFT)) &&
+                !r.sameTableRelation());
+            const rightRelations = tableRelations.filter(r =>
+                ((r.toTable === table && r.toTablePathSide === constant.PATH_RIGHT) ||
+                (r.fromTable === table && r.fromTablePathSide === constant.PATH_RIGHT)) &&
+                !r.sameTableRelation());
+            const topRelations = tableRelations.filter(r =>
+                ((r.toTable === table && r.toTablePathSide === constant.PATH_TOP) ||
+                (r.fromTable === table && r.fromTablePathSide === constant.PATH_TOP)) &&
+                !r.sameTableRelation());
+            const bottomRelations = tableRelations.filter(r =>
+                ((r.toTable === table && r.toTablePathSide === constant.PATH_BOTTOM) ||
+                (r.fromTable === table && r.fromTablePathSide === constant.PATH_BOTTOM)) &&
+                !r.sameTableRelation());
 
             Relation._ySort(leftRelations, table);
             Relation._ySort(rightRelations, table);
             Relation._xSort(topRelations, table);
             Relation._xSort(bottomRelations, table);
 
-            const sidesAndCount = [
-                { side: 'left', count: leftRelations.length },
-                { side: 'right', count: rightRelations.length },
-                { side: 'top', count: topRelations.length },
-                { side: 'bottom', count: bottomRelations.length }
+            const sidesAndCount = [{
+                    side: 'left',
+                    count: leftRelations.length
+                },
+                {
+                    side: 'right',
+                    count: rightRelations.length
+                },
+                {
+                    side: 'top',
+                    count: topRelations.length
+                },
+                {
+                    side: 'bottom',
+                    count: bottomRelations.length
+                }
             ];
 
             pendingSelfRelations.forEach(pendingSelfRelation => {
@@ -92,7 +111,7 @@ export default class Designer {
             let pathIndex = 0;
             leftRelations.forEach(relation => {
                 const count = sidesAndCount.find(item => item.side === 'left').count;
-                if (relation.fromTable !== relation.toTable) {                    
+                if (relation.fromTable !== relation.toTable) {
                     if (relation.fromTable === table) {
                         relation.fromPathIndex = pathIndex;
                         relation.fromPathCount = count;
@@ -113,7 +132,7 @@ export default class Designer {
             pathIndex = 0;
             rightRelations.forEach(relation => {
                 const count = sidesAndCount.find(item => item.side === 'right').count;
-                if (relation.fromTable !== relation.toTable) {                    
+                if (relation.fromTable !== relation.toTable) {
                     if (relation.fromTable === table) {
                         relation.fromPathIndex = pathIndex;
                         relation.fromPathCount = count;
@@ -134,7 +153,7 @@ export default class Designer {
             pathIndex = 0;
             topRelations.forEach(relation => {
                 const count = sidesAndCount.find(item => item.side === 'top').count;
-                if (relation.fromTable !== relation.toTable) {                    
+                if (relation.fromTable !== relation.toTable) {
                     if (relation.fromTable === table) {
                         relation.fromPathIndex = pathIndex;
                         relation.fromPathCount = count;
@@ -155,7 +174,7 @@ export default class Designer {
             pathIndex = 0;
             bottomRelations.forEach(relation => {
                 const count = sidesAndCount.find(item => item.side === 'bottom').count;
-                if (relation.fromTable !== relation.toTable) {                    
+                if (relation.fromTable !== relation.toTable) {
                     if (relation.fromTable === table) {
                         relation.fromPathIndex = pathIndex;
                         relation.fromPathCount = count;
@@ -189,7 +208,12 @@ export default class Designer {
 
             table.columns.forEach(column => {
                 if (column.fk) {
-                    let relationInfo = { fromTable: table, toTable: column.fk.table, fromColumn: column, toColumn: column.fk.column };
+                    let relationInfo = {
+                        fromTable: table,
+                        toTable: column.fk.table,
+                        fromColumn: column,
+                        toColumn: column.fk.column
+                    };
                     relationInfo = new Relation(relationInfo);
                     this._relationInfos.push(relationInfo);
                 }

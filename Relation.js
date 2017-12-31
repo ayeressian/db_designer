@@ -590,6 +590,10 @@ export default class Relation {
     return this.lineElems;
   }
 
+  sameTableRelation() {
+    return this.fromTable === this.toTable;
+  }
+
   calcPathTableSides() {
     if (this.fromTable === this.toTable) {
       return this;
@@ -598,7 +602,7 @@ export default class Relation {
     const toTableCenter = this.toTable.getCenter();
 
     const fromTableSides = this.fromTable.getSides();
-    // console.log('from left: ', fromTableSides.left);    
+    // console.log('from left: ', fromTableSides.left);
 
     const intersectFromTableRightSide = segmentIntersection(fromTableCenter, toTableCenter, fromTableSides.right.p1, fromTableSides.right.p2);
     if (intersectFromTableRightSide) {
