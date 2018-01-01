@@ -44,7 +44,7 @@
           "fk": {
             "table": "school",
             "column": "id"
-          }          
+          }
         }
       ]
     },

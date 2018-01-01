@@ -62,26 +62,34 @@ export default class Designer {
 
             const sidesAndCount = [{
                     side: 'left',
+                    order: 1,
                     count: leftRelations.length
                 },
                 {
                     side: 'right',
+                    order: 2,
                     count: rightRelations.length
                 },
                 {
                     side: 'top',
+                    order: 3,
                     count: topRelations.length
                 },
                 {
                     side: 'bottom',
+                    order: 4,
                     count: bottomRelations.length
                 }
             ];
 
             pendingSelfRelations.forEach(pendingSelfRelation => {
-                let minPathSideCount = sidesAndCount.sort((item1, item2) => item1.count - item2.count)[0];
-                console.log(sidesAndCount);
-                console.log(minPathSideCount);
+                const minPathSideCount = sidesAndCount.sort((item1, item2) => {
+                    const result = item1.count - item2.count;
+                    if (result === 0) {
+                        return item1.order - item2.order
+                    }
+                    return result;
+                })[0];
 
                 switch (minPathSideCount.side) {
                     case 'left':
