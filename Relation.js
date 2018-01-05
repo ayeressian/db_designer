@@ -81,19 +81,19 @@ export default class Relation {
   }
 
   _get2LinePathFlatTop(start, end) {
-    const arrowline1 = document.createElementNS(constant.nsSvg, 'line');
-    arrowline1.setAttributeNS(null, 'x1', end.x);
-    arrowline1.setAttributeNS(null, 'y1', end.y);
+    const arrowLine1 = document.createElementNS(constant.nsSvg, 'line');
+    arrowLine1.setAttributeNS(null, 'x1', end.x);
+    arrowLine1.setAttributeNS(null, 'y1', end.y);
 
-    const arrowline2 = document.createElementNS(constant.nsSvg, 'line');
-    arrowline2.setAttributeNS(null, 'x1', end.x);
-    arrowline2.setAttributeNS(null, 'y1', end.y);
+    const arrowLine2 = document.createElementNS(constant.nsSvg, 'line');
+    arrowLine2.setAttributeNS(null, 'x1', end.x);
+    arrowLine2.setAttributeNS(null, 'y1', end.y);
 
     const startLine = document.createElementNS(constant.nsSvg, 'line');
 
     if (start.y > end.y) {
-      arrowline1.setAttributeNS(null, 'y2', end.y + PATH_ARROW_HEIGHT);
-      arrowline2.setAttributeNS(null, 'y2', end.y - PATH_ARROW_HEIGHT);
+      arrowLine1.setAttributeNS(null, 'y2', end.y + PATH_ARROW_HEIGHT);
+      arrowLine2.setAttributeNS(null, 'y2', end.y - PATH_ARROW_HEIGHT);
 
       startLine.setAttributeNS(null, 'x1', start.x - PATH_START_LENGTH);
       startLine.setAttributeNS(null, 'x2', start.x + PATH_START_LENGTH);
@@ -101,21 +101,21 @@ export default class Relation {
       startLine.setAttributeNS(null, 'y2', start.y - PATH_START_PADDING);
 
       if (start.x > end.x) {
-        arrowline1.setAttributeNS(null, 'x2', end.x + PATH_ARROW_LENGTH);
-        arrowline2.setAttributeNS(null, 'x2', end.x + PATH_ARROW_LENGTH);
+        arrowLine1.setAttributeNS(null, 'x2', end.x + PATH_ARROW_LENGTH);
+        arrowLine2.setAttributeNS(null, 'x2', end.x + PATH_ARROW_LENGTH);
       } else {
-        arrowline1.setAttributeNS(null, 'x2', end.x - PATH_ARROW_LENGTH);
-        arrowline2.setAttributeNS(null, 'x2', end.x - PATH_ARROW_LENGTH);
+        arrowLine1.setAttributeNS(null, 'x2', end.x - PATH_ARROW_LENGTH);
+        arrowLine2.setAttributeNS(null, 'x2', end.x - PATH_ARROW_LENGTH);
       }
 
       const tmp = start;
       start = end;
       end = tmp;
     } else {
-      arrowline1.setAttributeNS(null, 'x2', end.x + PATH_ARROW_HEIGHT);
-      arrowline1.setAttributeNS(null, 'y2', end.y - PATH_ARROW_LENGTH);
-      arrowline2.setAttributeNS(null, 'x2', end.x - PATH_ARROW_HEIGHT);
-      arrowline2.setAttributeNS(null, 'y2', end.y - PATH_ARROW_LENGTH);
+      arrowLine1.setAttributeNS(null, 'x2', end.x + PATH_ARROW_HEIGHT);
+      arrowLine1.setAttributeNS(null, 'y2', end.y - PATH_ARROW_LENGTH);
+      arrowLine2.setAttributeNS(null, 'x2', end.x - PATH_ARROW_HEIGHT);
+      arrowLine2.setAttributeNS(null, 'y2', end.y - PATH_ARROW_LENGTH);
 
       startLine.setAttributeNS(null, 'y1', start.y - PATH_START_LENGTH);
       startLine.setAttributeNS(null, 'y2', start.y + PATH_START_LENGTH);
@@ -133,24 +133,24 @@ export default class Relation {
 
     const line2 = Relation._createLine(end.x, start.y, end.x, end.y);
 
-    return [arrowline1, arrowline2, line1, line2, startLine];
+    return [arrowLine1, arrowLine2, line1, line2, startLine];
   }
 
   _get2LinePathFlatBottom(start, end) {
-    const arrowline1 = document.createElementNS(constant.nsSvg, 'line');
-    arrowline1.setAttributeNS(null, 'x1', end.x);
-    arrowline1.setAttributeNS(null, 'y1', end.y);
-    const arrowline2 = document.createElementNS(constant.nsSvg, 'line');
-    arrowline2.setAttributeNS(null, 'x1', end.x);
-    arrowline2.setAttributeNS(null, 'y1', end.y);
+    const arrowLine1 = document.createElementNS(constant.nsSvg, 'line');
+    arrowLine1.setAttributeNS(null, 'x1', end.x);
+    arrowLine1.setAttributeNS(null, 'y1', end.y);
+    const arrowLine2 = document.createElementNS(constant.nsSvg, 'line');
+    arrowLine2.setAttributeNS(null, 'x1', end.x);
+    arrowLine2.setAttributeNS(null, 'y1', end.y);
 
     const startLine = document.createElementNS(constant.nsSvg, 'line');
 
     if (start.y > end.y) {
-      arrowline1.setAttributeNS(null, 'x2', end.x + PATH_ARROW_HEIGHT);
-      arrowline1.setAttributeNS(null, 'y2', end.y + PATH_ARROW_LENGTH);
-      arrowline2.setAttributeNS(null, 'x2', end.x - PATH_ARROW_HEIGHT);
-      arrowline2.setAttributeNS(null, 'y2', end.y + PATH_ARROW_LENGTH);
+      arrowLine1.setAttributeNS(null, 'x2', end.x + PATH_ARROW_HEIGHT);
+      arrowLine1.setAttributeNS(null, 'y2', end.y + PATH_ARROW_LENGTH);
+      arrowLine2.setAttributeNS(null, 'x2', end.x - PATH_ARROW_HEIGHT);
+      arrowLine2.setAttributeNS(null, 'y2', end.y + PATH_ARROW_LENGTH);
 
       startLine.setAttributeNS(null, 'y1', start.y - PATH_START_LENGTH);
       startLine.setAttributeNS(null, 'y2', start.y + PATH_START_LENGTH);
@@ -167,8 +167,8 @@ export default class Relation {
       start = end;
       end = tmp;
     } else {
-      arrowline1.setAttributeNS(null, 'y2', end.y + PATH_ARROW_HEIGHT);
-      arrowline2.setAttributeNS(null, 'y2', end.y - PATH_ARROW_HEIGHT);
+      arrowLine1.setAttributeNS(null, 'y2', end.y + PATH_ARROW_HEIGHT);
+      arrowLine2.setAttributeNS(null, 'y2', end.y - PATH_ARROW_HEIGHT);
 
       startLine.setAttributeNS(null, 'x1', start.x - PATH_START_LENGTH);
       startLine.setAttributeNS(null, 'x2', start.x + PATH_START_LENGTH);
@@ -176,11 +176,11 @@ export default class Relation {
       startLine.setAttributeNS(null, 'y2', start.y + PATH_START_PADDING);
 
       if (start.x > end.x) {
-        arrowline1.setAttributeNS(null, 'x2', end.x + PATH_ARROW_LENGTH);
-        arrowline2.setAttributeNS(null, 'x2', end.x + PATH_ARROW_LENGTH);
+        arrowLine1.setAttributeNS(null, 'x2', end.x + PATH_ARROW_LENGTH);
+        arrowLine2.setAttributeNS(null, 'x2', end.x + PATH_ARROW_LENGTH);
       } else {
-        arrowline1.setAttributeNS(null, 'x2', end.x - PATH_ARROW_LENGTH);
-        arrowline2.setAttributeNS(null, 'x2', end.x - PATH_ARROW_LENGTH);
+        arrowLine1.setAttributeNS(null, 'x2', end.x - PATH_ARROW_LENGTH);
+        arrowLine2.setAttributeNS(null, 'x2', end.x - PATH_ARROW_LENGTH);
       }
     }
 
@@ -188,27 +188,27 @@ export default class Relation {
 
     const line2 = Relation._createLine(start.x, end.y, end.x, end.y);
 
-    return [arrowline1, arrowline2, line1, line2, startLine];
+    return [arrowLine1, arrowLine2, line1, line2, startLine];
   }
 
   _get3LinePathHoriz(start, end) {
-    const arrowline1 = document.createElementNS(constant.nsSvg, 'line');
-    arrowline1.setAttributeNS(null, 'x1', end.x);
-    arrowline1.setAttributeNS(null, 'y1', end.y);
-    arrowline1.setAttributeNS(null, 'y2', end.y + PATH_ARROW_HEIGHT);
+    const arrowLine1 = document.createElementNS(constant.nsSvg, 'line');
+    arrowLine1.setAttributeNS(null, 'x1', end.x);
+    arrowLine1.setAttributeNS(null, 'y1', end.y);
+    arrowLine1.setAttributeNS(null, 'y2', end.y + PATH_ARROW_HEIGHT);
 
-    const arrowline2 = document.createElementNS(constant.nsSvg, 'line');
-    arrowline2.setAttributeNS(null, 'x1', end.x);
-    arrowline2.setAttributeNS(null, 'y1', end.y);
-    arrowline2.setAttributeNS(null, 'y2', end.y - PATH_ARROW_HEIGHT);
+    const arrowLine2 = document.createElementNS(constant.nsSvg, 'line');
+    arrowLine2.setAttributeNS(null, 'x1', end.x);
+    arrowLine2.setAttributeNS(null, 'y1', end.y);
+    arrowLine2.setAttributeNS(null, 'y2', end.y - PATH_ARROW_HEIGHT);
 
     const startLine = document.createElementNS(constant.nsSvg, 'line');
     startLine.setAttributeNS(null, 'y1', start.y - PATH_START_LENGTH);
     startLine.setAttributeNS(null, 'y2', start.y + PATH_START_LENGTH);
 
     if (start.x > end.x) {
-      arrowline1.setAttributeNS(null, 'x2', end.x + PATH_ARROW_LENGTH);
-      arrowline2.setAttributeNS(null, 'x2', end.x + PATH_ARROW_LENGTH);
+      arrowLine1.setAttributeNS(null, 'x2', end.x + PATH_ARROW_LENGTH);
+      arrowLine2.setAttributeNS(null, 'x2', end.x + PATH_ARROW_LENGTH);
 
       startLine.setAttributeNS(null, 'x1', start.x - PATH_START_PADDING);
       startLine.setAttributeNS(null, 'x2', start.x - PATH_START_PADDING);
@@ -217,8 +217,8 @@ export default class Relation {
       start = end;
       end = tmp;
     } else {
-      arrowline1.setAttributeNS(null, 'x2', end.x - PATH_ARROW_LENGTH);
-      arrowline2.setAttributeNS(null, 'x2', end.x - PATH_ARROW_LENGTH);
+      arrowLine1.setAttributeNS(null, 'x2', end.x - PATH_ARROW_LENGTH);
+      arrowLine2.setAttributeNS(null, 'x2', end.x - PATH_ARROW_LENGTH);
 
       startLine.setAttributeNS(null, 'x1', start.x + PATH_START_PADDING);
       startLine.setAttributeNS(null, 'x2', start.x + PATH_START_PADDING);
@@ -232,33 +232,33 @@ export default class Relation {
 
     const line3 = Relation._createLine(p2X, end.y, end.x, end.y);
 
-    return [arrowline1, arrowline2, line1, line2, line3, startLine];
+    return [arrowLine1, arrowLine2, line1, line2, line3, startLine];
   }
 
   _get3LinePathVert(start, end) {
-    const arrowline1 = document.createElementNS(constant.nsSvg, 'line');
-    arrowline1.setAttributeNS(null, 'x1', end.x);
-    arrowline1.setAttributeNS(null, 'y1', end.y);
-    arrowline1.setAttributeNS(null, 'x2', end.x + PATH_ARROW_HEIGHT);
+    const arrowLine1 = document.createElementNS(constant.nsSvg, 'line');
+    arrowLine1.setAttributeNS(null, 'x1', end.x);
+    arrowLine1.setAttributeNS(null, 'y1', end.y);
+    arrowLine1.setAttributeNS(null, 'x2', end.x + PATH_ARROW_HEIGHT);
 
-    const arrowline2 = document.createElementNS(constant.nsSvg, 'line');
-    arrowline2.setAttributeNS(null, 'x1', end.x);
-    arrowline2.setAttributeNS(null, 'y1', end.y);
-    arrowline2.setAttributeNS(null, 'x2', end.x - PATH_ARROW_HEIGHT);
+    const arrowLine2 = document.createElementNS(constant.nsSvg, 'line');
+    arrowLine2.setAttributeNS(null, 'x1', end.x);
+    arrowLine2.setAttributeNS(null, 'y1', end.y);
+    arrowLine2.setAttributeNS(null, 'x2', end.x - PATH_ARROW_HEIGHT);
 
     const startLine = document.createElementNS(constant.nsSvg, 'line');
     startLine.setAttributeNS(null, 'x1', start.x - PATH_START_LENGTH);
     startLine.setAttributeNS(null, 'x2', start.x + PATH_START_LENGTH);
 
     if (start.y > end.y) {
-      arrowline1.setAttributeNS(null, 'y2', end.y + PATH_ARROW_LENGTH);
-      arrowline2.setAttributeNS(null, 'y2', end.y + PATH_ARROW_LENGTH);
+      arrowLine1.setAttributeNS(null, 'y2', end.y + PATH_ARROW_LENGTH);
+      arrowLine2.setAttributeNS(null, 'y2', end.y + PATH_ARROW_LENGTH);
 
       startLine.setAttributeNS(null, 'y1', start.y - PATH_START_PADDING);
       startLine.setAttributeNS(null, 'y2', start.y - PATH_START_PADDING);
     } else {
-      arrowline1.setAttributeNS(null, 'y2', end.y - PATH_ARROW_LENGTH);
-      arrowline2.setAttributeNS(null, 'y2', end.y - PATH_ARROW_LENGTH);
+      arrowLine1.setAttributeNS(null, 'y2', end.y - PATH_ARROW_LENGTH);
+      arrowLine2.setAttributeNS(null, 'y2', end.y - PATH_ARROW_LENGTH);
 
       startLine.setAttributeNS(null, 'y1', start.y + PATH_START_PADDING);
       startLine.setAttributeNS(null, 'y2', start.y + PATH_START_PADDING);
@@ -278,7 +278,7 @@ export default class Relation {
 
     const line3 = Relation._createLine(end.x, p2Y, end.x, end.y);
 
-    return [arrowline1, arrowline2, line1, line2, line3, startLine];
+    return [arrowLine1, arrowLine2, line1, line2, line3, startLine];
   }
 
   render() {
@@ -301,13 +301,13 @@ export default class Relation {
 
                 const line3 = Relation._createLine(start.x - PATH_SELF_RELATION_LENGTH, end.y, end.x, end.y);
 
-                const arrowline1 = Relation._createLine(end.x, end.y, end.x - PATH_ARROW_LENGTH, end.y + PATH_ARROW_HEIGHT);
+                const arrowLine1 = Relation._createLine(end.x, end.y, end.x - PATH_ARROW_LENGTH, end.y + PATH_ARROW_HEIGHT);
 
-                const arrowline2 = Relation._createLine(end.x, end.y, end.x - PATH_ARROW_LENGTH, end.y - PATH_ARROW_HEIGHT);
+                const arrowLine2 = Relation._createLine(end.x, end.y, end.x - PATH_ARROW_LENGTH, end.y - PATH_ARROW_HEIGHT);
 
                 const startLine = Relation._createLine(start.x - PATH_START_PADDING, start.y + PATH_START_LENGTH, start.x - PATH_START_PADDING, start.y - PATH_START_LENGTH);
 
-                this.lineElems = [line1, line2, line3, arrowline1, arrowline2, startLine];
+                this.lineElems = [line1, line2, line3, arrowLine1, arrowLine2, startLine];
               }
               break;
             case constant.PATH_RIGHT:
@@ -356,13 +356,13 @@ export default class Relation {
 
                 const line3 = Relation._createLine(start.x + PATH_SELF_RELATION_LENGTH, end.y, end.x, end.y);
 
-                const arrowline1 = Relation._createLine(end.x, end.y, end.x + PATH_ARROW_LENGTH, end.y + PATH_ARROW_HEIGHT);
+                const arrowLine1 = Relation._createLine(end.x, end.y, end.x + PATH_ARROW_LENGTH, end.y + PATH_ARROW_HEIGHT);
 
-                const arrowline2 = Relation._createLine(end.x, end.y, end.x + PATH_ARROW_LENGTH, end.y - PATH_ARROW_HEIGHT);
+                const arrowLine2 = Relation._createLine(end.x, end.y, end.x + PATH_ARROW_LENGTH, end.y - PATH_ARROW_HEIGHT);
 
                 const startLine = Relation._createLine(start.x + PATH_START_PADDING, start.y + PATH_START_LENGTH, start.x + PATH_START_PADDING, start.y - PATH_START_LENGTH);
 
-                this.lineElems = [line1, line2, line3, arrowline1, arrowline2, startLine];
+                this.lineElems = [line1, line2, line3, arrowLine1, arrowLine2, startLine];
               }
               break;
             case constant.PATH_TOP:
@@ -411,13 +411,13 @@ export default class Relation {
 
                 const line3 = Relation._createLine(end.x, start.y - PATH_SELF_RELATION_LENGTH, end.x, end.y);
 
-                const arrowline1 = Relation._createLine(end.x, end.y, end.x + PATH_ARROW_HEIGHT, end.y - PATH_ARROW_LENGTH);
+                const arrowLine1 = Relation._createLine(end.x, end.y, end.x + PATH_ARROW_HEIGHT, end.y - PATH_ARROW_LENGTH);
 
-                const arrowline2 = Relation._createLine(end.x, end.y, end.x - PATH_ARROW_HEIGHT, end.y - PATH_ARROW_LENGTH);
+                const arrowLine2 = Relation._createLine(end.x, end.y, end.x - PATH_ARROW_HEIGHT, end.y - PATH_ARROW_LENGTH);
 
                 const startLine = Relation._createLine(start.x + PATH_START_LENGTH, start.y - PATH_START_PADDING, start.x - PATH_START_LENGTH, start.y - PATH_START_PADDING);
 
-                this.lineElems = [line1, line2, line3, arrowline1, arrowline2, startLine];
+                this.lineElems = [line1, line2, line3, arrowLine1, arrowLine2, startLine];
               }
               break;
             case constant.PATH_BOTTOM:
@@ -466,13 +466,13 @@ export default class Relation {
 
                 const line3 = Relation._createLine(end.x, start.y  + PATH_SELF_RELATION_LENGTH, end.x, end.y);
 
-                const arrowline1 = Relation._createLine(end.x, end.y, end.x - PATH_ARROW_HEIGHT, end.y + PATH_ARROW_LENGTH);
+                const arrowLine1 = Relation._createLine(end.x, end.y, end.x - PATH_ARROW_HEIGHT, end.y + PATH_ARROW_LENGTH);
 
-                const arrowline2 = Relation._createLine(end.x, end.y, end.x + PATH_ARROW_HEIGHT, end.y + PATH_ARROW_LENGTH);
+                const arrowLine2 = Relation._createLine(end.x, end.y, end.x + PATH_ARROW_HEIGHT, end.y + PATH_ARROW_LENGTH);
 
                 const startLine = Relation._createLine(start.x + PATH_START_LENGTH, start.y + PATH_START_PADDING, start.x - PATH_START_LENGTH, start.y + PATH_START_PADDING);
 
-                this.lineElems = [line1, line2, line3, arrowline1, arrowline2, startLine];
+                this.lineElems = [line1, line2, line3, arrowLine1, arrowLine2, startLine];
               }
               break;
           }
@@ -546,7 +546,7 @@ export default class Relation {
     return this.lineElems;
   }
 
-  static _ySort(arr, table) {
+  static ySort(arr, table) {
     arr.sort((r1, r2) => {
       if (r1.fromIntersectPoint == null || r2.fromIntersectPoint == null) {
         return -1;
@@ -565,7 +565,7 @@ export default class Relation {
     });
   }
 
-  static _xSort(arr, table) {
+  static xSort(arr, table) {
     arr.sort((r1, r2) => {
       if (r1.fromIntersectPoint == null || r2.fromIntersectPoint == null) {
         return -1;

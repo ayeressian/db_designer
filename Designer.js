@@ -55,10 +55,10 @@ export default class Designer {
                 (r.fromTable === table && r.fromTablePathSide === constant.PATH_BOTTOM)) &&
                 !r.sameTableRelation());
 
-            Relation._ySort(leftRelations, table);
-            Relation._ySort(rightRelations, table);
-            Relation._xSort(topRelations, table);
-            Relation._xSort(bottomRelations, table);
+            Relation.ySort(leftRelations, table);
+            Relation.ySort(rightRelations, table);
+            Relation.xSort(topRelations, table);
+            Relation.xSort(bottomRelations, table);
 
             const sidesAndCount = [{
                     side: 'left',
