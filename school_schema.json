@@ -86,6 +86,30 @@
             "table": "student",
             "column": "id"
           }
+        },
+        {
+          "name": "friend1",
+          "required": true,
+          "fk": {
+            "table": "student",
+            "column": "id"
+          }
+        },
+        {
+          "name": "friend2",
+          "required": true,
+          "fk": {
+            "table": "student",
+            "column": "id"
+          }
+        },
+        {
+          "name": "friend3",
+          "required": true,
+          "fk": {
+            "table": "student",
+            "column": "id"
+          }
         }
       ]
     }
