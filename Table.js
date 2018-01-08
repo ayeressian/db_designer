@@ -130,6 +130,7 @@ export default class Table {
 
         this.columns.forEach(column => {
             const columnTr = document.createElementNS(constant.nsHtml, 'tr');
+            column.elem = columnTr;
             this._table.appendChild(columnTr);
 
             const columnNameTd = document.createElementNS(constant.nsHtml, 'td');
@@ -154,5 +155,21 @@ export default class Table {
 
     getElement() {
         return this._elem;
+    }
+
+    highlightFrom(column) {
+        column.elem.classList.add('fromRelation');
+    }
+
+    removeHighlightFrom(column) {
+        column.elem.classList.remove('fromRelation');
+    }
+
+    highlightTo(column) {
+        column.elem.classList.add('toRelation');
+    }
+
+    removeHighlightTo(column) {
+        column.elem.classList.remove('toRelation');
     }
 }

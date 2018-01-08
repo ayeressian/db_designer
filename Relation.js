@@ -281,6 +281,30 @@ export default class Relation {
     return [arrowLine1, arrowLine2, line1, line2, line3, startLine];
   }
 
+  _onMouseEnter(event) {
+    this.lineElems.forEach(elem => {
+      elem.classList.add('lineHover');
+      this.fromTable.highlightFrom(this.fromColumn);
+      this.toTable.highlightTo(this.toColumn);
+    });
+  }
+
+  _onMouseLeave(event) {
+    this.lineElems.forEach(elem => {
+      elem.classList.remove('lineHover');
+      this.fromTable.removeHighlightFrom(this.fromColumn);
+      this.toTable.removeHighlightTo(this.toColumn);
+    });
+  }
+
+  _setElems(elems) {
+    this.lineElems = elems;
+    elems.forEach(elem => {
+      elem.onmouseenter = this._onMouseEnter.bind(this);
+      elem.onmouseleave = this._onMouseLeave.bind(this);
+    });    
+  }
+
   render() {
     //if (this.toPathIndex == null || this.fromPathCount == null) throw new MissingCountIndex();
 
@@ -307,28 +331,28 @@ export default class Relation {
 
                 const startLine = Relation._createLine(start.x - PATH_START_PADDING, start.y + PATH_START_LENGTH, start.x - PATH_START_PADDING, start.y - PATH_START_LENGTH);
 
-                this.lineElems = [line1, line2, line3, arrowLine1, arrowLine2, startLine];
+                this._setElems([line1, line2, line3, arrowLine1, arrowLine2, startLine]);
               }
               break;
             case constant.PATH_RIGHT:
               {
                 const end = this._getRightSidePathCord(toTableSides, this.toPathIndex, this.toPathCount);
 
-                this.lineElems = this._get3LinePathHoriz(start, end);
+                this._setElems(this._get3LinePathHoriz(start, end));
               }
               break;
             case constant.PATH_TOP:
               {
                 const end = this._getTopSidePathCord(toTableSides, this.toPathIndex, this.toPathCount);
 
-                this.lineElems = this._get2LinePathFlatTop(start, end);
+                this._setElems(this._get2LinePathFlatTop(start, end));
               }
               break;
             case constant.PATH_BOTTOM:
               {
                 const end = this._getBottomSidePathCord(toTableSides, this.toPathIndex, this.toPathCount);
 
-                this.lineElems = this._get2LinePathFlatBottom(start, end);
+                this._setElems(this._get2LinePathFlatBottom(start, end));
               }
               break;
           }
@@ -343,7 +367,7 @@ export default class Relation {
               {
                 const end = this._getLeftSidePathCord(toTableSides, this.toPathIndex, this.toPathCount);
 
-                this.lineElems = this._get3LinePathHoriz(start, end);
+                this._setElems(this._get3LinePathHoriz(start, end));
               }
               break;
             case constant.PATH_RIGHT:
@@ -362,21 +386,21 @@ export default class Relation {
 
                 const startLine = Relation._createLine(start.x + PATH_START_PADDING, start.y + PATH_START_LENGTH, start.x + PATH_START_PADDING, start.y - PATH_START_LENGTH);
 
-                this.lineElems = [line1, line2, line3, arrowLine1, arrowLine2, startLine];
+                this._setElems([line1, line2, line3, arrowLine1, arrowLine2, startLine]);
               }
               break;
             case constant.PATH_TOP:
               {
                 const end = this._getTopSidePathCord(toTableSides, this.toPathIndex, this.toPathCount);
 
-                this.lineElems = this._get2LinePathFlatTop(start, end);
+                this._setElems(this._get2LinePathFlatTop(start, end));
               }
               break;
             case constant.PATH_BOTTOM:
               {
                 const end = this._getBottomSidePathCord(toTableSides, this.toPathIndex, this.toPathCount);
 
-                this.lineElems = this._get2LinePathFlatBottom(start, end);
+                this._setElems(this._get2LinePathFlatBottom(start, end));
               }
               break;
           }
@@ -391,14 +415,14 @@ export default class Relation {
               {
                 const end = this._getLeftSidePathCord(toTableSides, this.toPathIndex, this.toPathCount);
 
-                this.lineElems = this._get2LinePathFlatTop(start, end);
+                this._setElems(this._get2LinePathFlatTop(start, end));
               }
               break;
             case constant.PATH_RIGHT:
               {
                 const end = this._getRightSidePathCord(toTableSides, this.toPathIndex, this.toPathCount);
 
-                this.lineElems = this._get2LinePathFlatTop(start, end);
+                this._setElems(this._get2LinePathFlatTop(start, end));
               }
               break;
             case constant.PATH_TOP:
@@ -407,7 +431,7 @@ export default class Relation {
 
                 const line1 = Relation._createLine(start.x, start.y, start.x, start.y - PATH_SELF_RELATION_LENGTH);
 
-                const line2 = Relation._createLine(start.x, start.y  - PATH_SELF_RELATION_LENGTH, end.x, start.y - PATH_SELF_RELATION_LENGTH);
+                const line2 = Relation._createLine(start.x, start.y - PATH_SELF_RELATION_LENGTH, end.x, start.y - PATH_SELF_RELATION_LENGTH);
 
                 const line3 = Relation._createLine(end.x, start.y - PATH_SELF_RELATION_LENGTH, end.x, end.y);
 
@@ -417,14 +441,14 @@ export default class Relation {
 
                 const startLine = Relation._createLine(start.x + PATH_START_LENGTH, start.y - PATH_START_PADDING, start.x - PATH_START_LENGTH, start.y - PATH_START_PADDING);
 
-                this.lineElems = [line1, line2, line3, arrowLine1, arrowLine2, startLine];
+                this._setElems([line1, line2, line3, arrowLine1, arrowLine2, startLine]);
               }
               break;
             case constant.PATH_BOTTOM:
               {
                 const end = this._getBottomSidePathCord(toTableSides, this.toPathIndex, this.toPathCount);
 
-                this.lineElems = this._get3LinePathVert(start, end);
+                this._setElems(this._get3LinePathVert(start, end));
               }
               break;
           }
@@ -439,21 +463,21 @@ export default class Relation {
               {
                 const end = this._getLeftSidePathCord(toTableSides, this.toPathIndex, this.toPathCount);
 
-                this.lineElems = this._get2LinePathFlatBottom(start, end);
+                this._setElems(this._get2LinePathFlatBottom(start, end));
               }
               break;
             case constant.PATH_RIGHT:
               {
                 const end = this._getRightSidePathCord(toTableSides, this.toPathIndex, this.toPathCount);
 
-                this.lineElems = this._get2LinePathFlatBottom(start, end);
+                this._setElems(this._get2LinePathFlatBottom(start, end));
               }
               break;
             case constant.PATH_TOP:
               {
                 const end = this._getTopSidePathCord(toTableSides, this.toPathIndex, this.toPathCount);
 
-                this.lineElems = this._get3LinePathVert(start, end);
+                this._setElems(this._get3LinePathVert(start, end));
               }
               break;
             case constant.PATH_BOTTOM:
@@ -464,7 +488,7 @@ export default class Relation {
 
                 const line2 = Relation._createLine(start.x, start.y + PATH_SELF_RELATION_LENGTH, end.x, start.y + PATH_SELF_RELATION_LENGTH);
 
-                const line3 = Relation._createLine(end.x, start.y  + PATH_SELF_RELATION_LENGTH, end.x, end.y);
+                const line3 = Relation._createLine(end.x, start.y + PATH_SELF_RELATION_LENGTH, end.x, end.y);
 
                 const arrowLine1 = Relation._createLine(end.x, end.y, end.x - PATH_ARROW_HEIGHT, end.y + PATH_ARROW_LENGTH);
 
@@ -472,7 +496,7 @@ export default class Relation {
 
                 const startLine = Relation._createLine(start.x + PATH_START_LENGTH, start.y + PATH_START_PADDING, start.x - PATH_START_LENGTH, start.y + PATH_START_PADDING);
 
-                this.lineElems = [line1, line2, line3, arrowLine1, arrowLine2, startLine];
+                this._setElems([line1, line2, line3, arrowLine1, arrowLine2, startLine]);
               }
               break;
           }

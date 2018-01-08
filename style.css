@@ -57,6 +57,19 @@
 }
 
 line {
-    stroke-width: 1;
+    stroke-width: 2;
     stroke: #666;
+}
+
+.lineHover {
+    stroke-width: 4;
+    stroke: black;
+}
+
+.fromRelation {
+    background-color: lightgreen;
+}
+
+.toRelation {
+    background-color: lightcoral;
 }
