@@ -72,7 +72,6 @@ export default class Relation {
 
   _get2LinePathFlatTop(start, end) {
     let dArrow1 = `M ${end.x} ${end.y} `;
-
     let dArrow2 = `M ${end.x} ${end.y} `;
 
     let dStartLine;
@@ -117,58 +116,50 @@ export default class Relation {
   }
 
   _get2LinePathFlatBottom(start, end) {
-    const arrowLine1 = document.createElementNS(constant.nsSvg, 'line');
-    arrowLine1.setAttributeNS(null, 'x1', end.x);
-    arrowLine1.setAttributeNS(null, 'y1', end.y);
-    const arrowLine2 = document.createElementNS(constant.nsSvg, 'line');
-    arrowLine2.setAttributeNS(null, 'x1', end.x);
-    arrowLine2.setAttributeNS(null, 'y1', end.y);
+    let dArrow1 = `M ${end.x} ${end.y} `;
+    let dArrow2 = `M ${end.x} ${end.y} `;
 
-    const startLine = document.createElementNS(constant.nsSvg, 'line');
+    let dStartLine;
 
     if (start.y > end.y) {
-      arrowLine1.setAttributeNS(null, 'x2', end.x + PATH_ARROW_HEIGHT);
-      arrowLine1.setAttributeNS(null, 'y2', end.y + PATH_ARROW_LENGTH);
-      arrowLine2.setAttributeNS(null, 'x2', end.x - PATH_ARROW_HEIGHT);
-      arrowLine2.setAttributeNS(null, 'y2', end.y + PATH_ARROW_LENGTH);
-
-      startLine.setAttributeNS(null, 'y1', start.y - PATH_START_LENGTH);
-      startLine.setAttributeNS(null, 'y2', start.y + PATH_START_LENGTH);
+      dArrow1 += `l ${PATH_ARROW_HEIGHT} ${PATH_ARROW_LENGTH}`;
+      dArrow2 += `l ${-PATH_ARROW_HEIGHT} ${PATH_ARROW_LENGTH}`;
 
       if (start.x > end.x) {
-        startLine.setAttributeNS(null, 'x1', start.x - PATH_START_PADDING);
-        startLine.setAttributeNS(null, 'x2', start.x - PATH_START_PADDING);
+        dStartLine = `M ${start.x - PATH_START_PADDING} `;
       } else {
-        startLine.setAttributeNS(null, 'x1', start.x + PATH_START_PADDING);
-        startLine.setAttributeNS(null, 'x2', start.x + PATH_START_PADDING);
+        dStartLine = `M ${start.x + PATH_START_PADDING} `;
       }
+
+      dStartLine += `${start.y - PATH_START_LENGTH} `;
+      
+      dStartLine += `v ${PATH_START_LENGTH * 2}`;      
 
       const tmp = start;
       start = end;
       end = tmp;
     } else {
-      arrowLine1.setAttributeNS(null, 'y2', end.y + PATH_ARROW_HEIGHT);
-      arrowLine2.setAttributeNS(null, 'y2', end.y - PATH_ARROW_HEIGHT);
-
-      startLine.setAttributeNS(null, 'x1', start.x - PATH_START_LENGTH);
-      startLine.setAttributeNS(null, 'x2', start.x + PATH_START_LENGTH);
-      startLine.setAttributeNS(null, 'y1', start.y + PATH_START_PADDING);
-      startLine.setAttributeNS(null, 'y2', start.y + PATH_START_PADDING);
+      dStartLine = `M ${start.x - PATH_START_LENGTH} ${start.y + PATH_START_PADDING} h ${2 * PATH_START_LENGTH}`;
 
       if (start.x > end.x) {
-        arrowLine1.setAttributeNS(null, 'x2', end.x + PATH_ARROW_LENGTH);
-        arrowLine2.setAttributeNS(null, 'x2', end.x + PATH_ARROW_LENGTH);
+        dArrow1 += `l ${PATH_ARROW_LENGTH} `;
+        dArrow2 += `l ${PATH_ARROW_LENGTH} `;
       } else {
-        arrowLine1.setAttributeNS(null, 'x2', end.x - PATH_ARROW_LENGTH);
-        arrowLine2.setAttributeNS(null, 'x2', end.x - PATH_ARROW_LENGTH);
+        dArrow1 += `l ${-PATH_ARROW_LENGTH} `;
+        dArrow2 += `l ${-PATH_ARROW_LENGTH} `;
       }
+
+      dArrow1 += PATH_ARROW_HEIGHT;
+      dArrow2 += -PATH_ARROW_HEIGHT;
     }
 
-    const d = `M ${start.x} ${start.y} V ${end.y} H ${end.x}`;
+    const dPath = `M ${start.x} ${start.y} V ${end.y} H ${end.x}`;
+
+    const d = `${dStartLine} ${dPath} ${dArrow1} ${dArrow2}`;
 
     const path = this._createPath(d);
 
-    return [arrowLine1, arrowLine2, path, startLine];
+    return [path];
   }
 
   _get3LinePathHoriz(start, end) {
