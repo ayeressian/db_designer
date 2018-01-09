@@ -41,17 +41,7 @@ export default class Relation {
   update() {
     this._getTableRelationSide();
   }
-
-  static _createLine(x1, y1, x2, y2) {
-    const line = document.createElementNS(constant.nsSvg, 'line');
-    line.setAttributeNS(null, 'x1', x1);
-    line.setAttributeNS(null, 'y1', y1);
-    line.setAttributeNS(null, 'x2', x2);
-    line.setAttributeNS(null, 'y2', y2);
-
-    return line;
-  }
-
+  
   _getPosOnLine(pathIndex, pathCount, sideLength) {
     return (pathIndex + 1) * (sideLength / (pathCount + 1));
   }
@@ -89,7 +79,7 @@ export default class Relation {
     arrowLine2.setAttributeNS(null, 'x1', end.x);
     arrowLine2.setAttributeNS(null, 'y1', end.y);
 
-    const startLine = document.createElementNS(constant.nsSvg, 'line');    
+    const startLine = document.createElementNS(constant.nsSvg, 'line');
 
     if (start.y > end.y) {
       arrowLine1.setAttributeNS(null, 'y2', end.y + PATH_ARROW_HEIGHT);
@@ -298,12 +288,12 @@ export default class Relation {
     elems.forEach(elem => {
       elem.onmouseenter = this._onMouseEnter.bind(this);
       elem.onmouseleave = this._onMouseLeave.bind(this);
-    });    
+    });
   }
 
   _createPath(d) {
     const path = document.createElementNS(constant.nsSvg, 'path');
-    
+
     path.setAttributeNS(null, 'd', d);
     path.setAttributeNS(null, 'fill', 'none');
     path.setAttributeNS(null, 'stroke', 'black');
@@ -326,19 +316,20 @@ export default class Relation {
               {
                 const end = this._getLeftSidePathCord(toTableSides, this.toPathIndex, this.toPathCount);
 
-                const d = `M ${start.x} ${start.y} h ${-PATH_SELF_RELATION_LENGTH}
-                            V ${end.y}
-                            h ${PATH_SELF_RELATION_LENGTH}`;
+                const dStartLine = `M ${start.x - PATH_START_PADDING} ${start.y - PATH_START_LENGTH} v ${PATH_START_LENGTH * 2}`;
+
+                const dPath = `M ${start.x} ${start.y} h ${-PATH_SELF_RELATION_LENGTH}
+                                V ${end.y}
+                                h ${PATH_SELF_RELATION_LENGTH}`;
+
+                const dArrow = `M ${end.x} ${end.y} l ${-PATH_ARROW_LENGTH} ${-PATH_ARROW_HEIGHT}
+                                M ${end.x} ${end.y} l ${-PATH_ARROW_LENGTH} ${PATH_ARROW_HEIGHT}`;
+
+                const d = dStartLine + dPath + dArrow;
 
                 const path = this._createPath(d);
 
-                const arrowLine1 = Relation._createLine(end.x, end.y, end.x - PATH_ARROW_LENGTH, end.y + PATH_ARROW_HEIGHT);
-
-                const arrowLine2 = Relation._createLine(end.x, end.y, end.x - PATH_ARROW_LENGTH, end.y - PATH_ARROW_HEIGHT);
-
-                const startLine = Relation._createLine(start.x - PATH_START_PADDING, start.y + PATH_START_LENGTH, start.x - PATH_START_PADDING, start.y - PATH_START_LENGTH);
-
-                this._setElems([path, arrowLine1, arrowLine2, startLine]);
+                this._setElems([path]);
               }
               break;
             case constant.PATH_RIGHT:
@@ -381,19 +372,20 @@ export default class Relation {
               {
                 const end = this._getRightSidePathCord(toTableSides, this.toPathIndex, this.toPathCount);
 
-                const d = `M ${start.x} ${start.y} h ${PATH_SELF_RELATION_LENGTH}
-                            V ${end.y}
-                            h ${-PATH_SELF_RELATION_LENGTH}`;
+                const dStartLine = `M ${start.x + PATH_START_PADDING} ${start.y - PATH_START_LENGTH} v ${PATH_START_LENGTH * 2}`;
+
+                const dPath = `M ${start.x} ${start.y} h ${PATH_SELF_RELATION_LENGTH}
+                                V ${end.y}
+                                h ${-PATH_SELF_RELATION_LENGTH}`;
+
+                const dArrow = `M ${end.x} ${end.y} l ${PATH_ARROW_LENGTH} ${-PATH_ARROW_HEIGHT}
+                                M ${end.x} ${end.y} l ${PATH_ARROW_LENGTH} ${PATH_ARROW_HEIGHT}`;
+
+                const d = dStartLine + dPath + dArrow;
 
                 const path = this._createPath(d);
 
-                const arrowLine1 = Relation._createLine(end.x, end.y, end.x + PATH_ARROW_LENGTH, end.y + PATH_ARROW_HEIGHT);
-
-                const arrowLine2 = Relation._createLine(end.x, end.y, end.x + PATH_ARROW_LENGTH, end.y - PATH_ARROW_HEIGHT);
-
-                const startLine = Relation._createLine(start.x + PATH_START_PADDING, start.y + PATH_START_LENGTH, start.x + PATH_START_PADDING, start.y - PATH_START_LENGTH);
-
-                this._setElems([path, arrowLine1, arrowLine2, startLine]);
+                this._setElems([path]);
               }
               break;
             case constant.PATH_TOP:
@@ -436,19 +428,20 @@ export default class Relation {
               {
                 const end = this._getTopSidePathCord(toTableSides, this.toPathIndex, this.toPathCount);
 
-                const d = `M ${start.x} ${start.y} v ${-PATH_SELF_RELATION_LENGTH}
-                            H ${end.x}
-                            v ${PATH_SELF_RELATION_LENGTH}`;
+                const dStartLine = `M ${start.x - PATH_START_LENGTH} ${start.y - PATH_START_PADDING} h ${PATH_START_LENGTH * 2}`;
+
+                const dPath = `M ${start.x} ${start.y} v ${-PATH_SELF_RELATION_LENGTH}
+                                H ${end.x}
+                                v ${PATH_SELF_RELATION_LENGTH}`;
+
+                const dArrow = `M ${end.x} ${end.y} l ${-PATH_ARROW_HEIGHT} ${-PATH_ARROW_LENGTH}
+                                M ${end.x} ${end.y} l ${PATH_ARROW_HEIGHT} ${-PATH_ARROW_LENGTH}`;
+
+                const d = dStartLine + dPath + dArrow;
 
                 const path = this._createPath(d);
 
-                const arrowLine1 = Relation._createLine(end.x, end.y, end.x + PATH_ARROW_HEIGHT, end.y - PATH_ARROW_LENGTH);
-
-                const arrowLine2 = Relation._createLine(end.x, end.y, end.x - PATH_ARROW_HEIGHT, end.y - PATH_ARROW_LENGTH);
-
-                const startLine = Relation._createLine(start.x + PATH_START_LENGTH, start.y - PATH_START_PADDING, start.x - PATH_START_LENGTH, start.y - PATH_START_PADDING);
-
-                this._setElems([path, arrowLine1, arrowLine2, startLine]);
+                this._setElems([path]);
               }
               break;
             case constant.PATH_BOTTOM:
@@ -491,19 +484,20 @@ export default class Relation {
               {
                 const end = this._getBottomSidePathCord(toTableSides, this.toPathIndex, this.toPathCount);
 
-                const d = `M ${start.x} ${start.y} v ${PATH_SELF_RELATION_LENGTH}
-                            H ${end.x}
-                            v ${-PATH_SELF_RELATION_LENGTH}`;
+                const dStartLine = `M ${start.x - PATH_START_LENGTH} ${start.y + PATH_START_PADDING} h ${PATH_START_LENGTH * 2}`;
+
+                const dPath = `M ${start.x} ${start.y} v ${PATH_SELF_RELATION_LENGTH}
+                                H ${end.x}
+                                v ${-PATH_SELF_RELATION_LENGTH}`;
+
+                const dArrow = `M ${end.x} ${end.y} l ${-PATH_ARROW_HEIGHT} ${PATH_ARROW_LENGTH}
+                                M ${end.x} ${end.y} l ${PATH_ARROW_HEIGHT} ${PATH_ARROW_LENGTH}`;
+
+                const d = dStartLine + dPath + dArrow;
 
                 const path = this._createPath(d);
 
-                const arrowLine1 = Relation._createLine(end.x, end.y, end.x - PATH_ARROW_HEIGHT, end.y + PATH_ARROW_LENGTH);
-
-                const arrowLine2 = Relation._createLine(end.x, end.y, end.x + PATH_ARROW_HEIGHT, end.y + PATH_ARROW_LENGTH);
-
-                const startLine = Relation._createLine(start.x + PATH_START_LENGTH, start.y + PATH_START_PADDING, start.x - PATH_START_LENGTH, start.y + PATH_START_PADDING);
-
-                this._setElems([path, arrowLine1, arrowLine2, startLine]);
+                this._setElems([path]);
               }
               break;
           }
