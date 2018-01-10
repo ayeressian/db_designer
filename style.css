@@ -56,13 +56,14 @@
     padding-right: 10px;
 }
 
-line {
-    stroke-width: 2;
+path {
+    stroke-width: 1;
     stroke: #666;
+    fill: none;
 }
 
-.lineHover {
-    stroke-width: 4;
+.pathHover {
+    stroke-width: 2;
     stroke: black;
 }
 

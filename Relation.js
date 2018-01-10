@@ -82,7 +82,7 @@ export default class Relation {
 
       if (start.x > end.x) {
         dArrow1 += `l ${PATH_ARROW_LENGTH} `;
-        dArrow2 += `l ${PATH_ARROW_LENGTH} `;        
+        dArrow2 += `l ${PATH_ARROW_LENGTH} `;
       } else {
         dArrow1 += `l ${-PATH_ARROW_LENGTH} `;
         dArrow2 += `l ${-PATH_ARROW_LENGTH} `;
@@ -96,14 +96,14 @@ export default class Relation {
       end = tmp;
     } else {
       dArrow1 += `l ${PATH_ARROW_HEIGHT} ${-PATH_ARROW_LENGTH}`;
-      dArrow2 += `l ${-PATH_ARROW_HEIGHT} ${-PATH_ARROW_LENGTH}`;      
-      
+      dArrow2 += `l ${-PATH_ARROW_HEIGHT} ${-PATH_ARROW_LENGTH}`;
+
       if (start.x > end.x) {
-        dStartLine = `M ${start.x - PATH_START_PADDING} `;           
+        dStartLine = `M ${start.x - PATH_START_PADDING} `;
       } else {
-        dStartLine = `M ${start.x + PATH_START_PADDING} `;        
+        dStartLine = `M ${start.x + PATH_START_PADDING} `;
       }
-      dStartLine += `${start.y - PATH_START_LENGTH} v ${2 * PATH_START_LENGTH}`;      
+      dStartLine += `${start.y - PATH_START_LENGTH} v ${2 * PATH_START_LENGTH}`;
     }
 
     const dpath = `M ${start.x} ${start.y} H ${end.x} V ${end.y}`;
@@ -132,8 +132,8 @@ export default class Relation {
       }
 
       dStartLine += `${start.y - PATH_START_LENGTH} `;
-      
-      dStartLine += `v ${PATH_START_LENGTH * 2}`;      
+
+      dStartLine += `v ${PATH_START_LENGTH * 2}`;
 
       const tmp = start;
       start = end;
@@ -163,74 +163,56 @@ export default class Relation {
   }
 
   _get3LinePathHoriz(start, end) {
-    const arrowLine1 = document.createElementNS(constant.nsSvg, 'line');
-    arrowLine1.setAttributeNS(null, 'x1', end.x);
-    arrowLine1.setAttributeNS(null, 'y1', end.y);
-    arrowLine1.setAttributeNS(null, 'y2', end.y + PATH_ARROW_HEIGHT);
+    let dArrow1 = `M ${end.x} ${end.y} `;
+    let dArrow2 = `M ${end.x} ${end.y} `;
 
-    const arrowLine2 = document.createElementNS(constant.nsSvg, 'line');
-    arrowLine2.setAttributeNS(null, 'x1', end.x);
-    arrowLine2.setAttributeNS(null, 'y1', end.y);
-    arrowLine2.setAttributeNS(null, 'y2', end.y - PATH_ARROW_HEIGHT);
-
-    const startLine = document.createElementNS(constant.nsSvg, 'line');
-    startLine.setAttributeNS(null, 'y1', start.y - PATH_START_LENGTH);
-    startLine.setAttributeNS(null, 'y2', start.y + PATH_START_LENGTH);
+    let dStartLine;
 
     if (start.x > end.x) {
-      arrowLine1.setAttributeNS(null, 'x2', end.x + PATH_ARROW_LENGTH);
-      arrowLine2.setAttributeNS(null, 'x2', end.x + PATH_ARROW_LENGTH);
-
-      startLine.setAttributeNS(null, 'x1', start.x - PATH_START_PADDING);
-      startLine.setAttributeNS(null, 'x2', start.x - PATH_START_PADDING);
+      dArrow1 += `l ${PATH_ARROW_LENGTH} `;
+      dArrow2 += `l ${PATH_ARROW_LENGTH} `;
+      
+      dStartLine = `M ${start.x - PATH_START_PADDING} ${start.y - PATH_START_LENGTH} v ${2* PATH_START_LENGTH}`;
 
       const tmp = start;
       start = end;
       end = tmp;
     } else {
-      arrowLine1.setAttributeNS(null, 'x2', end.x - PATH_ARROW_LENGTH);
-      arrowLine2.setAttributeNS(null, 'x2', end.x - PATH_ARROW_LENGTH);
+      dArrow1 += `l ${-PATH_ARROW_LENGTH} `;
+      dArrow2 += `l ${-PATH_ARROW_LENGTH} `;
 
-      startLine.setAttributeNS(null, 'x1', start.x + PATH_START_PADDING);
-      startLine.setAttributeNS(null, 'x2', start.x + PATH_START_PADDING);
+      dStartLine = `M ${start.x + PATH_START_PADDING} ${start.y - PATH_START_LENGTH} v ${2* PATH_START_LENGTH}`;
     }
+
+    dArrow1 += PATH_ARROW_HEIGHT;
+    dArrow2 += -PATH_ARROW_HEIGHT;
 
     const p2X = start.x + (end.x - start.x) / 2;
 
-    const d = `M ${start.x} ${start.y} H ${p2X} V ${end.y} H ${end.x}`;
+    const dPath = `M ${start.x} ${start.y} H ${p2X} V ${end.y} H ${end.x}`;
 
+    const d = `${dStartLine} ${dPath} ${dArrow1} ${dArrow2}`;
     const path = this._createPath(d);
 
-    return [arrowLine1, arrowLine2, path, startLine];
+    return [path];
   }
 
   _get3LinePathVert(start, end) {
-    const arrowLine1 = document.createElementNS(constant.nsSvg, 'line');
-    arrowLine1.setAttributeNS(null, 'x1', end.x);
-    arrowLine1.setAttributeNS(null, 'y1', end.y);
-    arrowLine1.setAttributeNS(null, 'x2', end.x + PATH_ARROW_HEIGHT);
+    let dArrow1 = `M ${end.x} ${end.y} l ${PATH_ARROW_HEIGHT} `;
+    let dArrow2 = `M ${end.x} ${end.y} l ${-PATH_ARROW_HEIGHT} `;
 
-    const arrowLine2 = document.createElementNS(constant.nsSvg, 'line');
-    arrowLine2.setAttributeNS(null, 'x1', end.x);
-    arrowLine2.setAttributeNS(null, 'y1', end.y);
-    arrowLine2.setAttributeNS(null, 'x2', end.x - PATH_ARROW_HEIGHT);
-
-    const startLine = document.createElementNS(constant.nsSvg, 'line');
-    startLine.setAttributeNS(null, 'x1', start.x - PATH_START_LENGTH);
-    startLine.setAttributeNS(null, 'x2', start.x + PATH_START_LENGTH);
+    let dStartLine = `M ${start.x - PATH_START_LENGTH} `;
 
     if (start.y > end.y) {
-      arrowLine1.setAttributeNS(null, 'y2', end.y + PATH_ARROW_LENGTH);
-      arrowLine2.setAttributeNS(null, 'y2', end.y + PATH_ARROW_LENGTH);
+      dArrow1 += PATH_ARROW_LENGTH;
+      dArrow2 += PATH_ARROW_LENGTH;
 
-      startLine.setAttributeNS(null, 'y1', start.y - PATH_START_PADDING);
-      startLine.setAttributeNS(null, 'y2', start.y - PATH_START_PADDING);
-    } else {
-      arrowLine1.setAttributeNS(null, 'y2', end.y - PATH_ARROW_LENGTH);
-      arrowLine2.setAttributeNS(null, 'y2', end.y - PATH_ARROW_LENGTH);
+      dStartLine += `${start.y - PATH_START_PADDING} h ${2* PATH_START_LENGTH}`;
+    } else {      
+      dArrow1 += -PATH_ARROW_LENGTH;
+      dArrow2 += -PATH_ARROW_LENGTH;
 
-      startLine.setAttributeNS(null, 'y1', start.y + PATH_START_PADDING);
-      startLine.setAttributeNS(null, 'y2', start.y + PATH_START_PADDING);
+      dStartLine += `${start.y + PATH_START_PADDING} h ${2* PATH_START_LENGTH}`;      
     }
 
     if (start.x > end.x) {
@@ -241,16 +223,18 @@ export default class Relation {
 
     const p2Y = start.y + (end.y - start.y) / 2;
 
-    const d = `M ${start.x} ${start.y} V ${p2Y} H ${end.x} V ${end.y}`;
+    const dPath = `M ${start.x} ${start.y} V ${p2Y} H ${end.x} V ${end.y}`;
+
+    const d = `${dStartLine} ${dPath} ${dArrow1} ${dArrow2}`;
 
     const path = this._createPath(d);
 
-    return [arrowLine1, arrowLine2, path, startLine];
+    return [path];
   }
 
   _onMouseEnter(event) {
     this.lineElems.forEach(elem => {
-      elem.classList.add('lineHover');
+      elem.classList.add('pathHover');
       this.fromTable.highlightFrom(this.fromColumn);
       this.toTable.highlightTo(this.toColumn);
     });
@@ -258,7 +242,7 @@ export default class Relation {
 
   _onMouseLeave(event) {
     this.lineElems.forEach(elem => {
-      elem.classList.remove('lineHover');
+      elem.classList.remove('pathHover');
       this.fromTable.removeHighlightFrom(this.fromColumn);
       this.toTable.removeHighlightTo(this.toColumn);
     });
@@ -276,8 +260,6 @@ export default class Relation {
     const path = document.createElementNS(constant.nsSvg, 'path');
 
     path.setAttributeNS(null, 'd', d);
-    path.setAttributeNS(null, 'fill', 'none');
-    path.setAttributeNS(null, 'stroke', 'black');
 
     return path;
   }
