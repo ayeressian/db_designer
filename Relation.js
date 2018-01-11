@@ -232,15 +232,19 @@ export default class Relation {
     return [path];
   }
 
-  _onMouseEnter(event) {
-    this.lineElems.forEach(elem => {
+  removeHoverEffect() {
+    this._onMouseLeave();
+  }
+
+  _onMouseEnter() {
+    this.lineElems.forEach(elem => {      
       elem.classList.add('pathHover');
       this.fromTable.highlightFrom(this.fromColumn);
       this.toTable.highlightTo(this.toColumn);
     });
   }
 
-  _onMouseLeave(event) {
+  _onMouseLeave() {
     this.lineElems.forEach(elem => {
       elem.classList.remove('pathHover');
       this.fromTable.removeHighlightFrom(this.fromColumn);

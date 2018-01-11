@@ -202,6 +202,7 @@ export default class Designer {
         });
 
         this._relationInfos.forEach(relation => {
+            relation.removeHoverEffect();
             relation.getElems().forEach(elem => this._svgElem.removeChild(elem));
             const elems = relation.render();
             elems.forEach(elem => this._svgElem.prepend(elem));
