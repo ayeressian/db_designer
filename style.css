@@ -1,8 +1,8 @@
 #designer-container {
     position: relative;
     overflow: hidden;
-    width: 2000px;
-    height: 2000px;
+    width: 800px;
+    height: 800px;
 }
 
 #designer-container #btn-zoom-in {

@@ -1,8 +1,8 @@
 import Designer from './Designer.js';
 import schemaParser from './schemaParser.js';
 
-//fetch('school_schema.json').then(schema => {
-fetch('benchmark_schema.json').then(schema => {
+//fetch('school.json').then(schema => {
+fetch('schema/simple.json').then(schema => {
   return schema.json();
 }).then(schema => {
   const tables = schemaParser(schema);
