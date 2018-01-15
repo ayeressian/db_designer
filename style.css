@@ -74,3 +74,8 @@ path {
 .toRelation {
     background-color: lightcoral;
 }
+
+.highlight {
+    stroke-width: 12;
+    stroke: transparent;
+}

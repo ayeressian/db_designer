@@ -58,12 +58,9 @@ export default class Table {
     }
 
     getCenter() {
-        const boundingRect = this._table.getBoundingClientRect();
-        
-        console.log()
+        const boundingRect = this._table.getBoundingClientRect();        
         const x = this._normalizeX(boundingRect.left) + to3FixedNumber(boundingRect.width / this._designer.getZoom()) / 2;
-        const y = this._normalizeY(boundingRect.top) + to3FixedNumber(boundingRect.height / this._designer.getZoom()) / 2;        
-
+        const y = this._normalizeY(boundingRect.top) + to3FixedNumber(boundingRect.height / this._designer.getZoom()) / 2;
         return {
             x,
             y
