@@ -1,6 +1,9 @@
 import Relation from './Relation.js';
 import constant from './const.js';
 
+const DESIGNER_PAN_HEIGHT = 2160;
+const DESIGNER_PAN_WIDTH = 3840;
+
 export default class Designer {
     constructor(tables = []) {
         this._container = document.getElementById('designer-container');
@@ -19,9 +22,11 @@ export default class Designer {
         this._viewBoxVals = {
             minX: 0,
             minY: 0,
-            width: parseInt(window.getComputedStyle(this._svgElem).width, 10),
-            height: parseInt(window.getComputedStyle(this._svgElem).height, 10)
+            width: this._designerWidth,
+            height: this._designerHeight
         };
+
+        this._minimap.setAttribute('viewBox', `0 0 ${DESIGNER_PAN_WIDTH} ${DESIGNER_PAN_HEIGHT}`);
 
         this._setUpEvents();
 
@@ -224,7 +229,7 @@ export default class Designer {
         let minY = Number.MAX_SAFE_INTEGER;
         let maxY = Number.MIN_SAFE_INTEGER;
 
-        this.tables.forEach((table, i) => {            
+        this.tables.forEach((table, i) => {
             const tableElm = table.render();
             tableElm.setAttribute('id', i + 'table');
             this._svgElem.appendChild(tableElm);
@@ -260,7 +265,7 @@ export default class Designer {
             const bottomY = table.getSides().bottom.p1.y;
             if (bottomY > maxY) {
                 maxY = bottomY;
-            }            
+            }
         });
 
         this._designerOverallWidth = maxX - minX;
@@ -289,7 +294,7 @@ export default class Designer {
     }
 
     _setUpEvents() {
-        const ZOOM = 1.2;        
+        const ZOOM = 1.2;
 
         let prevMouseCordX, prevMouseCordY;
 
@@ -317,14 +322,14 @@ export default class Designer {
         this._btnZoomIn.addEventListener('click', () => {
             this._viewBoxVals.width = this._viewBoxVals.width / ZOOM;
             this._viewBoxVals.height = this._viewBoxVals.height / ZOOM;
-            setViewBox();
+            this._setViewBox();
             this._zoom *= ZOOM;
         });
 
         this._btnZoomOut.addEventListener('click', () => {
             this._viewBoxVals.width = this._viewBoxVals.width * ZOOM;
             this._viewBoxVals.height = this._viewBoxVals.height * ZOOM;
-            setViewBox();
+            this._setViewBox();
             this._zoom /= ZOOM;
         });
 
