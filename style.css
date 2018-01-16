@@ -2,19 +2,32 @@
     position: relative;
     overflow: hidden;
     width: 800px;
-    height: 800px;
+    height: 600px;
+}
+
+#designer-container #minimap {
+    position: absolute;
+    left: 10px;
+    bottom: 10px;
+    width: 100px;
+    height: 75px;
+    background-color: red;
 }
 
 #designer-container #btn-zoom-in {
     position: absolute;
-    left: 10px;
-    bottom: 10px;
+    left: 120px;
+    bottom: 50px;
+    width: 25px;
+    height: 25px;
 }
 
 #designer-container #btn-zoom-out {
     position: absolute;
-    left: 40px;
+    left: 120px;
     bottom: 10px;
+    width: 25px;
+    height: 25px;
 }
 
 #designer {

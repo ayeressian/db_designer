@@ -67,6 +67,13 @@ export default class Table {
         };
     }
 
+    getPoints() {
+        const boundingRect = this._table.getBoundingClientRect();
+        return {
+            
+        };
+    }
+
     getSides() {
         const boundingRect = this._table.getBoundingClientRect();
         return {

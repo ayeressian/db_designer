@@ -5,8 +5,13 @@ export default class Designer {
     constructor(tables = []) {
         this._container = document.getElementById('designer-container');
         this._svgElem = document.getElementById('designer');
+        this._minimap = document.getElementById('minimap');
         this._btnZoomIn = document.getElementById('btn-zoom-in');
         this._btnZoomOut = document.getElementById('btn-zoom-out');
+
+        this._designerWidth = this._svgElem.scrollWidth;
+        this._designerHeight = this._svgElem.scrollHeight;
+
         this.tables = tables;
 
         tables.forEach(table => table.setDesigner(this));
@@ -209,8 +214,17 @@ export default class Designer {
         });
     }
 
+    _drawMinimap() {
+        this.tables
+    }
+
     draw() {
-        this.tables.forEach((table, i) => {
+        let minX = Number.MAX_SAFE_INTEGER;
+        let maxX = Number.MIN_SAFE_INTEGER;
+        let minY = Number.MAX_SAFE_INTEGER;
+        let maxY = Number.MIN_SAFE_INTEGER;
+
+        this.tables.forEach((table, i) => {            
             const tableElm = table.render();
             tableElm.setAttribute('id', i + 'table');
             this._svgElem.appendChild(tableElm);
@@ -227,7 +241,34 @@ export default class Designer {
                     this._relationInfos.push(relationInfo);
                 }
             });
+
+            const rightX = table.getSides().right.p1.x;
+            if (rightX > maxX) {
+                maxX = rightX;
+            }
+
+            const leftX = table.getSides().left.p1.x;
+            if (leftX < minX) {
+                minX = leftX;
+            }
+
+            const topY = table.getSides().top.p1.y;
+            if (topY < minY) {
+                minY = topY;
+            }
+
+            const bottomY = table.getSides().bottom.p1.y;
+            if (bottomY > maxY) {
+                maxY = bottomY;
+            }            
         });
+
+        this._designerOverallWidth = maxX - minX;
+        this._designerOverallHeight = maxY - minY;
+
+        this._viewBoxVals.minY = (minY + maxY) / 2 - this._designerHeight / 2;
+        this._viewBoxVals.minX = (minX + maxX) / 2 - this._designerWidth / 2;
+        this._setViewBox();
 
         this._drawRelations();
 
@@ -243,12 +284,12 @@ export default class Designer {
         });
     }
 
-    _setUpEvents() {
-        const ZOOM = 1.2;
+    _setViewBox() {
+        this._svgElem.setAttribute('viewBox', `${this._viewBoxVals.minX} ${this._viewBoxVals.minY} ${this._viewBoxVals.width} ${this._viewBoxVals.height}`);
+    }
 
-        const setViewBox = () => {
-            this._svgElem.setAttribute('viewBox', `${this._viewBoxVals.minX} ${this._viewBoxVals.minY} ${this._viewBoxVals.width} ${this._viewBoxVals.height}`);
-        };
+    _setUpEvents() {
+        const ZOOM = 1.2;        
 
         let prevMouseCordX, prevMouseCordY;
 
@@ -257,7 +298,7 @@ export default class Designer {
             const deltaY = (event.clientY - prevMouseCordY) / this._zoom;
             this._viewBoxVals.minX -= deltaX;
             this._viewBoxVals.minY -= deltaY;
-            setViewBox();
+            this._setViewBox();
 
             prevMouseCordX = event.clientX;
             prevMouseCordY = event.clientY;
