@@ -15,6 +15,12 @@
     border-width: 1px;
 }
 
+#designer-container #minimap #viewpoint {
+    fill: none;
+    stroke-width: 10;
+    stroke: black;
+}
+
 #designer-container #btn-zoom-in {
     position: absolute;
     left: 120px;

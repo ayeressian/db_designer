@@ -1,14 +1,15 @@
 import Relation from './Relation.js';
 import constant from './const.js';
 
-const DESIGNER_PAN_HEIGHT = 2160;
-const DESIGNER_PAN_WIDTH = 3840;
+const DESIGNER_PAN_HEIGHT = 1200;
+const DESIGNER_PAN_WIDTH = 1600;
 
 export default class Designer {
     constructor(tables = []) {
         this._container = document.getElementById('designer-container');
         this._svgElem = document.getElementById('designer');
         this._minimap = document.getElementById('minimap');
+        this._viewpoint = document.getElementById('viewpoint');
         this._btnZoomIn = document.getElementById('btn-zoom-in');
         this._btnZoomOut = document.getElementById('btn-zoom-out');
 
@@ -50,19 +51,19 @@ export default class Designer {
 
             const leftRelations = tableRelations.filter(r =>
                 ((r.toTable === table && r.toTablePathSide === constant.PATH_LEFT) ||
-                (r.fromTable === table && r.fromTablePathSide === constant.PATH_LEFT)) &&
+                    (r.fromTable === table && r.fromTablePathSide === constant.PATH_LEFT)) &&
                 !r.sameTableRelation());
             const rightRelations = tableRelations.filter(r =>
                 ((r.toTable === table && r.toTablePathSide === constant.PATH_RIGHT) ||
-                (r.fromTable === table && r.fromTablePathSide === constant.PATH_RIGHT)) &&
+                    (r.fromTable === table && r.fromTablePathSide === constant.PATH_RIGHT)) &&
                 !r.sameTableRelation());
             const topRelations = tableRelations.filter(r =>
                 ((r.toTable === table && r.toTablePathSide === constant.PATH_TOP) ||
-                (r.fromTable === table && r.fromTablePathSide === constant.PATH_TOP)) &&
+                    (r.fromTable === table && r.fromTablePathSide === constant.PATH_TOP)) &&
                 !r.sameTableRelation());
             const bottomRelations = tableRelations.filter(r =>
                 ((r.toTable === table && r.toTablePathSide === constant.PATH_BOTTOM) ||
-                (r.fromTable === table && r.fromTablePathSide === constant.PATH_BOTTOM)) &&
+                    (r.fromTable === table && r.fromTablePathSide === constant.PATH_BOTTOM)) &&
                 !r.sameTableRelation());
 
             Relation.ySort(leftRelations, table);
@@ -71,25 +72,25 @@ export default class Designer {
             Relation.xSort(bottomRelations, table);
 
             const sidesAndCount = [{
-                    side: 'left',
-                    order: 1,
-                    count: leftRelations.length
-                },
-                {
-                    side: 'right',
-                    order: 2,
-                    count: rightRelations.length
-                },
-                {
-                    side: 'top',
-                    order: 3,
-                    count: topRelations.length
-                },
-                {
-                    side: 'bottom',
-                    order: 4,
-                    count: bottomRelations.length
-                }
+                side: 'left',
+                order: 1,
+                count: leftRelations.length
+            },
+            {
+                side: 'right',
+                order: 2,
+                count: rightRelations.length
+            },
+            {
+                side: 'top',
+                order: 3,
+                count: topRelations.length
+            },
+            {
+                side: 'bottom',
+                order: 4,
+                count: bottomRelations.length
+            }
             ];
 
             pendingSelfRelations.forEach(pendingSelfRelation => {
@@ -271,8 +272,11 @@ export default class Designer {
         this._designerOverallWidth = maxX - minX;
         this._designerOverallHeight = maxY - minY;
 
-        this._viewBoxVals.minY = (minY + maxY) / 2 - this._designerHeight / 2;
-        this._viewBoxVals.minX = (minX + maxX) / 2 - this._designerWidth / 2;
+        // this._viewBoxVals.minY = (minY + maxY) / 2 - this._designerHeight / 2;
+        // this._viewBoxVals.minX = (minX + maxX) / 2 - this._designerWidth / 2;
+
+        this._viewBoxVals.minY = 0;
+        this._viewBoxVals.minX = 0;
         this._setViewBox();
 
         this._drawRelations();
@@ -291,6 +295,10 @@ export default class Designer {
 
     _setViewBox() {
         this._svgElem.setAttribute('viewBox', `${this._viewBoxVals.minX} ${this._viewBoxVals.minY} ${this._viewBoxVals.width} ${this._viewBoxVals.height}`);
+        this._viewpoint.setAttributeNS(null, 'x', this._viewBoxVals.minX);
+        this._viewpoint.setAttributeNS(null, 'y', this._viewBoxVals.minY);
+        this._viewpoint.setAttributeNS(null, 'width', this._viewBoxVals.width);
+        this._viewpoint.setAttributeNS(null, 'height', this._viewBoxVals.height);
     }
 
     _setUpEvents() {
@@ -301,12 +309,22 @@ export default class Designer {
         const mouseMove = () => {
             const deltaX = (event.clientX - prevMouseCordX) / this._zoom;
             const deltaY = (event.clientY - prevMouseCordY) / this._zoom;
-            this._viewBoxVals.minX -= deltaX;
-            this._viewBoxVals.minY -= deltaY;
-            this._setViewBox();
 
-            prevMouseCordX = event.clientX;
             prevMouseCordY = event.clientY;
+            prevMouseCordX = event.clientX;
+            console.log(this._viewBoxVals.minX - deltaX, this._viewBoxVals.minY - deltaY)
+
+            if (this._viewBoxVals.minX - deltaX + this._designerWidth < DESIGNER_PAN_WIDTH &&
+                this._viewBoxVals.minX - deltaX >= 0) {
+                this._viewBoxVals.minX -= deltaX;
+                
+            }
+            if (this._viewBoxVals.minY - deltaY + this._designerHeight < DESIGNER_PAN_HEIGHT &&
+                this._viewBoxVals.minY - deltaY >= 0) {
+                this._viewBoxVals.minY -= deltaY;
+                
+            }
+            this._setViewBox();
         };
 
         this._container.addEventListener('mousedown', event => {
