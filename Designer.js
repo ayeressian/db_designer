@@ -235,6 +235,16 @@ export default class Designer {
             tableElm.setAttribute('id', i + 'table');
             this._svgElem.appendChild(tableElm);
 
+            const sides = table.getSides();
+
+            const tableMini = document.createElementNS(constant.nsSvg, 'rect');
+            tableMini.setAttributeNS(null, 'class', 'mini_table');
+            tableMini.setAttributeNS(null, 'x', sides.left.p1.x);
+            tableMini.setAttributeNS(null, 'y', sides.left.p1.y);
+            tableMini.setAttributeNS(null, 'width', sides.top.p2.x - sides.top.p1.x);
+            tableMini.setAttributeNS(null, 'height', sides.left.p2.y - sides.left.p1.y);
+            this._minimap.appendChild(tableMini);
+
             table.columns.forEach(column => {
                 if (column.fk) {
                     let relationInfo = {

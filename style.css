@@ -21,6 +21,12 @@
     stroke: black;
 }
 
+#designer-container #minimap .mini_table {
+    fill: lightcyan;
+    stroke-width: 10;
+    stroke: black;
+}
+
 #designer-container #btn-zoom-in {
     position: absolute;
     left: 120px;
