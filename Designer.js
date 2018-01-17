@@ -322,7 +322,6 @@ export default class Designer {
 
             prevMouseCordY = event.clientY;
             prevMouseCordX = event.clientX;
-            console.log(this._viewBoxVals.minX - deltaX, this._viewBoxVals.minY - deltaY)
 
             if (this._viewBoxVals.minX - deltaX + this._designerWidth < DESIGNER_PAN_WIDTH &&
                 this._viewBoxVals.minX - deltaX >= 0) {
