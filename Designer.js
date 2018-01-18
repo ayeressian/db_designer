@@ -1,9 +1,6 @@
 import Relation from './Relation.js';
 import constant from './const.js';
 
-const DESIGNER_PAN_HEIGHT = 1200;
-const DESIGNER_PAN_WIDTH = 1600;
-
 export default class Designer {
     constructor(tables = []) {
         this._container = document.getElementById('designer-container');
@@ -27,7 +24,7 @@ export default class Designer {
             height: this._designerHeight
         };
 
-        this._minimap.setAttribute('viewBox', `0 0 ${DESIGNER_PAN_WIDTH} ${DESIGNER_PAN_HEIGHT}`);
+        this._minimap.setAttribute('viewBox', `0 0 ${constant.DESIGNER_PAN_WIDTH} ${constant.DESIGNER_PAN_HEIGHT}`);
 
         this._setUpEvents();
 
@@ -35,12 +32,22 @@ export default class Designer {
 
         this._zoom = 1;
 
-        this.draw();
+        this._tableMinimap = new Map();
+
+        this.draw();        
     }
 
     addTable(table) {
         this.tables.push(table);
         drawTable();
+    }
+
+    onTableMove(table, deltaX, deltaY) {
+        this._drawRelations();
+
+        const minimapTableElem = this._tableMinimap.get(table);
+
+        minimapTableElem.setAttributeNS(null, 'transform', `translate(${deltaX},${deltaY})`);
     }
 
     _drawRelations() {
@@ -220,10 +227,6 @@ export default class Designer {
         });
     }
 
-    _drawMinimap() {
-        this.tables
-    }
-
     draw() {
         let minX = Number.MAX_SAFE_INTEGER;
         let maxX = Number.MIN_SAFE_INTEGER;
@@ -243,6 +246,7 @@ export default class Designer {
             tableMini.setAttributeNS(null, 'y', sides.left.p1.y);
             tableMini.setAttributeNS(null, 'width', sides.top.p2.x - sides.top.p1.x);
             tableMini.setAttributeNS(null, 'height', sides.left.p2.y - sides.left.p1.y);
+            this._tableMinimap.set(table, tableMini);
             this._minimap.appendChild(tableMini);
 
             table.columns.forEach(column => {
@@ -323,12 +327,12 @@ export default class Designer {
             prevMouseCordY = event.clientY;
             prevMouseCordX = event.clientX;
 
-            if (this._viewBoxVals.minX - deltaX + this._designerWidth < DESIGNER_PAN_WIDTH &&
+            if (this._viewBoxVals.minX - deltaX + this._designerWidth < constant.DESIGNER_PAN_WIDTH &&
                 this._viewBoxVals.minX - deltaX >= 0) {
                 this._viewBoxVals.minX -= deltaX;
                 
             }
-            if (this._viewBoxVals.minY - deltaY + this._designerHeight < DESIGNER_PAN_HEIGHT &&
+            if (this._viewBoxVals.minY - deltaY + this._designerHeight < constant.DESIGNER_PAN_HEIGHT &&
                 this._viewBoxVals.minY - deltaY >= 0) {
                 this._viewBoxVals.minY -= deltaY;
                 
@@ -361,12 +365,12 @@ export default class Designer {
         });
 
         this.tables.forEach(table => {
-            table.setMoveListener(this._drawRelations.bind(this));
+            table.setMoveListener(this.onTableMove.bind(this));
         });
     }
 
     getZoom() {
-        return this._zoom;
+        return this._zoom;deltaX
     }
 
     getPan() {

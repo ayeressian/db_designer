@@ -18,7 +18,7 @@ export default class Table {
             const deltaX = normalizedClientX - mouseDownInitialElemX;
             const deltaY = normalizedClientY - mouseDownInitialElemY;
             this._elem.setAttributeNS(null, 'transform', `translate(${deltaX},${deltaY})`);
-            this._onMove && this._onMove();
+            this._onMove && this._onMove(this, deltaX, deltaY);            
         };
 
         this._table.addEventListener('mousedown', event => {
@@ -66,7 +66,7 @@ export default class Table {
             y
         };
     }
-    
+
     getSides() {
         const boundingRect = this._table.getBoundingClientRect();
         return {
