@@ -13,6 +13,7 @@
     height: 75px;
     border-style: solid;
     border-width: 1px;
+    background-color: #e3ebed;
 }
 
 #designer-container #minimap #viewpoint {
@@ -49,7 +50,6 @@
     user-select: none;
     cursor: default;
     background-color: #e3ebed;
-
     font: normal 10px Verdana, Arial, sans-serif;
 }
 
