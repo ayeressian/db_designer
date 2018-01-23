@@ -327,15 +327,13 @@ export default class Designer {
             prevMouseCordY = event.clientY;
             prevMouseCordX = event.clientX;
 
-            if (this._viewBoxVals.minX - deltaX + this._designerWidth < constant.DESIGNER_PAN_WIDTH &&
+            if (this._viewBoxVals.minX - deltaX + this._designerWidth / this._zoom < constant.DESIGNER_PAN_WIDTH &&
                 this._viewBoxVals.minX - deltaX >= 0) {
-                this._viewBoxVals.minX -= deltaX;
-                
+                this._viewBoxVals.minX -= deltaX;                
             }
-            if (this._viewBoxVals.minY - deltaY + this._designerHeight < constant.DESIGNER_PAN_HEIGHT &&
+            if (this._viewBoxVals.minY - deltaY  + this._designerHeight / this._zoom < constant.DESIGNER_PAN_HEIGHT &&
                 this._viewBoxVals.minY - deltaY >= 0) {
-                this._viewBoxVals.minY -= deltaY;
-                
+                this._viewBoxVals.minY -= deltaY;                
             }
             this._setViewBox();
         };
@@ -350,18 +348,21 @@ export default class Designer {
             document.removeEventListener('mousemove', mouseMove);
         }, false);
 
-        this._btnZoomIn.addEventListener('click', () => {
+        this._btnZoomIn.addEventListener('click', () => {            
             this._viewBoxVals.width = this._viewBoxVals.width / ZOOM;
             this._viewBoxVals.height = this._viewBoxVals.height / ZOOM;
             this._setViewBox();
             this._zoom *= ZOOM;
         });
 
-        this._btnZoomOut.addEventListener('click', () => {
-            this._viewBoxVals.width = this._viewBoxVals.width * ZOOM;
-            this._viewBoxVals.height = this._viewBoxVals.height * ZOOM;
-            this._setViewBox();
-            this._zoom /= ZOOM;
+        this._btnZoomOut.addEventListener('click', () => {            
+            if (this._viewBoxVals.height * ZOOM <= constant.DESIGNER_PAN_HEIGHT &&
+                this._viewBoxVals.width * ZOOM <= constant.DESIGNER_PAN_WIDTH) {
+                this._viewBoxVals.width = this._viewBoxVals.width * ZOOM;
+                this._viewBoxVals.height = this._viewBoxVals.height * ZOOM;
+                this._setViewBox();
+                this._zoom /= ZOOM;
+            }            
         });
 
         this.tables.forEach(table => {
