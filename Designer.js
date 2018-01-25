@@ -348,18 +348,30 @@ export default class Designer {
             document.removeEventListener('mousemove', mouseMove);
         }, false);
 
-        this._btnZoomIn.addEventListener('click', () => {            
+        this._btnZoomIn.addEventListener('click', () => {
             this._viewBoxVals.width = this._viewBoxVals.width / ZOOM;
             this._viewBoxVals.height = this._viewBoxVals.height / ZOOM;
             this._setViewBox();
             this._zoom *= ZOOM;
         });
 
-        this._btnZoomOut.addEventListener('click', () => {            
+        this._btnZoomOut.addEventListener('click', () => {
             if (this._viewBoxVals.height * ZOOM <= constant.DESIGNER_PAN_HEIGHT &&
                 this._viewBoxVals.width * ZOOM <= constant.DESIGNER_PAN_WIDTH) {
+
                 this._viewBoxVals.width = this._viewBoxVals.width * ZOOM;
                 this._viewBoxVals.height = this._viewBoxVals.height * ZOOM;
+
+                const offsetWidth = this._viewBoxVals.width + this._viewBoxVals.minX - constant.DESIGNER_PAN_WIDTH;
+                if (offsetWidth > 0) {
+                    this._viewBoxVals.minX -= offsetWidth;
+                }
+    
+                const offsetHeight = this._viewBoxVals.height + this._viewBoxVals.minY - constant.DESIGNER_PAN_HEIGHT;
+                if (offsetHeight > 0) {
+                    this._viewBoxVals.minY -= offsetHeight;
+                }
+                
                 this._setViewBox();
                 this._zoom /= ZOOM;
             }            
