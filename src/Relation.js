@@ -512,7 +512,6 @@ module.exports = class Relation {
     const toTableCenter = this.toTable.getCenter();
 
     const fromTableSides = this.fromTable.getSides();
-    // console.log('from left: ', fromTableSides.left);
 
     const intersectFromTableRightSide = segmentIntersection(fromTableCenter, toTableCenter, fromTableSides.right.p1, fromTableSides.right.p2);
     if (intersectFromTableRightSide) {
@@ -536,7 +535,6 @@ module.exports = class Relation {
     }
 
     const toTableSides = this.toTable.getSides();
-    // console.log('to right: ', toTableSides.right);
 
     const intersectToTableRightSide = segmentIntersection(fromTableCenter, toTableCenter, toTableSides.right.p1, toTableSides.right.p2);
     if (intersectToTableRightSide) {

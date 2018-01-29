@@ -1,28 +1,16 @@
 {
-  // Use IntelliSense to learn about possible attributes.
-  // Hover to view descriptions of existing attributes.
-  // For more information, visit: https://go.microsoft.com/fwlink/?linkid=830387
   "version": "0.2.0",
   "configurations": [
-  {
-    "type": "node",
-    "request": "launch",
-    "name": "test",
-    "program": "${workspaceFolder}/test.js"
-  },
-  {
-    "type": "chrome",
-    "request": "attach",
-    "name": "Attach to Chrome",
-    "port": 9222,
-    "webRoot": "${workspaceRoot}"
-  },
     {
-      "type": "chrome",
+      "name": "Debug Main Process",
+      "type": "node",
       "request": "launch",
-      "name": "Launch Chrome against localhost",
-      "url": "http://localhost:9000",
-      "webRoot": "${workspaceRoot}"
+      "cwd": "${workspaceRoot}",
+      "runtimeExecutable": "${workspaceRoot}/node_modules/.bin/electron",
+      "windows": {
+        "runtimeExecutable": "${workspaceRoot}/node_modules/.bin/electron.cmd"
+      },
+      "args" : ["."]
     }
   ]
 }
