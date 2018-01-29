@@ -1,7 +1,7 @@
 'use strict';
 
 const constant = require('./const');
-const to3FixedNumber = require('./util.js').to3FixedNumber;
+const { to3FixedNumber } = require('./util.js');
 
 module.exports = class Table {
   constructor({ name, columns = [], pos = { x: 0, y: 0 } }) {
