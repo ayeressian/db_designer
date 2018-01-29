@@ -13,7 +13,7 @@ module.exports = class Designer {
     this._btnZoomOut = document.getElementById('btn-zoom-out');
 
     this._designerWidth = this._svgElem.scrollWidth;
-    this._designerHeight = this._svgElem.scrollHeight;   
+    this._designerHeight = this._svgElem.scrollHeight;
 
     this.tables = tables;
 
@@ -244,8 +244,7 @@ module.exports = class Designer {
 
       const tableMini = document.createElementNS(constant.nsSvg, 'rect');
       tableMini.setAttributeNS(null, 'class', 'mini_table');
-      tableMini.setAttributeNS(null, 'x', sides.left.p1.x);
-      tableMini.setAttributeNS(null, 'y', sides.left.p1.y);
+      tableMini.setAttributeNS(null, 'transform', `translate(${sides.left.p1.x}, ${sides.left.p1.y})`);
       tableMini.setAttributeNS(null, 'width', sides.top.p2.x - sides.top.p1.x);
       tableMini.setAttributeNS(null, 'height', sides.left.p2.y - sides.left.p1.y);
       this._tableMinimap.set(table, tableMini);
