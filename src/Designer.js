@@ -13,7 +13,7 @@ module.exports = class Designer {
     this._btnZoomOut = document.getElementById('btn-zoom-out');
 
     this._designerWidth = this._svgElem.scrollWidth;
-    this._designerHeight = this._svgElem.scrollHeight;
+    this._designerHeight = this._svgElem.scrollHeight;   
 
     this.tables = tables;
 
@@ -319,6 +319,15 @@ module.exports = class Designer {
 
   _setUpEvents() {
     const ZOOM = 1.2;
+
+    window.addEventListener('resize', event => {
+      this._designerWidth = this._svgElem.scrollWidth;
+      this._designerHeight = this._svgElem.scrollHeight;
+
+      this._viewBoxVals.width = this._designerWidth;
+      this._viewBoxVals.height = this._designerHeight;
+      this._setViewBox();
+    });
 
     let prevMouseCordX, prevMouseCordY;
 
