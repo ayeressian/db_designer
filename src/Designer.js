@@ -323,8 +323,8 @@ module.exports = class Designer {
       this._designerWidth = this._svgElem.scrollWidth;
       this._designerHeight = this._svgElem.scrollHeight;
 
-      this._viewBoxVals.width = this._designerWidth;
-      this._viewBoxVals.height = this._designerHeight;
+      this._viewBoxVals.width = this._designerWidth / this._zoom;
+      this._viewBoxVals.height = this._designerHeight / this._zoom;
       this._setViewBox();
     });
 
