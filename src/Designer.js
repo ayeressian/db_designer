@@ -316,6 +316,18 @@ module.exports = class Designer {
     this._viewpoint.setAttributeNS(null, 'height', this._viewBoxVals.height);
   }
 
+  _viewportAddjustment() {
+    const offsetWidth = this._viewBoxVals.width + this._viewBoxVals.minX - constant.DESIGNER_PAN_WIDTH;
+    if (offsetWidth > 0) {
+      this._viewBoxVals.minX -= offsetWidth;
+    }
+
+    const offsetHeight = this._viewBoxVals.height + this._viewBoxVals.minY - constant.DESIGNER_PAN_HEIGHT;
+    if (offsetHeight > 0) {
+      this._viewBoxVals.minY -= offsetHeight;
+    }
+  }
+
   _setUpEvents() {
     const ZOOM = 1.2;
 
@@ -325,6 +337,9 @@ module.exports = class Designer {
 
       this._viewBoxVals.width = this._designerWidth / this._zoom;
       this._viewBoxVals.height = this._designerHeight / this._zoom;
+      
+      this._viewportAddjustment();
+
       this._setViewBox();
     });
 
@@ -372,15 +387,7 @@ module.exports = class Designer {
         this._viewBoxVals.width = this._viewBoxVals.width * ZOOM;
         this._viewBoxVals.height = this._viewBoxVals.height * ZOOM;
 
-        const offsetWidth = this._viewBoxVals.width + this._viewBoxVals.minX - constant.DESIGNER_PAN_WIDTH;
-        if (offsetWidth > 0) {
-          this._viewBoxVals.minX -= offsetWidth;
-        }
-
-        const offsetHeight = this._viewBoxVals.height + this._viewBoxVals.minY - constant.DESIGNER_PAN_HEIGHT;
-        if (offsetHeight > 0) {
-          this._viewBoxVals.minY -= offsetHeight;
-        }
+        this._viewportAddjustment();
 
         this._setViewBox();
         this._zoom /= ZOOM;
