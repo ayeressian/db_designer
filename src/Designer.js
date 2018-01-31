@@ -26,6 +26,8 @@ module.exports = class Designer {
       height: this._designerHeight
     };
 
+    this._minimap.style.width = constant.DESIGNER_PAN_WIDTH * parseInt(this._minimap.style.height, 10) / constant.DESIGNER_PAN_HEIGHT + 'px';
+
     this._minimap.setAttribute('viewBox', `0 0 ${constant.DESIGNER_PAN_WIDTH} ${constant.DESIGNER_PAN_HEIGHT}`);
 
     this._setUpEvents();
