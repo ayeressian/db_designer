@@ -4,7 +4,7 @@ const Relation = require('./Relation');
 const constant = require('./const');
 
 module.exports = class Designer {
-  constructor(tables = []) {
+  constructor() {
     this._container = document.getElementById('designer-container');
     this._svgElem = document.getElementById('designer');
     this._minimap = document.getElementById('minimap');
@@ -13,11 +13,7 @@ module.exports = class Designer {
     this._btnZoomOut = document.getElementById('btn-zoom-out');
 
     this._designerWidth = this._svgElem.scrollWidth;
-    this._designerHeight = this._svgElem.scrollHeight;
-
-    this.tables = tables;
-
-    tables.forEach(table => table.setDesigner(this));
+    this._designerHeight = this._svgElem.scrollHeight;    
 
     this._viewBoxVals = {
       minX: 0,
@@ -39,8 +35,18 @@ module.exports = class Designer {
 
     this._zoom = 1;
 
-    this._tableMinimap = new Map();
+    this._tableMinimap = new Map();    
+  }
 
+  load(tables) {
+    this._relationInfos = [];
+    this._svgElem.innerHTML = '';
+    this.tables = tables;
+    tables.forEach(table => {
+      table.setDesigner(this);
+      table.setMoveListener(this.onTableMove.bind(this));
+    });
+    
     this.draw();
   }
 
@@ -321,6 +327,14 @@ module.exports = class Designer {
     this._viewpoint.setAttributeNS(null, 'height', this._viewBoxVals.height);
   }
 
+  getCords() {
+    const bRect = this._svgElem.getBoundingClientRect();
+    return {
+      x: bRect.left,
+      y: bRect.top
+    }
+  }
+
   _viewportAddjustment() {
     const offsetWidth = this._viewBoxVals.width + this._viewBoxVals.minX - constant.DESIGNER_PAN_WIDTH;
     if (offsetWidth > 0) {
@@ -399,10 +413,12 @@ module.exports = class Designer {
       }
     });
 
-    this.tables.forEach(table => {
-      table.setMoveListener(this.onTableMove.bind(this));
-    });
-  }
+    if (this.tables) {
+      this.tables.forEach(table => {
+        table.setMoveListener(this.onTableMove.bind(this));
+      });
+    }    
+  }  
 
   getZoom() {
     return this._zoom; deltaX

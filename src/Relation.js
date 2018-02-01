@@ -49,7 +49,7 @@ module.exports = class Relation {
   _getLeftSidePathCord(tableSides, pathIndex, pathCount) {
     const sideLength = tableSides.left.p2.y - tableSides.left.p1.y;
     const posOnLine = this._getPosOnLine(pathIndex, pathCount, sideLength);
-    return { y: tableSides.left.p1.y + posOnLine, x: tableSides.left.p1.x };
+    return { y: tableSides.left.p1.y + posOnLine, x: tableSides.left.p1.x};
   }
 
   _getRightSidePathCord(tableSides, pathIndex, pathCount) {

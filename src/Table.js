@@ -60,9 +60,11 @@ module.exports = class Table {
   }
 
   getCenter() {
-    const boundingRect = this._table.getBoundingClientRect();
-    const x = this._normalizeX(boundingRect.left) + to3FixedNumber(boundingRect.width / this._designer.getZoom()) / 2;
-    const y = this._normalizeY(boundingRect.top) + to3FixedNumber(boundingRect.height / this._designer.getZoom()) / 2;
+    const designerCords = this._designer.getCords();
+    const boundingRect = this._table.getBoundingClientRect();    
+    //console.log(boundingRect.left)
+    const x = this._normalizeX(boundingRect.left - designerCords.x)  + to3FixedNumber(boundingRect.width / this._designer.getZoom()) / 2;    
+    const y = this._normalizeY(boundingRect.top - designerCords.y) + to3FixedNumber(boundingRect.height / this._designer.getZoom()) / 2;
     return {
       x,
       y
@@ -70,46 +72,47 @@ module.exports = class Table {
   }
 
   getSides() {
+    const designerCords = this._designer.getCords();
     const boundingRect = this._table.getBoundingClientRect();
     return {
       right: {
         p1: {
-          x: this._normalizeX(boundingRect.right),
-          y: this._normalizeY(boundingRect.top)
+          x: this._normalizeX(boundingRect.right - designerCords.x),
+          y: this._normalizeY(boundingRect.top - designerCords.y)
         },
         p2: {
-          x: this._normalizeX(boundingRect.right),
-          y: this._normalizeY(boundingRect.bottom)
+          x: this._normalizeX(boundingRect.right - designerCords.x),
+          y: this._normalizeY(boundingRect.bottom - designerCords.y)
         }
       },
       left: {
         p1: {
-          x: this._normalizeX(boundingRect.left),
-          y: this._normalizeY(boundingRect.top)
+          x: this._normalizeX(boundingRect.left - designerCords.x),
+          y: this._normalizeY(boundingRect.top - designerCords.y)
         },
         p2: {
-          x: this._normalizeX(boundingRect.left),
-          y: this._normalizeY(boundingRect.bottom)
+          x: this._normalizeX(boundingRect.left - designerCords.x),
+          y: this._normalizeY(boundingRect.bottom - designerCords.y)
         }
       },
       top: {
         p1: {
-          x: this._normalizeX(boundingRect.left),
-          y: this._normalizeY(boundingRect.top)
+          x: this._normalizeX(boundingRect.left - designerCords.x),
+          y: this._normalizeY(boundingRect.top - designerCords.y)
         },
         p2: {
-          x: this._normalizeX(boundingRect.right),
-          y: this._normalizeY(boundingRect.top)
+          x: this._normalizeX(boundingRect.right - designerCords.x),
+          y: this._normalizeY(boundingRect.top - designerCords.y)
         }
       },
       bottom: {
         p1: {
-          x: this._normalizeX(boundingRect.left),
-          y: this._normalizeY(boundingRect.bottom)
+          x: this._normalizeX(boundingRect.left - designerCords.x),
+          y: this._normalizeY(boundingRect.bottom - designerCords.y)
         },
         p2: {
-          x: this._normalizeX(boundingRect.right),
-          y: this._normalizeY(boundingRect.bottom)
+          x: this._normalizeX(boundingRect.right - designerCords.x),
+          y: this._normalizeY(boundingRect.bottom - designerCords.y)
         }
       }
     };

@@ -7,7 +7,7 @@ const url = require('url');
 
 let mainWindow;
 
-function createWindow() {  
+function createWindow() {
   mainWindow = new BrowserWindow({ width: 1024, height: 800 });
 
   mainWindow.loadURL(url.format({
@@ -16,7 +16,7 @@ function createWindow() {
     slashes: true
   }));
 
-  mainWindow.webContents.openDevTools();
+  // mainWindow.webContents.openDevTools(); 
 
   mainWindow.on('closed', function () {
     mainWindow = null;
@@ -31,7 +31,14 @@ function createWindow() {
         {
           label: 'Open',
           click() {
-            dialog.showOpenDialog(mainWindow, {properties: ['openFile', 'openDirectory', 'multiSelections']});
+            dialog.showOpenDialog(mainWindow, {
+              properties: ['openFile'],
+              filters: [{ name: 'json', extensions: ['json'] }]
+            }, filePaths => {
+              if (filePaths && filePaths.length > 0) {
+                mainWindow.webContents.send('file-to-load', filePaths[0]);
+              }              
+            });
           }
         },
         {
@@ -56,7 +63,7 @@ app.on('window-all-closed', function () {
   }
 });
 
-app.on('activate', function () {  
+app.on('activate', function () {
   if (mainWindow === null) {
     createWindow();
   }

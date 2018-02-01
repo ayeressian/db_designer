@@ -5,15 +5,25 @@ html{
 
 body {
     height: 100%;
+    display: grid;
+    grid-template-columns: 40px auto;
+    grid-auto-rows: minmax(200px, auto);
+    width: 100vw;
+    height: 100vh;
+}
+
+.side-menu {
+    grid-column: 1;
 }
 
 #designer-container {
-    position:absolute;
-    top:0;
-    bottom:0;
-    left:0;
-    right:0;
-    overflow:hidden;
+    grid-column: 2;
+    position: relative;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    overflow: hidden;
 }
 
 #designer-container #minimap {
