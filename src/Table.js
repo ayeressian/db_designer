@@ -62,7 +62,7 @@ module.exports = class Table {
   getCenter() {
     const designerCords = this._designer.getCords();
     const boundingRect = this._table.getBoundingClientRect();    
-    //console.log(boundingRect.left)
+    
     const x = this._normalizeX(boundingRect.left - designerCords.x)  + to3FixedNumber(boundingRect.width / this._designer.getZoom()) / 2;    
     const y = this._normalizeY(boundingRect.top - designerCords.y) + to3FixedNumber(boundingRect.height / this._designer.getZoom()) / 2;
     return {
