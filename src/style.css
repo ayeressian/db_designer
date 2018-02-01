@@ -7,9 +7,35 @@ body {
     height: 100%;
     display: grid;
     grid-template-columns: 40px auto;
-    grid-auto-rows: minmax(200px, auto);
     width: 100vw;
     height: 100vh;
+}
+
+.command {
+    height: 40px;
+    width: 40px;       
+    background-size: 30px 30px; 
+}
+.command:hover {
+    background-color: #DDD;
+}
+
+.command.create-table {        
+    background-image: url("../asset/create_table.svg");
+    background-repeat: no-repeat;
+    background-position: center;
+}
+
+.command.create-view {
+    background-image: url("../asset/create_view.svg");
+    background-repeat: no-repeat;
+    background-position: center;
+}
+
+.command.create-relation {    
+    background-image: url("../asset/create_relation.svg");
+    background-repeat: no-repeat;
+    background-position: center;
 }
 
 .side-menu {
