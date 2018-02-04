@@ -1,3 +1,5 @@
+'use strict';
+
 const electron = require('electron');
 const app = electron.app;
 const BrowserWindow = electron.BrowserWindow;
@@ -16,7 +18,7 @@ function createWindow() {
     slashes: true
   }));
 
-  mainWindow.webContents.openDevTools(); 
+  // mainWindow.webContents.openDevTools();
 
   mainWindow.on('closed', function () {
     mainWindow = null;
@@ -37,7 +39,7 @@ function createWindow() {
             }, filePaths => {
               if (filePaths && filePaths.length > 0) {
                 mainWindow.webContents.send('file-to-load', filePaths[0]);
-              }              
+              }
             });
           }
         },
@@ -51,8 +53,8 @@ function createWindow() {
     }
   ];
 
-  const menu = Menu.buildFromTemplate(template)
-  Menu.setApplicationMenu(menu)
+  const menu = Menu.buildFromTemplate(template);
+  Menu.setApplicationMenu(menu);
 }
 
 app.on('ready', createWindow);
