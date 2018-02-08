@@ -23,12 +23,14 @@ class App {
     document.getElementsByClassName('create-table')[0].addEventListener('click', event => {
       let mainWindow = BrowserWindow.getFocusedWindow();
       const createTableWindow = new BrowserWindow({
-        width: 500,
-        height: 400,
+        width: 1300,
+        height: 800,
         parent: mainWindow
       });
 
       createTableWindow.webContents.openDevTools();
+
+      createTableWindow.setMenu(null);
 
       createTableWindow.loadURL(url.format({
         pathname: path.join(__dirname, 'createTable/createTable.html'),

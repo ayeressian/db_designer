@@ -5,34 +5,45 @@ const agGrid = require('ag-grid');
 console.log('test');
 
 const gridOptions = {
+  editType: 'fullRow',
   columnDefs: [{
-      headerName: "Make",
-      field: "make"
+      headerName: 'Name',
+      field: 'name',
+      editable: true,
+      width: 150
     },
     {
-      headerName: "Model",
-      field: "model"
+      headerName: 'Type',
+      field: 'type',
+      editable: true,
+      width: 100
     },
     {
-      headerName: "Price",
-      field: "price"
+      headerName: 'Primary key',
+      field: 'primaryKey',
+      editable: true,
+      width: 120
+    },
+    {
+      headerName: 'Not Null',
+      field: 'notNull',
+      editable: true,
+      width: 100
+    },
+    {
+      headerName: 'Unique',
+      field: 'unique',
+      editable: true,
+      width: 100
+    },
+    {
+      headerName: 'Auto Increment',
+      field: 'autoIncrement',
+      editable: true,
+      width: 140
     }
   ],
-  rowData: [{
-      make: "Toyota",
-      model: "Celica",
-      price: 35000
-    },
-    {
-      make: "Ford",
-      model: "Mondeo",
-      price: 32000
-    },
-    {
-      make: "Porsche",
-      model: "Boxter",
-      price: 72000
-    }
+  rowData: [
   ]
 }
 
