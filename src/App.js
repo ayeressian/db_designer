@@ -10,14 +10,14 @@ const BrowserWindow = electron.remote.BrowserWindow;
 
 class App {
   constructor() {
-    const designer = new Designer();
+    this.designer = new Designer();
     this._initEvents();
   }
 
   _initEvents() {
     electron.ipcRenderer.on('file-to-load', (sender, filePath) => {
       const tables = schemaParser(require(filePath));
-      designer.load(tables);
+      this.designer.load(tables);
     });
 
     document.getElementsByClassName('create-table')[0].addEventListener('click', event => {
