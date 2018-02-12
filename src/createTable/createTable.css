@@ -27,11 +27,6 @@ label {
   float: right;
 }
 
-.type-input {
-  width: 100%;
-  margin: 0;
-}
-
 .column-checkbox {
   display: table;
   margin: 0 auto;

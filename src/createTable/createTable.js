@@ -1,6 +1,10 @@
 'use strict';
 
 const agGrid = require('ag-grid');
+const path = require('path');
+const url = require('url');
+const electron = require('electron');
+const BrowserWindow = electron.remote.BrowserWindow;
 
 const types = ["INT", "STRING"];
 
@@ -74,12 +78,41 @@ class CellDelete {
 }
 
 const gridOptions = {
-  editType: 'fullRow',
-  stopEditingWhenGridLosesFocus: true,
-  suppressClickEdit: true,
   components:{
     countryDropdown: CountryDropDown,
     cellCheckBox: CellCheckBox
+  },
+  rowSelection: 'single',
+  onSelectionChanged(api) {
+    const selectedRow = api.api.getSelectedRows()[0];
+    if (selectedRow) {
+      let createTableWindow = BrowserWindow.getFocusedWindow();
+      let editRowWindow = new BrowserWindow({
+        width: 405,
+        height: 340,
+        parent: createTableWindow,
+        resizable: false
+      });
+
+      editRowWindow.webContents.openDevTools();
+
+      editRowWindow.setMenu(null);      
+
+      editRowWindow.on('closed', function () {
+        editRowWindow = null;
+        api.api.deselectAll();        
+      });
+
+      editRowWindow.on('show', function () {
+        editRowWindow.webContents.send('row-data', selectedRow);
+      });
+
+      editRowWindow.loadURL(url.format({
+        pathname: path.join(__dirname, '../editRow/editRow.html'),
+        protocol: 'file:',
+        slashes: true
+      }));
+    }    
   },
   columnDefs: [
     {

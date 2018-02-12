@@ -1,0 +1,17 @@
+.buttons {
+  margin-bottom: 20px;
+  float: right;
+  clear: both;
+}
+
+body {
+  padding: 20px;
+}
+
+label {
+  display: inline-block;
+  width: 140px;
+  text-align: right;  
+  margin-bottom: 20px; 
+  margin-right: 10px;
+}
