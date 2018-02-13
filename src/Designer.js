@@ -253,7 +253,7 @@ module.exports = class Designer {
 
       const sides = table.getSides();
 
-      const tableMini = document.createElementNS(constant.nsSvg, 'rect');
+      const tableMini = document.createElementNS(constant.NS_SVG, 'rect');
       tableMini.setAttributeNS(null, 'class', 'mini_table');
       tableMini.setAttributeNS(null, 'transform', `translate(${sides.left.p1.x}, ${sides.left.p1.y})`);
       tableMini.setAttributeNS(null, 'width', sides.top.p2.x - sides.top.p1.x);

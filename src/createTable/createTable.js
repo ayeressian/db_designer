@@ -18,27 +18,6 @@ types.forEach(type => {
 });
 document.getElementsByTagName('body')[0].appendChild(datalist);
 
-class CountryDropDown {
-  init() {    
-    this.elem = document.createElement('input');
-    this.elem.setAttribute('list', datalistId);
-    this.elem.classList.add('type-input');
-  }
-  getGui() {
-    return this.elem;
-  }
-  afterGuiAttached() {
-    this.elem.focus();
-  }
-  getValue() {
-    this.elem.value;
-  }
-  destroy() {}
-  isPopup() {
-    return false;
-  }
-}
-
 class CellCheckBox {
   init(params) {
     const val = params.getValue && params.getValue();
@@ -79,7 +58,6 @@ class CellDelete {
 
 const gridOptions = {
   components:{
-    countryDropdown: CountryDropDown,
     cellCheckBox: CellCheckBox
   },
   rowSelection: 'single',
@@ -103,7 +81,7 @@ const gridOptions = {
         api.api.deselectAll();        
       });
 
-      editRowWindow.on('show', function () {
+      editRowWindow.webContents.on('did-finish-load', function () {
         editRowWindow.webContents.send('row-data', selectedRow);
       });
 

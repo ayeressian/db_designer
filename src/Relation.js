@@ -266,7 +266,7 @@ module.exports = class Relation {
   }
 
   _createHighlightTrigger(d) {
-    const path = document.createElementNS(constant.nsSvg, 'path');
+    const path = document.createElementNS(constant.NS_SVG, 'path');
     path.setAttributeNS(null, 'd', d);
     path.classList.add('highlight');
 
@@ -274,7 +274,7 @@ module.exports = class Relation {
   }
 
   _createPath(d) {
-    const path = document.createElementNS(constant.nsSvg, 'path');
+    const path = document.createElementNS(constant.NS_SVG, 'path');
 
     path.setAttributeNS(null, 'd', d);
 

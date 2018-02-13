@@ -119,14 +119,14 @@ module.exports = class Table {
   }
 
   render() {
-    this._elem = document.createElementNS(constant.nsSvg, 'foreignObject');
+    this._elem = document.createElementNS(constant.NS_SVG, 'foreignObject');
     this._elem.setAttributeNS(null, 'transform', `translate(${this._pos.x},${this._pos.y})`);
 
-    this._table = document.createElementNS(constant.nsHtml, 'table');
+    this._table = document.createElementNS(constant.NS_HTML, 'table');
     this._table.className = 'table';
-    const headingTr = document.createElementNS(constant.nsHtml, 'tr');
+    const headingTr = document.createElementNS(constant.NS_HTML, 'tr');
     this._table.appendChild(headingTr);
-    const headingTh = document.createElementNS(constant.nsHtml, 'th');
+    const headingTh = document.createElementNS(constant.NS_HTML, 'th');
     headingTh.setAttributeNS(null, 'colspan', 2);
     headingTh.innerHTML = this._name;
     headingTr.appendChild(headingTh);
@@ -134,15 +134,15 @@ module.exports = class Table {
     this._elem.appendChild(this._table);
 
     this.columns.forEach(column => {
-      const columnTr = document.createElementNS(constant.nsHtml, 'tr');
+      const columnTr = document.createElementNS(constant.NS_HTML, 'tr');
       column.elem = columnTr;
       this._table.appendChild(columnTr);
 
-      const columnNameTd = document.createElementNS(constant.nsHtml, 'td');
+      const columnNameTd = document.createElementNS(constant.NS_HTML, 'td');
       columnNameTd.innerHTML = column.name;
       columnTr.appendChild(columnNameTd);
 
-      const columnTypeTd = document.createElementNS(constant.nsHtml, 'td');
+      const columnTypeTd = document.createElementNS(constant.NS_HTML, 'td');
       if (column.fk) {
         columnTypeTd.innerHTML = column.fk.column.type;
       } else {
