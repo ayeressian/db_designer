@@ -29,7 +29,8 @@ class CellCheckBox {
 
     this.elem = document.createElement('input');
     this.elem.setAttribute('type', 'checkbox');
-    //make it unchangeable
+    
+    //make it readonly
     this.elem.addEventListener('click', function() {
       this.checked == true ? this.checked = false : this.checked = true;
     });
