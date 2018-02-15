@@ -4,6 +4,7 @@ const agGrid = require('ag-grid');
 const path = require('path');
 const url = require('url');
 const electron = require('electron');
+const constant = require('../const');
 const BrowserWindow = electron.remote.BrowserWindow;
 
 const types = ["INT", "STRING"];
@@ -17,6 +18,10 @@ types.forEach(type => {
   datalist.appendChild(option);
 });
 document.getElementsByTagName('body')[0].appendChild(datalist);
+
+document.getElementById('cancel').addEventListener('click', () => {
+  electron.remote.getCurrentWindow().close();
+});
 
 class CellCheckBox {
   init(params) {
@@ -65,28 +70,28 @@ const gridOptions = {
     const selectedRow = api.api.getSelectedRows()[0];
     if (selectedRow) {
       let createTableWindow = BrowserWindow.getFocusedWindow();
-      let editRowWindow = new BrowserWindow({
-        width: 405,
-        height: 340,
+      let editColumnWindow = new BrowserWindow({
+        width: constant.EDIT_COLUMN_WINDOW_WIDTH,
+        height: constant.EDIT_COLUMN_WINDOW_HEIGHT,
         parent: createTableWindow,
         resizable: false
       });
 
-      editRowWindow.webContents.openDevTools();
+      editColumnWindow.webContents.openDevTools();
 
-      editRowWindow.setMenu(null);      
+      editColumnWindow.setMenu(null);      
 
-      editRowWindow.on('closed', function () {
-        editRowWindow = null;
+      editColumnWindow.on('closed', function () {
+        editColumnWindow = null;
         api.api.deselectAll();        
       });
 
-      editRowWindow.webContents.on('did-finish-load', function () {
-        editRowWindow.webContents.send('row-data', selectedRow);
+      editColumnWindow.webContents.on('did-finish-load', function () {
+        editColumnWindow.webContents.send('row-data', selectedRow);
       });
 
-      editRowWindow.loadURL(url.format({
-        pathname: path.join(__dirname, '../editRow/editRow.html'),
+      editColumnWindow.loadURL(url.format({
+        pathname: path.join(__dirname, '../editColumn/editColumn.html'),
         protocol: 'file:',
         slashes: true
       }));

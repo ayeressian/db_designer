@@ -1,7 +1,7 @@
 'use strict';
 
 const { segmentIntersection } = require('./util');
-const constant = require('./const');
+const constant = require('../const');
 
 // export class MissingCountIndex extends Error {
 //   constructor() {

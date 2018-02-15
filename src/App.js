@@ -1,7 +1,8 @@
 'use strict';
 
-const Designer = require('./Designer');
-const schemaParser = require('./schemaParser');
+const Designer = require('./designer/Designer');
+const schemaParser = require('./designer/schemaParser');
+const constant = require('./const');
 const electron = require('electron');
 const path = require('path');
 const url = require('url');
@@ -23,8 +24,8 @@ class App {
     document.getElementsByClassName('create-table')[0].addEventListener('click', event => {
       let mainWindow = BrowserWindow.getFocusedWindow();
       const createTableWindow = new BrowserWindow({
-        width: 1300,
-        height: 800,
+        width: constant.CREATE_TABLE_WINDOW_WIDTH,
+        height: constant.CREATE_TABLE_WINDOW_HEIGHT,
         parent: mainWindow
       });
 

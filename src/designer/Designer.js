@@ -1,7 +1,7 @@
 'use strict';
 
 const Relation = require('./Relation');
-const constant = require('./const');
+const constant = require('../const');
 
 module.exports = class Designer {
   constructor() {

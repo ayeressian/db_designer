@@ -1,6 +1,6 @@
 'use strict';
 
-const constant = require('./const');
+const constant = require('../const');
 const { to3FixedNumber } = require('./util.js');
 
 module.exports = class Table {

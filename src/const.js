@@ -9,6 +9,12 @@ module.exports = {
   DESIGNER_PAN_WIDTH: 3000,
   NS_SVG: 'http://www.w3.org/2000/svg',
   NS_HTML: 'http://www.w3.org/1999/xhtml',
+  MAIN_WINDOW_WIDTH: 1024,
+  MAIN_WINDOW_HEIGHT: 800,
+  CREATE_TABLE_WINDOW_WIDTH: 1300,
+  CREATE_TABLE_WINDOW_HEIGHT: 800,
+  EDIT_COLUMN_WINDOW_WIDTH: 405,
+  EDIT_COLUMN_WINDOW_HEIGHT: 340,
   TYPES: [
     "bigint",
     "bigserial",

@@ -12,7 +12,12 @@ const aiElem = document.getElementById('ai');
 const defaultElem = document.getElementById('default');
 
 document.getElementById('save').addEventListener('click', () => {
+  //TODO more elaborate name value check is necessary
+  if (nameElem.value == null || nameElem.value.trim().length == 0) {
+    
+  } else {
 
+  }
 });
 
 document.getElementById('cancel').addEventListener('click', () => {

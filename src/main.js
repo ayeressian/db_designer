@@ -1,16 +1,17 @@
 'use strict';
 
 const electron = require('electron');
+const path = require('path');
+const constant = require('./const');
+const url = require('url');
+
 const app = electron.app;
 const BrowserWindow = electron.BrowserWindow;
-
-const path = require('path');
-const url = require('url');
 
 let mainWindow;
 
 function createWindow() {
-  mainWindow = new BrowserWindow({ width: 1024, height: 800 });
+  mainWindow = new BrowserWindow({ width: constant.MAIN_WINDOW_WIDTH, height: constant.MAIN_WINDOW_HEIGHT });
 
   mainWindow.loadURL(url.format({
     pathname: path.join(__dirname, 'index.html'),
