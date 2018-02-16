@@ -17,8 +17,8 @@ class App {
 
   _initEvents() {
     electron.ipcRenderer.on('file-to-load', (sender, filePath) => {
-      const tables = schemaParser(require(filePath));
-      this.designer.load(tables);
+      this._tables = schemaParser(require(filePath));       
+      this.designer.load(this._tables);
     });
 
     document.getElementsByClassName('create-table')[0].addEventListener('click', event => {
@@ -43,6 +43,10 @@ class App {
     document.getElementsByClassName('create-relation')[0].addEventListener('click', event => {});
   }
 
+  getTables() {
+    return this._tables;
+  }
+
 }
 
-new App();
+module.exports = new App();

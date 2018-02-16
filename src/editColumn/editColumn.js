@@ -2,6 +2,7 @@
 
 const electron = require('electron');
 const constants = require('../const');
+const app = require('../App');
 
 const typeElem = document.getElementById('type');
 const nameElem = document.getElementById('name');
@@ -14,7 +15,10 @@ const defaultElem = document.getElementById('default');
 document.getElementById('save').addEventListener('click', () => {
   //TODO more elaborate name value check is necessary
   if (nameElem.value == null || nameElem.value.trim().length == 0) {
-    
+    const tables = app.getTables();
+    if (tables.find(table => nameElem.value.trim() === table.getName())) {
+      
+    }
   } else {
 
   }
@@ -36,7 +40,7 @@ electron.ipcRenderer.on('row-data', (sender, rowData) => {
   nameElem.value = rowData.name;
   pkElem.checked = rowData.pk;
   nnElem.checked = rowData.nn;
-  uniqueElem.checked = rowData.unique;
+  uniqueElem.checked = rowData.unique;app
   aiElem.checked = rowData.ai;
   if (rowData.default) {
     defaultElem.value = rowData.default;
